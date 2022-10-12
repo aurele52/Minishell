@@ -6,7 +6,7 @@
 /*   By: audreyer <audreyer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/02 19:27:29 by audreyer          #+#    #+#             */
-/*   Updated: 2022/09/08 19:48:42 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/10/12 13:55:20 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,20 @@ void	ft_resetcolor()
 	write(1, color, ft_strlen(color));
 }
 
+char	*ft_readline(t_pos *garbage)
+{
+	char	*str;
+
+	str = readline(0);
+	if (garbage != 0)
+	{
+		ft_lstnew(str, garbage, 0);
+		if (garbage->start->back == 0)
+			return (0);
+	}
+	return (str);
+}
+
 int	main(int argc, char **argv, char **env)
 {
 	t_minishell	*minishell;
@@ -46,15 +60,13 @@ int	main(int argc, char **argv, char **env)
 
 	minishell = ft_minishellinit(argc, argv, env);
 	str = 0;
-	while (ft_strcmp(str, "exit\n") == 1 && minishell->error == 0)
+	while (ft_strcmp(str, "exit") != 0 && minishell->error == 0)
 	{
 		ft_setcolor(GREEN);
 		write(1, argv[0], ft_strlen(argv[0]));
 		write(1, " ", 1);
 		ft_resetcolor();
-		str = get_next_line(0, minishell->garbage);
-		if (str == 0)
-			break;
+		str = ft_readline(minishell->garbage);
 	}
 	ft_exit(minishell->garbage, minishell->error);
 }

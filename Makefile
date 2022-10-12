@@ -24,7 +24,10 @@ SRC=	src/minishell.c	\
 		src/ft_malloc.c		\
 		src/ft_strlen.c	\
 		src/ft_strcmp.c	\
-		src/ft_posclear.c
+		src/ft_posclear.c \
+		src/ft_token_create.c \
+		src/ft_isalpha.c \
+		src/ft_isalnum.c
 
 OBJ = $(SRC:.c=.o)
 

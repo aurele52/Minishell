@@ -23,7 +23,10 @@ void	*ft_malloc(int size, t_pos *garbage)
 	{
 		ft_lstnew(new, garbage, 0);
 		if (garbage->start->back == 0)
-			return (0);
+		{
+			free(new);
+			ft_exit(garbage, "malloc error");
+		}
 	}
 	return (new);
 }

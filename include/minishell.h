@@ -28,10 +28,11 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
+enum token{alphanum, space};
+
 typedef struct s_pos
 {
 	struct s_list	*start;
-	struct s_list	*end;
 	int				*size;
 }	t_pos;
 
@@ -39,7 +40,7 @@ typedef struct s_list
 {
 	struct s_list	*next;
 	struct s_list	*back;
-	int				*content;
+	void			*content;
 	struct s_pos	*pos;
 }	t_list;
 
@@ -50,6 +51,7 @@ typedef struct s_minishell
 	char		**argv;
 	int			argc;
 	char		*error;
+	t_pos		*token_list;
 }	t_minishell;
 
 /* liste */
@@ -64,9 +66,13 @@ int					ft_strcmp(const char *str1, const char *str2);
 void				*ft_malloc(int size, t_pos *free);
 int					ft_exit(t_pos *garbage, char *str);
 size_t				ft_strlen(const char *s);
+int					ft_isalpha(int c);
+int					ft_isalnum(int c);
+
 
 /* minishell */
 
 char				*readline(const char *prompt);
+void				ft_tokencreate(t_minishell *minishell, char *str);
 
 #endif

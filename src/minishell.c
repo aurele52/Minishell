@@ -24,6 +24,7 @@ t_minishell	*ft_minishellinit(int argc, char **argv, char **env)
 	minishell->argv = argv;
 	minishell->env = env;
 	minishell->error = 0;
+	minishell->token_list = ft_setpos(garbage);
 	return (minishell);
 }
 
@@ -67,6 +68,7 @@ int	main(int argc, char **argv, char **env)
 		write(1, " ", 1);
 		ft_resetcolor();
 		str = ft_readline(minishell->garbage);
+		ft_tokencreate(minishell, str);
 	}
 	ft_exit(minishell->garbage, minishell->error);
 }

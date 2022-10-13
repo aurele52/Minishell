@@ -12,11 +12,6 @@
 
 #include "minishell.h"
 
-char	ft_putchar(char c)
-{
-	write(1, &c, 1);
-}
-
 int	ft_tokenspace(t_minishell *minishell, char *str)
 {
 	int		i;

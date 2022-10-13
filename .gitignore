@@ -1,0 +1,8 @@
+*.o
+*.a
+a.out
+.DS_Store
+*.git
+*.swp
+*.vscode
+*.d

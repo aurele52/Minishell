@@ -14,11 +14,14 @@
 
 void	ft_posclear(t_pos *pos, int freee)
 {
-	while (*pos->size != 0)
-		ft_lstdelone(pos->start, freee);
-	if (freee == 1)
+	if (pos != NULL)
 	{
-		free(pos->size);
-		free(pos);
+		while (*pos->size != 0)
+			ft_lstdelone(pos->start, freee);
+		if (freee == 1)
+		{
+			free(pos->size);
+			free(pos);
+		}
 	}
 }

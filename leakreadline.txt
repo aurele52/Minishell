@@ -1,0 +1,9 @@
+==254883==     in use at exit: 204,184 bytes in 221 blocks
+==254883==   total heap usage: 429 allocs, 208 frees, 224,490 bytes allocated
+==254883== 
+==254883== LEAK SUMMARY:
+==254883==    definitely lost: 0 bytes in 0 blocks
+==254883==    indirectly lost: 0 bytes in 0 blocks
+==254883==      possibly lost: 0 bytes in 0 blocks
+==254883==    still reachable: 0 bytes in 0 blocks
+==254883==         suppressed: 204,184 bytes in 221 blocks

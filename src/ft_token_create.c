@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 11:53:25 by audreyer          #+#    #+#             */
-/*   Updated: 2022/10/13 15:19:59 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/10/13 16:29:17 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,15 @@ int	ft_tokenspace(t_minishell *minishell, char *str)
 	t_token	*token;
 
 	i = 0;
-	token = ft_malloc(sizeof(*token), minishell->garbage);
+	token = ft_malloc(sizeof(*token), minishell->garbagecmd);
 	if (!token)
-		ft_exit(minishell->garbage, "malloc error");
-	ft_lstnew(token, minishell->tokenlist, minishell->garbage);
+		ft_exit(minishell, "malloc error");
+	ft_lstnew(token, minishell->tokenlist, minishell->garbagecmd);
 	if (minishell->tokenlist->start->back == 0)
-		ft_exit(minishell->garbage, "malloc error");
+		ft_exit(minishell, "malloc error");
 	while (str[i] == ' ')
 		i++;
-	token->tokenstr = ft_strdup(" ", minishell->garbage);
+	token->tokenstr = ft_strdup(" ", minishell->garbagecmd);
 	token->tokentype = SPACES;
 	return (i);
 }
@@ -37,15 +37,15 @@ int	ft_tokenword(t_minishell *minishell, char *str)
 	t_token	*token;
 
 	i = 0;
-	token = ft_malloc(sizeof(*token), minishell->garbage);
+	token = ft_malloc(sizeof(*token), minishell->garbagecmd);
 	if (!token)
-		ft_exit(minishell->garbage, "malloc error");
-	ft_lstnew(token, minishell->tokenlist, minishell->garbage);
+		ft_exit(minishell, "malloc error");
+	ft_lstnew(token, minishell->tokenlist, minishell->garbagecmd);
 	if (minishell->tokenlist->start->back == 0)
-		ft_exit(minishell->garbage, "malloc error");
+		ft_exit(minishell, "malloc error");
 	while (str[i] && str[i] != ' ')
 		i++;
-	token->tokenstr = ft_substr(str, 0, i, minishell->garbage);
+	token->tokenstr = ft_substr(str, 0, i, minishell->garbagecmd);
 	token->tokentype = WORD;
 	return (i);
 }
@@ -75,6 +75,9 @@ void	ft_char(t_minishell *minishell, char *str)
 		 */
 	}
 	ft_posprint(minishell->tokenlist, &ft_printtoken);
+	ft_posclear(minishell->tokenlist, 0);
+	ft_posclear(minishell->garbagecmd, 0);
+		printf("arg\n");
 }
 
 void	ft_tokencreate(t_minishell *minishell, char *str)

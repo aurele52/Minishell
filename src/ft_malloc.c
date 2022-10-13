@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 14:32:19 by audreyer          #+#    #+#             */
-/*   Updated: 2022/10/12 12:33:23 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/10/13 16:01:37 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	*ft_malloc(int size, t_pos *garbage)
 		if (garbage->start->back == 0)
 		{
 			free(new);
-			ft_exit(garbage, "malloc error");
+			return (0);
 		}
 	}
 	return (new);

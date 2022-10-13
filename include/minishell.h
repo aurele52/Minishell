@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 16:37:40 by audreyer          #+#    #+#             */
-/*   Updated: 2022/10/13 15:20:18 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/10/13 16:00:38 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,9 @@ typedef struct s_list
 typedef struct s_minishell
 {
 	t_pos		*garbage;
+	t_pos		*garbagecmd;
 	char		**env;
+	char		**envact;
 	char		**argv;
 	int			argc;
 	char		*prompt;
@@ -90,7 +92,7 @@ char	*ft_strdup(const char *s, t_pos *garbage);
 char	*ft_substr(char const *s, unsigned int start, size_t len, t_pos *garb);
 int		ft_strcmp(const char *str1, const char *str2);
 void	*ft_malloc(int size, t_pos *free);
-int		ft_exit(t_pos *garbage, char *str);
+int		ft_exit(t_minishell *minishell, char *str);
 size_t	ft_strlen(const char *s);
 int		ft_isalpha(int c);
 int		ft_isalnum(int c);

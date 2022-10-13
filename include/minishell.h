@@ -38,7 +38,8 @@ enum e_type
 {
 	NOTZEROONMYMINISHELL,
 	SPACES,
-	WORD
+	WORD,
+	DOUBLECOTE
 };
 
 typedef struct s_list

@@ -55,19 +55,43 @@ int	ft_tokenword(t_minishell *minishell, char *str)
 	return (i);
 }
 
+int	ft_tokendoublecote(t_minishell *minishell, char *str)
+{
+	int		i;
+	t_token	*token;
+
+	i = 0;
+	token =ft_malloc(sizeof(*token), minishell->garbagecmd);
+	if (!token)
+		ft_exit(minishell, "malloc error");
+	ft_lstnew(token, minishell->tokenlist, minishell->garbagecmd);
+	if (minishell->tokenlist->start->back == 0)
+		ft_exit(minishell, "malloc error");
+	while (str[i] && str[i] != '\"')
+		i++;
+	// if (str[i] == '\0')
+	// 	ft_error(minishell, "No matching \"\n"); /* a coder */
+	// else
+	// {
+		token->tokenstr = ft_substr(str, 1, i, minishell->garbagecmd);
+		token->tokentype = DOUBLECOTE;
+	// }
+	return (i);
+}
+
 void	ft_char(t_minishell *minishell, char *str)
 {
 	while (*str)
 	{
 		if (*str == ' ')
 			str = str + ft_tokenspace(minishell, str);
+		else if (*str == '\"')
+			str = str + ft_tokendoublecote(minishell, str);
 		else
 			str = str + ft_tokenword(minishell, str);
-	/* 	tokenword
-		tokenspace
-		tokentiret
-		token'
-		token"
+	/* 	tokentiret
+		token''
+		token""
 		token&&
 		token|
 		token||
@@ -82,7 +106,6 @@ void	ft_char(t_minishell *minishell, char *str)
 	ft_posprint(minishell->tokenlist, &ft_printtoken);
 	ft_posclear(minishell->tokenlist, 0);
 	ft_posclear(minishell->garbagecmd, 0);
-		printf("arg\n");
 }
 
 void	ft_tokencreate(t_minishell *minishell, char *str)

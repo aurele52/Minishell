@@ -6,7 +6,7 @@
 #    By: audreyer <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/21 22:50:22 by audreyer          #+#    #+#              #
-#    Updated: 2022/10/12 13:37:22 by audreyer         ###   ########.fr        #
+#    Updated: 2022/10/13 11:38:21 by audreyer         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,10 @@ CC = gcc
 FLAG = -g -Wall -Werror -Wextra 
 
 SRC=	src/minishell.c	\
+		src/ft_strjoin.c	\
+		src/ft_putnbrfd.c	\
+		src/ft_posprint.c \
+		src/ft_substr.c \
 		src/ft_setpos.c	\
 		src/ft_lstnew.c	\
 		src/ft_exit.c	\
@@ -27,6 +31,7 @@ SRC=	src/minishell.c	\
 		src/ft_posclear.c \
 		src/ft_token_create.c \
 		src/ft_isalpha.c \
+		src/ft_strdup.c	\
 		src/ft_isalnum.c
 
 OBJ = $(SRC:.c=.o)

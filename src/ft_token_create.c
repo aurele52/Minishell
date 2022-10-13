@@ -6,11 +6,16 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 11:53:25 by audreyer          #+#    #+#             */
-/*   Updated: 2022/10/13 16:29:17 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/10/13 17:31:37 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char	ft_putchar(char c)
+{
+	write(1, &c, 1);
+}
 
 int	ft_tokenspace(t_minishell *minishell, char *str)
 {

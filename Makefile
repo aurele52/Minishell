@@ -32,7 +32,8 @@ SRC=	src/minishell.c	\
 		src/ft_token_create.c \
 		src/ft_isalpha.c \
 		src/ft_strdup.c	\
-		src/ft_isalnum.c
+		src/ft_isalnum.c \
+		src/ft_error.c
 
 OBJ = $(SRC:.c=.o)
 

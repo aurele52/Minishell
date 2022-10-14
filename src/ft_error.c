@@ -18,6 +18,8 @@ void	ft_error(t_minishell *minishell, char *str)
 		ft_posclear(minishell->garbagecmd, 1);
 	if (minishell->tokenlist != NULL)
 		ft_posclear(minishell->tokenlist, 0);
+	minishell->tokenlist->start = 0;
+	*minishell->tokenlist->size = 0;
 	if (str)
 		write(2, str, ft_strlen(str));
 }

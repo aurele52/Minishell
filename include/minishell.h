@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 16:37:40 by audreyer          #+#    #+#             */
-/*   Updated: 2022/10/14 17:40:17 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/10/14 21:32:21 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ typedef struct s_command
 {
 	int		fdin;
 	int		fdout;
+	char	*error;
 	char	**cmd;
 }	t_command;
 

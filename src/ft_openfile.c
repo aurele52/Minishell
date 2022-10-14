@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 11:55:54 by audreyer          #+#    #+#             */
-/*   Updated: 2022/10/14 14:09:54 by mgirardo         ###   ########.fr       */
+/*   Updated: 2022/10/14 19:57:10 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,3 @@ int	ft_heredoc(t_pipex *pipex, char *limiter)
 	fd = open("heredoc_tmp", O_RDONLY);
 	return (fd);
 }
-/*
-		open readonly
-		int fd = open(argv[1], O_RDONLY, 0444); a verif
-		open writeonly mais creer si non existant et remplace si existant pour >
-		int fd = open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 0644); a verif
-		open writeonly mais creer si non existant et ajoute a la fin si existant pour >>
-		int fd = open(argv[argc - 1], O_WRONLY | O_CREAT | O_APPEND, 0644); a verif
-
-*/

@@ -33,7 +33,8 @@ SRC=	src/minishell.c	\
 		src/ft_isalpha.c \
 		src/ft_strdup.c	\
 		src/ft_isalnum.c \
-		src/ft_error.c
+		src/ft_error.c \
+		src/ft_leaf.c
 
 OBJ = $(SRC:.c=.o)
 

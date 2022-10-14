@@ -1,25 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_leaf.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aurele <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: mgirardo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/15 18:03:37 by aurele            #+#    #+#             */
-/*   Updated: 2022/10/14 14:11:31 by mgirardo         ###   ########.fr       */
+/*   Created: 2022/10/14 14:12:26 by mgirardo          #+#    #+#             */
+/*   Updated: 2022/10/14 14:14:40 by mgirardo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-size_t	ft_strlen(const char *s)
-{
-	int	i;
+/*
 
-	i = 0;
-	if (s == 0)
-		return (-1);
-	while (s[i])
-		i++;
-	return (i);
+void	ft_createleaf(t_minishell *minishell)
+{
+	
 }
+
+void	ft_parseleaf(t_minishell *minishell)
+{
+
+}
+
+void	ft_leaf(t_minishell *minishell)
+{
+	ft_createleaf(minishell);
+	ft_parseleaf(minishell);
+}
+
+*/

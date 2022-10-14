@@ -41,7 +41,15 @@ enum e_type
 	WORD,
 	DOUBLECOTE,
 	SINGLECOTE,
-	PARENTHESIS
+	PARENTHESIS,
+	DASH,
+	PIPE,
+	AND,
+	OR,
+	HEREDOC,
+	WRITE,
+	APPEND,
+	IN
 };
 
 typedef struct s_list
@@ -104,5 +112,8 @@ int		ft_isalnum(int c);
 char	*readline(const char *prompt);
 void	ft_tokencreate(t_minishell *minishell, char *str);
 void	ft_error(t_minishell *minishell, char *str);
+void	ft_leaf(t_minishell *minishell);
+void	ft_createleaf(t_minishell *minishell);
+void	ft_parseleaf(t_minishell *minishell);
 
 #endif

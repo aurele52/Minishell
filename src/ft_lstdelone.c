@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 22:08:00 by audreyer          #+#    #+#             */
-/*   Updated: 2022/10/14 14:09:16 by mgirardo         ###   ########.fr       */
+/*   Updated: 2022/10/14 18:27:48 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	ft_lstdelone(t_list *list, int garbage)
 {
-	if (garbage == 1)
+	if (garbage != 0)
 		free(list->content);
 	*list->pos->size = *list->pos->size - 1;
 	if (list->pos->start->back == list->pos->start)
@@ -26,6 +26,6 @@ void	ft_lstdelone(t_list *list, int garbage)
 		list->back->next = list->next;
 		list->next->back = list->back;
 	}
-	if (garbage == 1)
+	if (garbage != 0)
 		free(list);
 }

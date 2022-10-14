@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 11:53:25 by audreyer          #+#    #+#             */
-/*   Updated: 2022/10/13 20:00:38 by mgirardo         ###   ########.fr       */
+/*   Updated: 2022/10/14 19:03:02 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,6 +228,7 @@ int	ft_tokenand(t_minishell *minishell, char *str)
 
 void	ft_char(t_minishell *minishell, char *str)
 {
+//	printf("%p\n", minishell->tokenlist);
 	while (*str)
 	{
 		if (*str == ' ')
@@ -259,8 +260,6 @@ void	ft_char(t_minishell *minishell, char *str)
 			*/
 	}
 	ft_posprint(minishell->tokenlist, &ft_printtoken);
-	ft_posclear(minishell->tokenlist, 0);
-	ft_posclear(minishell->garbagecmd, 0);
 }
 
 int	ft_checkuptwo(char *str, char c)
@@ -328,6 +327,10 @@ int	ft_numbercheck(char *str)
 
 void	ft_tokencreate(t_minishell *minishell, char *str)
 {
+	if (ft_strcmp(str, "exit") == 0)
+		ft_exit(minishell, 0);
+	if (!minishell->tokenlist)
+		ft_exit(minishell, "malloc error\n");
 	if (ft_numbercheck(str))
 		ft_char(minishell, str);
 	else

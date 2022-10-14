@@ -6,7 +6,7 @@
 /*   By: audreyer <audreyer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/02 19:27:29 by audreyer          #+#    #+#             */
-/*   Updated: 2022/10/14 14:12:03 by mgirardo         ###   ########.fr       */
+/*   Updated: 2022/10/14 18:53:16 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,9 @@ t_minishell	*ft_minishellinit(int argc, char **argv, char **env)
 				garbage), ft_strdup("\x1b[0m ", garbage), garbage);
 	if (minishell->prompt == 0)
 		ft_exit(minishell, "malloc error\n");
-	minishell->tokenlist = ft_setpos(garbage);
+	minishell->tokenlist = ft_setpos(minishell->garbage);
+	if (!minishell->tokenlist)
+		ft_exit(minishell, "malloc error\n");
 	return (minishell);
 }
 

@@ -6,5 +6,5 @@ a.out
 *.swp
 *.vscode
 *.d
-./minishell
-./tester/tester
+minishell
+tester/tester

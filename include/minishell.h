@@ -49,7 +49,9 @@ enum e_type
 	HEREDOC,
 	WRITE,
 	APPEND,
-	IN
+	IN,
+	ERROR,
+	DOLLAR
 };
 
 typedef struct s_list

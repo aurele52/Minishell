@@ -43,7 +43,10 @@ int	ft_tokenword(t_minishell *minishell, char *str)
 	ft_lstnew(token, minishell->tokenlist, minishell->garbagecmd);
 	if (minishell->tokenlist->start->back == 0)
 		ft_exit(minishell, "malloc error\n");
-	while (str[i] && str[i] != ' ')
+	while (str[i] && str[i] != ' ') 
+/*
+	creer fonction de comparaison pour arreter WORD si il rencontre >, <, |, &
+*/
 		i++;
 	token->tokenstr = ft_substr(str, 0, i, minishell->garbagecmd);
 	token->tokentype = WORD;
@@ -65,7 +68,11 @@ int	ft_tokendoublecote(t_minishell *minishell, char *str)
 	while (str[i] && str[i] != '"')
 		i++;
 	if (str[i] == '\0')
-		ft_error(minishell, "No matching \"\n");
+	{
+		token->tokenstr = ft_strdup("\"", minishell->garbagecmd);
+		token->tokentype = ERROR;
+		return (i);
+	}
 	else
 	{
 		token->tokenstr = ft_substr(str, 1, i - 1, minishell->garbagecmd);
@@ -89,8 +96,12 @@ int	ft_tokensinglecote(t_minishell *minishell, char *str)
 	while (str[i] && str[i] != '\'')
 		i++;
 	if (str[i] == '\0')
-		ft_error(minishell, "No matching '\n");
-	else
+	{
+		token->tokenstr = ft_strdup("\'", minishell->garbagecmd);
+		token->tokentype = ERROR;
+		return (i);
+	}
+		else
 	{
 		token->tokenstr = ft_substr(str, 1, i - 1, minishell->garbagecmd);
 		token->tokentype = SINGLECOTE;
@@ -113,7 +124,11 @@ int	ft_tokenparenthesis(t_minishell *minishell, char *str)
 		while (str[i] && str[i] != ')')
 			i++;
 		if (str[i] == '\0')
-			ft_error(minishell, "NO matching )\n");
+		{
+			token->tokenstr = ft_strdup(")", minishell->garbagecmd);
+			token->tokentype = ERROR;
+			return (i);
+		}
 		else
 		{
 			token->tokenstr = ft_substr(str, 1, i - 1, minishell->garbagecmd);
@@ -226,9 +241,27 @@ int	ft_tokenand(t_minishell *minishell, char *str)
 	return (i);
 }
 
+int	ft_tokendollar(t_minishell *minishell, char *str)
+{
+	int		i;
+	t_token	*token;
+
+	i = 0;
+	token = ft_malloc(sizeof(*token), minishell->garbagecmd);
+	if (!token)
+		ft_exit(minishell, "malloc error\n");
+	ft_lstnew(token, minishell->tokenlist, minishell->garbagecmd);
+	if (minishell->tokenlist->start->back == 0)
+		ft_exit(minishell, "malloc error\n");
+	while (str[i] && str[i] != ' ')
+		i++;
+	token->tokenstr = ft_substr(str, 0, i, minishell->garbagecmd);
+	token->tokentype = DOLLAR;
+	return (i);
+}
+
 void	ft_char(t_minishell *minishell, char *str)
 {
-//	printf("%p\n", minishell->tokenlist);
 	while (*str)
 	{
 		if (*str == ' ')
@@ -239,13 +272,6 @@ void	ft_char(t_minishell *minishell, char *str)
 			str = str + ft_tokensinglecote(minishell, str);
 		else if (*str == '(')
 			str = str + ft_tokenparenthesis(minishell, str);
-		else if (*str == ')')
-		{
-			ft_error(minishell, "synthax error\n");
-			break;
-		}
-		else if (*str == '-')
-			str = str + ft_tokendash(minishell, str);
 		else if (*str == '<')
 			str = str + ft_tokenlanglebraket(minishell, str);
 		else if (*str == '>')
@@ -254,10 +280,10 @@ void	ft_char(t_minishell *minishell, char *str)
 			str = str + ft_tokenpipe(minishell, str);
 		else if (*str == '&')
 			str = str + ft_tokenand(minishell, str);
+		else if (*str == '$')
+			str = str + ft_tokendollar(minishell, str);
 		else
 			str = str + ft_tokenword(minishell, str);
-		/*	token$
-			*/
 	}
 	ft_posprint(minishell->tokenlist, &ft_printtoken);
 }
@@ -312,6 +338,21 @@ int	ft_checktwo(char *str, char c)
 	return (1);
 }
 
+int	ft_parenthesischeck(char *str)
+{
+	int		i;
+
+	i = 1;
+	while (str[i] && str[i] != ')')
+		i++;
+	if (str[i] == '\0')
+		return (i);
+	else
+		return (++i);
+}
+
+
+
 int	ft_numbercheck(char *str)
 {
 	if (!ft_checkuptwo(str, '|'))
@@ -322,6 +363,15 @@ int	ft_numbercheck(char *str)
 		return (0);
 	if (!ft_checktwo(str, '&'))
 		return (0);
+	while (*str)
+	{
+		if (*str == '(')
+			str = str + ft_parenthesischeck(str);
+		else if (*str == ')')
+			return (0);
+		else
+			str++;
+	}
 	return (1);
 }
 

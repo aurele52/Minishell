@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 16:37:40 by audreyer          #+#    #+#             */
-/*   Updated: 2022/10/13 16:00:38 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/10/14 15:33:46 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,25 +88,25 @@ typedef struct s_command
 
 /* liste */
 
-t_pos	*ft_setpos(t_pos *free);
-void	ft_lstdelone(t_list *lst, int freee);
-t_list	*ft_lstnew(void *content, t_pos *pos, t_pos *free);
-void	ft_posclear(t_pos *pos, int freee);
+t_pos		*ft_setpos(t_pos *free);
+void		ft_lstdelone(t_list *lst, int freee);
+t_list		*ft_lstnew(void *content, t_pos *pos, t_pos *free);
+void		ft_posclear(t_pos *pos, int freee);
 
 /* libft */
 
-char	*ft_strjoin(char *s1, char *s2, t_pos *garbage);
-void	ft_putnbrfd(int n, int fd);
-void	ft_printtoken(void *ptr);
-void	ft_posprint(t_pos *pos, void (*fct)(void *));
-char	*ft_strdup(const char *s, t_pos *garbage);
-char	*ft_substr(char const *s, unsigned int start, size_t len, t_pos *garb);
-int		ft_strcmp(const char *str1, const char *str2);
-void	*ft_malloc(int size, t_pos *free);
-int		ft_exit(t_minishell *minishell, char *str);
-size_t	ft_strlen(const char *s);
-int		ft_isalpha(int c);
-int		ft_isalnum(int c);
+char		*ft_strjoin(char *s1, char *s2, t_pos *garbage);
+void		ft_putnbrfd(int n, int fd);
+void		ft_printtoken(void *ptr);
+void		ft_posprint(t_pos *pos, void (*fct)(void *));
+char		*ft_strdup(const char *s, t_pos *garbage);
+char		*ft_substr(char const *s, unsigned int start, size_t len, t_pos *garb);
+int			ft_strcmp(const char *str1, const char *str2);
+void		*ft_malloc(int size, t_pos *free);
+int			ft_exit(t_minishell *minishell, char *str);
+size_t		ft_strlen(const char *s);
+int			ft_isalpha(int c);
+int			ft_isalnum(int c);
 
 /* minishell */
 char	*readline(const char *prompt);

@@ -60,19 +60,3 @@ char	*ft_readline(t_minishell *minishell)
 		return (0);
 	return (str);
 }
-
-int	main(int argc, char **argv, char **env)
-{
-	t_minishell	*minishell;
-	char		*str;
-
-	minishell = ft_minishellinit(argc, argv, env);
-	str = 0;
-	while (ft_strcmp(str, "exit") != 0 && minishell->error == 0)
-	{
-		str = ft_readline(minishell);
-		ft_tokencreate(minishell, str);
-		// ft_leaf(minishell);
-	}
-	ft_exit(minishell, minishell->error);
-}

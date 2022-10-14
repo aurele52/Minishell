@@ -6,7 +6,7 @@
 #    By: audreyer <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/21 22:50:22 by audreyer          #+#    #+#              #
-#    Updated: 2022/10/13 22:31:30 by audreyer         ###   ########.fr        #
+#    Updated: 2022/10/14 17:42:18 by audreyer         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -58,9 +58,9 @@ all:	$(NAME)
 
 $(TESTER):	$(OBJ) $(OBJ_MAIN_TEST) $(INC)
 	$(CC) $(FLAG) $(OBJ) $(OBJ_MAIN_TEST) -lreadline -o $(TESTER)
-	rm -f ./unit_test/tester
-	mv $(TESTER) ./unit_test/$(TESTER)
-	@make -C ./unit_test
+	rm -f ./tester/tester
+	mv $(TESTER) ./tester/$(TESTER)
+	@make -C ./tester
 
 $(NAME):	$(OBJ) $(INC) $(OBJ_MAIN)
 	$(CC) $(FLAG) $(OBJ) $(OBJ_MAIN) -lreadline -o $(NAME)

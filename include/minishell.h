@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 16:37:40 by audreyer          #+#    #+#             */
-/*   Updated: 2022/10/14 15:33:46 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/10/14 17:40:17 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,11 +109,13 @@ int			ft_isalpha(int c);
 int			ft_isalnum(int c);
 
 /* minishell */
-char	*readline(const char *prompt);
-void	ft_tokencreate(t_minishell *minishell, char *str);
-void	ft_error(t_minishell *minishell, char *str);
-void	ft_leaf(t_minishell *minishell);
-void	ft_createleaf(t_minishell *minishell);
-void	ft_parseleaf(t_minishell *minishell);
+
+void		ft_tokencreate(t_minishell *minishell, char *str);
+void		ft_error(t_minishell *minishell, char *str);
+void		ft_leaf(t_minishell *minishell);
+void		ft_createleaf(t_minishell *minishell);
+void		ft_parseleaf(t_minishell *minishell);
+char		*ft_readline(t_minishell *minishell);
+t_minishell	*ft_minishellinit(int argc, char **argv, char **env);
 
 #endif

@@ -34,7 +34,6 @@ SRC=	src/minishell.c	\
 		src/ft_token_create.c \
 		src/ft_isalpha.c \
 		src/ft_strdup.c	\
-		src/ft_leaf.c	\
 		src/ft_isalnum.c \
 		src/ft_error.c
 
@@ -74,4 +73,4 @@ fclean:	clean
 re:	fclean all 
 
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re	

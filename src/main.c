@@ -26,6 +26,11 @@ int	main(int argc, char **argv, char **env)
 		ft_posclear(minishell->garbagecmd, 1);
 		minishell->tokenlist->start = 0;
 		*minishell->tokenlist->size = 0;
+/* 		printf("errno = %i\n", errno);
+		open("leakreadline.txt", O_RDONLY);
+		printf("errno = %i\n", errno);
+		open("valgrind_readline_leaks_ignore.txt", O_RDONLY);
+		printf("errno = %i\n", errno); */
 	}
 	ft_exit(minishell, minishell->error);
 }

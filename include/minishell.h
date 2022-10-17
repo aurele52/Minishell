@@ -27,6 +27,8 @@
 # include <stdlib.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <errno.h>
+# include <fcntl.h>
 
 typedef struct s_pos
 {
@@ -84,7 +86,7 @@ typedef struct s_token
 typedef struct s_command
 {
 	int		fdin;
-	int		fdout;
+	int		ofdout;
 	char	*error;
 	char	**cmd;
 }	t_command;

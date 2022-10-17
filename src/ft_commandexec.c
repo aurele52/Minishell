@@ -28,7 +28,7 @@ void	ft_executesimple(t_minishell *minishell, t_command *command, char *cmd[1], 
 			ft_strjoin(cmd[0], "\n", minishell->garbage), minishell->garbage));
 }
 
-void	ft_execute(t_minishell *minishell, t_commande *cmd)
+void	ft_execute(t_minishell *minishell, t_command *cmd)
 {
 	if (!access(command->cmdfile, X_OK))	
 		exceve(command->cmdfile, command->cmd, minishell->act);

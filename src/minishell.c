@@ -25,6 +25,7 @@ t_minishell	*ft_minishellinit(int argc, char **argv, char **env)
 	minishell->argc = argc;
 	minishell->argv = argv;
 	minishell->env = env;
+	minishell->envact = env;
 	minishell->garbagecmd = ft_setpos(0);
 	if (minishell->garbagecmd == 0)
 		ft_exit(minishell, "malloc error\n");

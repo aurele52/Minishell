@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 19:45:28 by audreyer          #+#    #+#             */
-/*   Updated: 2022/10/18 00:28:20 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/10/18 01:25:06 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,11 @@ int	main(int argc, char **argv, char **env)
 			minishell->tokenlist->start = 0;
 			*minishell->tokenlist->size = 0;
 		}
+/* 		printf("errno = %i\n", errno);
+		open("leakreadline.txt", O_RDONLY);
+		printf("errno = %i\n", errno);
+		open("valgrind_readline_leaks_ignore.txt", O_RDONLY);
+		printf("errno = %i\n", errno); */
 	}
 	ft_exit(minishell, minishell->error);
 }

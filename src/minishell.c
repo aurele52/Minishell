@@ -6,11 +6,32 @@
 /*   By: audreyer <audreyer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/02 19:27:29 by audreyer          #+#    #+#             */
-/*   Updated: 2022/10/14 18:53:16 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/10/18 00:15:15 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	*ft_pipeinit(t_minishell *minishell)
+{
+	int	*i;
+
+	i = ft_malloc(sizeof(int) * 3, minishell->garbage);
+	if (!i)
+		ft_exit(minishell, "malloc error\n");
+	i[0] = 0;
+	i[1] = 0;
+	i[2] = 0;
+	return (i);
+}
+
+char	**ft_envinit(char **env, t_pos *garbage)
+{
+	char *str;
+
+	str = ft_unsplit(env, "+", garbage);
+	return (ft_split(str, '+', garbage));
+}
 
 t_minishell	*ft_minishellinit(int argc, char **argv, char **env)
 {
@@ -25,6 +46,10 @@ t_minishell	*ft_minishellinit(int argc, char **argv, char **env)
 	minishell->argc = argc;
 	minishell->argv = argv;
 	minishell->env = env;
+	minishell->actenv = ft_envinit(env, garbage);
+	if (!minishell->actenv)
+		ft_exit(minishell, "malloc error\n");
+	minishell->pipe = ft_pipeinit(minishell);
 	minishell->garbagecmd = ft_setpos(0);
 	if (minishell->garbagecmd == 0)
 		ft_exit(minishell, "malloc error\n");
@@ -52,13 +77,13 @@ void	ft_resetcolor(void)
 	write(1, color, ft_strlen(color));
 }
 
-char	*ft_readline(t_minishell *minishell)
+char	*ft_readline(char *prompt, t_pos *garbage)
 {
 	char	*str;
 
-	str = readline(minishell->prompt);
-	ft_lstnew(str, minishell->garbagecmd, 0);
-	if (minishell->garbagecmd->start->back == 0)
+	str = readline(prompt);
+	ft_lstnew(str, garbage, 0);
+	if (garbage->start->back == 0)
 		return (0);
 	return (str);
 }

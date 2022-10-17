@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 13:47:33 by audreyer          #+#    #+#             */
-/*   Updated: 2022/10/13 14:59:37 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/10/18 00:18:13 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,61 +35,37 @@ char	**ft_getpath(t_minishell *minishell)
 	return (pathtab);
 }
 
-char	*ft_getcmdfile(t_minishell *minishell, char *cmd, t_command *command)
+char	*ft_getcmdfile(t_minishell *minishell, t_command *command)
 {
 	char	**pathtab;
 	int		i;
+	char	*cmdtmp;
 
 	i = 0;
-	pathtab = ft_getpath(minishell, minishell->actenv);
+	pathtab = ft_getpath(minishell);
 	while (pathtab && pathtab[i] != 0)
 	{
-		cmdfile = ft_strjoin(ft_strjoin(pathtab[i++],
-					"/", minishell->garbage), cmd[0], minishell->garbage);
-		if (!cmdfile)
-			ft_exit(minishell->garbage, "error malloc");
-		if (!access(cmdfile, F_OK))
+		cmdtmp = ft_strjoin(ft_strjoin(pathtab[i++],
+					"/", minishell->garbagecmd), command->cmd[0], minishell->garbagecmd);
+		if (!cmdtmp)
+			ft_exit(minishell, "error malloc\n");
+		if (!access(cmdtmp, F_OK))
 		{
-			if (!access(cmdfile, X_OK))
-				return (cmdfile);
+			if (!access(cmdtmp, X_OK))
+				return (cmdtmp);
 			else
-				command->error = cmdfile;
+				command->error = ft_strjoin(ft_strdup("enro =", minishell->garbagecmd), cmdtmp, minishell->garbagecmd);
 		}
 	}
+	if (!access(command->cmd[0], F_OK))
+	{
+		if (!access(command->cmd[0], X_OK))
+			return (command->cmd[0]);
+		else
+			command->error = ft_strjoin(ft_strdup("enro =", minishell->garbagecmd), cmdtmp, minishell->garbagecmd);
+	}
+	return (0);
 }
-
-char	**ft_getcmd(t_minishell *minishell, char *cmd)
-{
-	return (ft_split(cmd, ' ', minishell->garbage));
-}
-
-t_command	*ft_commandcreate(t_minishell *minishell, char *cmd/*cmd de la forme "cat -e"*//*argument suplementaire a voir pour pipe*/)
-{
-	t_command	*command;
-
-	command = ft_malloc(sizeof(*command), minishell->garbage);
-	if (!cmd)
-		ft_exit(minishell->garbage, "malloc error");
-	command->fdin = 0;
-	command->fdout = 1;
-	command->cmd = ft_getcmd(minishell, cmd);/*struc *char[2] ou char[0] = "cat" et char[1] = "e" (ou "-e" a voir)*/
-	if (!command->cmd)
-		ft_exit(minishell->garbage, "error malloc");
-	command->cmdfile = ft_getcmdfile(minishell, command);
-	return (command);
-}
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

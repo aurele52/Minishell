@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 16:37:40 by audreyer          #+#    #+#             */
-/*   Updated: 2022/10/14 21:32:21 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/10/18 00:13:47 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,19 @@
 # define WHITE   "\x1B[37m"
 # define RESET "\x1B[0m"
 
+# include <stdarg.h>
+# include <fcntl.h>
+# include <sys/wait.h>
+
 # include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <sys/types.h>
+# include <sys/stat.h>
+# include <fcntl.h>
+# include <errno.h>  
 
 typedef struct s_pos
 {
@@ -37,21 +45,23 @@ typedef struct s_pos
 enum e_type
 {
 	NOTZEROONMYMINISHELL,
-	SPACES,
+	SINGLEQUOTE,
 	WORD,
-	DOUBLECOTE,
-	SINGLECOTE,
-	PARENTHESIS,
-	DASH,
-	PIPE,
-	AND,
-	OR,
+	DOLLAR,
+	DOUBLEQUOTE,
 	HEREDOC,
 	WRITE,
 	APPEND,
 	IN,
+	SPACES,
+	NL,
 	ERROR,
-	DOLLAR
+	OR,
+	AND,
+	PIPE,
+	PARENTHESIS,
+	HEREDOCEXT,
+	CMD
 };
 
 typedef struct s_list
@@ -67,9 +77,10 @@ typedef struct s_minishell
 	t_pos		*garbage;
 	t_pos		*garbagecmd;
 	char		**env;
-	char		**envact;
+	char		**actenv;
 	char		**argv;
 	int			argc;
+	int			*pipe;
 	char		*prompt;
 	char		*error;
 	t_pos		*tokenlist;
@@ -77,16 +88,20 @@ typedef struct s_minishell
 
 typedef struct s_token
 {
-	char	*tokenstr;
-	int		tokentype;
+	char	*str;
+	int		type;
 }	t_token;
 
 typedef struct s_command
 {
-	int		fdin;
-	int		fdout;
+	char	*fdin;
+	char	*fdout;
+	int		ofdout;
+	int		ofdin;
 	char	*error;
+	char	*heredoc;
 	char	**cmd;
+	int		type;
 }	t_command;
 
 /* liste */
@@ -98,10 +113,11 @@ void		ft_posclear(t_pos *pos, int freee);
 
 /* libft */
 
+int			ft_closevaria(int i, ...);
 char		*ft_strjoin(char *s1, char *s2, t_pos *garbage);
 void		ft_putnbrfd(int n, int fd);
-void		ft_printtoken(void *ptr);
-void		ft_posprint(t_pos *pos, void (*fct)(void *));
+void		ft_printtoken(t_minishell *minishell, void *ptr);
+void		ft_posprint(t_minishell *minishell, t_pos *pos, void (*fct)(t_minishell *, void *));
 char		*ft_strdup(const char *s, t_pos *garbage);
 char		*ft_substr(char const *s, unsigned int start, size_t len, t_pos *garb);
 int			ft_strcmp(const char *str1, const char *str2);
@@ -110,15 +126,26 @@ int			ft_exit(t_minishell *minishell, char *str);
 size_t		ft_strlen(const char *s);
 int			ft_isalpha(int c);
 int			ft_isalnum(int c);
+char		*ft_unsplit(char **tab, char *charset, t_pos *garbage);
 
 /* minishell */
 
+char		**ft_split(char const *s, char c, t_pos *free);
+void		ft_child(t_minishell *minishell, t_list *tokenlist);
+char		*ft_getcmdfile(t_minishell *minishell, t_command *command);
+int			ft_type(t_list *tokenlist);
+char		*ft_str(t_list *tokenlist);
+void		ft_tokenredirclean(t_minishell *minishell);
+void		ft_tokencmdclean(t_minishell *minishell);
+void		ft_parsetoken(t_minishell *minishell);
 void		ft_tokencreate(t_minishell *minishell, char *str);
 void		ft_error(t_minishell *minishell, char *str);
 void		ft_leaf(t_minishell *minishell);
 void		ft_createleaf(t_minishell *minishell);
 void		ft_parseleaf(t_minishell *minishell);
-char		*ft_readline(t_minishell *minishell);
+char		*ft_readline(char *str, t_pos *garbage);
 t_minishell	*ft_minishellinit(int argc, char **argv, char **env);
+void		ft_expanddoublequote(t_token *token);
+void		ft_expanddollar(t_token *token);
 
 #endif

@@ -6,42 +6,13 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 14:11:29 by audreyer          #+#    #+#             */
-/*   Updated: 2022/10/18 01:19:02 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/10/18 15:29:55 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//	while (ft_strcmp(str, token->str) != 0)
-//	{
-//		write(0, ">", 1);
-//		str = ft_readline(">", minishell->garbagecmd);
-//		if (str == 0)
-//			ft_exit(minishell, "readline error\n");
-//		if (ft_strcmp(str, token->str) != 0)
-//			write(fd, str, ft_strlen(str));
-//	}
 	
-void	ft_heredoc(t_minishell *minishell, t_token *token, t_command *command)
-{
-	int		fd;
-	char	*fdin;
-
-	fdin = ft_strdup("", minishell->garbagecmd);	
-	fdin = ft_strjoin(fdin, "\"", minishell->garbagecmd);
-	fdin = ft_strjoin(fdin, token->str, minishell->garbagecmd);
-	fdin = ft_strjoin(fdin, "\"", minishell->garbagecmd);
-	command->fdin = 0;
-	if (command->heredoc == 0)
-		command->heredoc = fdin;
-	else
-		command->heredoc = ft_strjoin(command->heredoc, fdin, minishell->garbagecmd);
-	if (!command->heredoc)
-		ft_exit(minishell, "malloc error\n");
-	fd = open("heredoc_tmp", O_CREAT | O_TRUNC | O_RDWR, 0777);
-	close(fd);
-}
-
 void	ft_resetcommand(t_command *command)
 {
 	command->fdin = 0;
@@ -50,10 +21,9 @@ void	ft_resetcommand(t_command *command)
 	command->error = 0;
 	command->ofdout = 1;
 	command->ofdin = 0;
-	command->heredoc = 0;
 }
 
-int	ft_open(t_token *token, t_command *command)
+int	ft_open(t_minishell *minishell, t_token *token, t_command *command)
 {
 	int	i;
 
@@ -68,6 +38,9 @@ int	ft_open(t_token *token, t_command *command)
 		{
 			ft_resetcommand(command);
 			command->error = strerror(errno);
+			command->error = ft_strjoin(command->error, ft_strdup(" ", minishell->garbagecmd), minishell->garbagecmd);
+			command->error = ft_strjoin(command->error, token->str, minishell->garbagecmd);
+			command->error = ft_strjoin(command->error, ft_strdup("\n", minishell->garbagecmd), minishell->garbagecmd);
 			return (1);
 		}
 		close(i);
@@ -81,6 +54,9 @@ int	ft_open(t_token *token, t_command *command)
 		{
 			ft_resetcommand(command);
 			command->error = strerror(errno);
+			command->error = ft_strjoin(command->error, ft_strdup(" ", minishell->garbagecmd), minishell->garbagecmd);
+			command->error = ft_strjoin(command->error, token->str, minishell->garbagecmd);
+			command->error = ft_strjoin(command->error, ft_strdup("\n", minishell->garbagecmd), minishell->garbagecmd);
 			return (1);
 		}
 		close(i);
@@ -93,6 +69,9 @@ int	ft_open(t_token *token, t_command *command)
 		{
 			ft_resetcommand(command);
 			command->error = strerror(errno);
+			command->error = ft_strjoin(command->error, ft_strdup(" ", minishell->garbagecmd), minishell->garbagecmd);
+			command->error = ft_strjoin(command->error, token->str, minishell->garbagecmd);
+			command->error = ft_strjoin(command->error, ft_strdup("\n", minishell->garbagecmd), minishell->garbagecmd);
 			return (1);
 		}
 		close(i);
@@ -111,7 +90,6 @@ t_command	*ft_commandinit(t_minishell *minishell)
 	command->fdin = 0;
 	command->fdout = 0;
 	command->cmd = 0;
-	command->heredoc = 0;
 	command->error = 0;
 	command->ofdout = 1;
 	command->ofdin = 0;
@@ -124,7 +102,7 @@ char	**ft_cmdcharcreate(t_minishell *minishell, t_list *tokenlist)
 	char	**cmd;
 
 	i = 0;
-	while (ft_type(tokenlist) < 9 || ft_type(tokenlist) == HEREDOCEXT)
+	while (ft_type(tokenlist) < 9)
 	{
 		if (ft_type(tokenlist) == WORD)
 			i++;
@@ -139,7 +117,7 @@ char	**ft_cmdcharcreate(t_minishell *minishell, t_list *tokenlist)
 
 t_list	*ft_cmdclear(t_list *tokenlist)
 {
-	while (ft_type(tokenlist->next) == HEREDOC || ft_type(tokenlist->next) == HEREDOCEXT || ft_type(tokenlist->next) == IN || ft_type(tokenlist->next) == WRITE || ft_type(tokenlist->next) == APPEND || ft_type(tokenlist->next) == WORD)
+	while (ft_type(tokenlist->next) == IN || ft_type(tokenlist->next) == WRITE || ft_type(tokenlist->next) == APPEND || ft_type(tokenlist->next) == WORD)
 		ft_lstdelone(tokenlist->next, 0);
 	return (tokenlist->next);
 }
@@ -157,15 +135,13 @@ t_list	*ft_commandcreate(t_minishell *minishell, t_list *tokenlist)
 	cmdtoken->type = CMD;
 	cmdtoken->str = (char *)command;
 	command->cmd = ft_cmdcharcreate(minishell, tokenlist);
-	while (ft_type(tokenlist) < 9 || ft_type(tokenlist) == HEREDOCEXT)
+	while (ft_type(tokenlist) < 9)
 	{
-		if (ft_type(tokenlist->back) == HEREDOC || ft_type(tokenlist->back) == HEREDOCEXT || ft_type(tokenlist->back) == IN || ft_type(tokenlist->back) == WRITE || ft_type(tokenlist->back) == APPEND || ft_type(tokenlist->back) == WORD)
+		if (ft_type(tokenlist->back) == IN || ft_type(tokenlist->back) == WRITE || ft_type(tokenlist->back) == APPEND || ft_type(tokenlist->back) == WORD)
 			ft_lstdelone(tokenlist->back, 0);
-		if (ft_type(tokenlist) == HEREDOC || ft_type(tokenlist) == HEREDOCEXT)
-			ft_heredoc(minishell, (t_token *)tokenlist->content, command);
-		else if (ft_type(tokenlist) == IN || ft_type(tokenlist) == WRITE || ft_type(tokenlist) == APPEND)
+		if (ft_type(tokenlist) == IN || ft_type(tokenlist) == WRITE || ft_type(tokenlist) == APPEND)
 		{
-			if (ft_open(tokenlist->content, command) == 1)
+			if (ft_open(minishell, tokenlist->content, command) == 1)
 			{
 				tokenlist->content = cmdtoken;
 				return (ft_cmdclear(tokenlist));
@@ -203,11 +179,11 @@ void	ft_tokencmdclean(t_minishell *minishell)
 	while (ft_type(tokenlist) != NL)
 	{
 		if (ft_type(tokenlist) == DOUBLEQUOTE)
-			ft_expanddoublequote((t_token *)tokenlist->content);
+			ft_expanddoublequote(ft_str(tokenlist));
 		if (ft_type(tokenlist) == SINGLEQUOTE)
 			ft_expandsimplequote((t_token *)tokenlist->content);
 		if (ft_type(tokenlist) == DOLLAR)
-			ft_expanddollar((t_token *)tokenlist->content);
+			ft_expanddollar(ft_str(tokenlist));
 		if (ft_type(tokenlist->next) == SPACES)
 			ft_lstdelone(tokenlist->next, 0);
 		tokenlist = tokenlist->next;	

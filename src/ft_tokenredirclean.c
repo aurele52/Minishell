@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_tokenredirclear.c                               :+:      :+:    :+:   */
+/*   ft_tokenredirclean.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 22:50:21 by audreyer          #+#    #+#             */
-/*   Updated: 2022/10/16 16:49:32 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/10/18 18:48:59 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	ft_errorcmd(t_list *tokenlist)
 
 	token = tokenlist->content;
 	token->type = ERROR;
-	token->str = 0;/*must be change into a pipe a or a and*/
+	token->str = 0;
 	while (tokenlist->next != tokenlist->pos->start)
 		ft_lstdelone(tokenlist->next, 0);
 	while (tokenlist->back != tokenlist->pos->start->back || ft_type(tokenlist->back) <= 9)
@@ -45,14 +45,65 @@ void	ft_errorcmd(t_list *tokenlist)
 	}
 }
 
-void	ft_expanddollar(t_token *token)
+char	*ft_searchinenv(t_minishell *minishell, char *str)
 {
-		(void)token;
+	t_list	*line;
+	char	*new;
+
+	if (!str[0])
+	{
+		new = ft_strdup("$", minishell->garbagecmd);
+		if (!new)
+			ft_exit(minishell, "malloc error\n");
+		return (new);
+	}
+	line = minishell->actenv->start;
+	while (line != minishell->actenv->start)
+	{
+		if (ft_strcmp(ft_name(line->content), str) == 0)
+			return (ft_value(line->content));
+		line = line->next;
+	}
+	new = ft_strdup("\n", minishell->garbagecmd);
+	if (!new)
+		ft_exit(minishell, "malloc error\n");
+	return (new);
 }
 
-void	ft_expanddoublequote(t_token *token)
+void	ft_expanddollar(t_minishell *minishell, char *str)
 {
-		(void)token;
+	char *new;
+
+	new = ft_searchinenv(minishell, str);
+	return (new);
+}
+
+void	ft_expanddoublequote(t_minishell *minishell, char *str)
+{
+	char	temp;
+	int		i;
+	char	*new;
+	int		j;
+
+	i = 0;
+	while (*str)
+	{
+		while (str[i] && str[i] != '$')
+			i++;
+		new = ft_substr(str, 0, i - 1, minishell->garbagecmd);
+		str = str + i;
+		i = 0;
+		if (str[i] == '$')
+		{
+			while (str[i] && str[i] != ' ' && str[i] != '$')
+				i++;
+			temp = ft_expanddollar(ft_substr(str, 0, i, minishell->garbagecmd));	
+			new = ft_strjoin(new, temp, minishell->garbagecmd);
+			str = str + i;
+			i = 0;
+		}
+	}
+	return (new);
 }
 
 void	ft_tokenjoin(t_minishell *minishell, t_list *tokenlist1, t_list	*tokenlist2)

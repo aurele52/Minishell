@@ -6,7 +6,7 @@
 #    By: audreyer <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/21 22:50:22 by audreyer          #+#    #+#              #
-#    Updated: 2022/10/18 00:13:42 by audreyer         ###   ########.fr        #
+#    Updated: 2022/10/18 15:21:07 by audreyer         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,8 @@ FLAG = -g -fsanitize=address -Wall -Werror -Wextra
 
 SRC=	src/minishell.c	\
 		src/ft_tokenredirclean.c	\
+		src/ft_heredoc.c	\
+		src/ft_itoa.c	\
 		src/ft_tokencmdclean.c	\
 		src/ft_closevaria.c	\
 		src/ft_strjoin.c	\

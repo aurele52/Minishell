@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 17:54:06 by audreyer          #+#    #+#             */
-/*   Updated: 2022/10/17 14:51:06 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/10/18 15:30:22 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,13 +65,6 @@ void	ft_printcmd(t_minishell *minishell, t_command *cmd)
 		write(2, "cmd = {\n", 8);
 		write(2, str, ft_strlen(str));
 		write(2, "\n}\n", 3);
-	}
-	if (cmd->heredoc == 0)
-		write(2, "heredoc = 0\n", 12);
-	else
-	{
-		write(2, "heredoc = ", 10);
-		write(2, cmd->heredoc, ft_strlen(cmd->heredoc));
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 13:35:21 by audreyer          #+#    #+#             */
-/*   Updated: 2022/10/18 01:25:58 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/10/18 15:30:36 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,10 +95,6 @@ void	ft_heredocend(t_command *command)
 
 void	ft_openend(t_command *command)
 {
-	if (command->heredoc != 0)
-	{
-		ft_heredocend(command);
-	}
 	if (command->fdin != 0)
 		command->ofdin = open(command->fdin, O_RDONLY, 0777);
 	if (command->fdout != 0 && command->type == 'T')
@@ -157,16 +153,22 @@ void	ft_child(t_minishell *minishell, t_list *tokenlist)
 	command = ft_commandget(tokenlist);
 	i = 0;
 	childid = ft_malloc(sizeof(int) *ft_cmdnbr(tokenlist), minishell->garbagecmd);
-	command->cmd[0] = ft_getcmdfile(minishell, command);
+	if (command->cmd)
+		command->cmd[0] = ft_getcmdfile(minishell, command);
 	while (ft_type(tokenlist) != NL)
 	{
-		ft_arg(minishell, tokenlist);
 //		childid[i] = fork();
 //		if (childid[i] == 0)
+		if (command->error == 0)
+		{
+			ft_arg(minishell, tokenlist);
 			ft_executecmd(minishell, command);
+		}
+		else
+			write(2, command->error, ft_strlen(command->error));
 //		else
 			ft_closevaria(2, ft_ofdout(tokenlist), ft_ofdin(tokenlist));
-		tokenlist = tokenlist->next->next;
+		tokenlist = tokenlist->next;
 	}
 	while (i-- > 0)
 		waitpid(childid[i], 0, 0);

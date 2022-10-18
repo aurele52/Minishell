@@ -1,5 +1,6 @@
 *.o
 *.a
+ctags
 a.out
 .DS_Store
 *.git

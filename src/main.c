@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 19:45:28 by audreyer          #+#    #+#             */
-/*   Updated: 2022/10/18 01:25:06 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/10/18 15:09:21 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int	main(int argc, char **argv, char **env)
 			printf("debut second------------------\n");
 			ft_posprint(minishell, minishell->tokenlist, &ft_printtoken);
 			printf("fin second--------------------\n\n");
+			ft_heredocclean(minishell);
 			ft_tokencmdclean(minishell);
 			printf("debut third-------------------\n");
 			ft_posprint(minishell, minishell->tokenlist, &ft_printtoken);

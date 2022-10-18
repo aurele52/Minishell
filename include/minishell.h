@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 16:37:40 by audreyer          #+#    #+#             */
-/*   Updated: 2022/10/18 01:24:10 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/10/18 15:28:52 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ typedef struct s_minishell
 {
 	t_pos		*garbage;
 	t_pos		*garbagecmd;
+	int			heredoc;
 	char		**env;
 	char		**actenv;
 	char		**argv;
@@ -99,7 +100,6 @@ typedef struct s_command
 	int		ofdout;
 	int		ofdin;
 	char	*error;
-	char	*heredoc;
 	char	**cmd;
 	int		type;
 }	t_command;
@@ -127,10 +127,12 @@ size_t		ft_strlen(const char *s);
 int			ft_isalpha(int c);
 int			ft_isalnum(int c);
 char		*ft_unsplit(char **tab, char *charset, t_pos *garbage);
+char		**ft_split(char const *s, char c, t_pos *free);
+char		*ft_itoa(int n, t_pos *garbage);
 
 /* minishell */
 
-char		**ft_split(char const *s, char c, t_pos *free);
+void		ft_heredocclean(t_minishell *minishell);
 void		ft_child(t_minishell *minishell, t_list *tokenlist);
 char		*ft_getcmdfile(t_minishell *minishell, t_command *command);
 int			ft_type(t_list *tokenlist);
@@ -145,7 +147,7 @@ void		ft_createleaf(t_minishell *minishell);
 void		ft_parseleaf(t_minishell *minishell);
 char		*ft_readline(char *str, t_pos *garbage);
 t_minishell	*ft_minishellinit(int argc, char **argv, char **env);
-void		ft_expanddoublequote(t_token *token);
-void		ft_expanddollar(t_token *token);
+void		ft_expanddoublequote(char *str);
+void		ft_expanddollar(char *str);
 
 #endif

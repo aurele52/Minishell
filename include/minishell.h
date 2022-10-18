@@ -34,7 +34,8 @@
 # include <sys/types.h>
 # include <sys/stat.h>
 # include <fcntl.h>
-# include <errno.h>  
+# include <errno.h>
+# include <limits.h>
 
 typedef struct s_pos
 {

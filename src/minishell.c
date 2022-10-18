@@ -31,13 +31,13 @@ t_pos	*ft_envinit(t_minishell *minishell)
 	t_env	*line;
 	size_t	i;
 
-	newenv = ft_setpos(minishell->garbagecmd);
+	newenv = ft_setpos(minishell->garbage);
 	if (!newenv)
 		ft_exit(minishell, "malloc error\n");
 	i = 0;
 	while (minishell->env[i])
 	{
-		line = ft_malloc(sizeof(*line), minishell->garbagecmd);
+		line = ft_malloc(sizeof(*line), minishell->garbage);
 		if (!line)
 			ft_exit(minishell, "malloc error\n");
 		ft_lstnew(line, newenv, minishell->garbage);

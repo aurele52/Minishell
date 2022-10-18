@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../include/minishell.h"
 
 int	ft_type(t_list *list)
 {
@@ -48,11 +48,13 @@ void	ft_errorcmd(t_list *tokenlist)
 void	ft_expanddollar(t_token *token)
 {
 		(void)token;
+		// a faire
 }
 
 void	ft_expanddoublequote(t_token *token)
 {
 		(void)token;
+		// a faire
 }
 
 void	ft_tokenjoin(t_minishell *minishell, t_list *tokenlist1, t_list	*tokenlist2)
@@ -93,7 +95,7 @@ void	ft_tokenredirclean(t_minishell *minishell)
 			if (ft_type(tokenlist->next) <= 4)
 				ft_expandforfd(minishell, tokenlist);
 		}
-		tokenlist = tokenlist->next;	
+		tokenlist = tokenlist->next;
 	}
 	if (ft_type(tokenlist) >= 5 && ft_type(tokenlist) <= 8)
 		ft_errorcmd(tokenlist);

@@ -37,6 +37,29 @@ char	*ft_unsplit(char **tab, char *charset, t_pos *free)
 	return (str);
 }
 
+void	ft_printenv(t_minishell	*minishell, void *ptr)
+{
+	t_env	*env;
+	(void)minishell;
+
+	env = (t_env *)ptr;
+	write(2, "name = ", 7);
+	if (!env->name)
+		write(2, " NULL", 5);
+	else
+		write(2, env->name, ft_strlen(env->name));
+	write(2, "\nvalue = ", 9);
+	if (!env->value)
+		write(2," NULL", 5);
+	else
+		write(2, env->value, ft_strlen(env->value));
+	write(2, "\nlname = ", 9);
+	ft_putnbrfd(env->lname, 2);
+	write(2, "\nlvalue = ", 10);
+	ft_putnbrfd(env->lvalue, 2);
+	write(2, "\n", 1);
+}
+
 void	ft_printcmd(t_minishell *minishell, t_command *cmd)
 {
 	char	*str;
@@ -93,7 +116,7 @@ void	ft_posprint(t_minishell *minishell, t_pos *pos, void (*fct)(t_minishell *, 
 {
 	t_list	*list;
 
-	if (pos->start != 0)
+	if (pos->start)
 	{
 		list = pos->start;
 		while (list != list->pos->start->back)

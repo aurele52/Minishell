@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../include/minishell.h"
 
 int	*ft_pipeinit(t_minishell *minishell)
 {
@@ -25,12 +25,31 @@ int	*ft_pipeinit(t_minishell *minishell)
 	return (i);
 }
 
-char	**ft_envinit(char **env, t_pos *garbage)
+t_pos	*ft_envinit(t_minishell *minishell)
 {
-	char *str;
+	t_pos	*newenv;
+	t_env	*line;
+	size_t	i;
 
-	str = ft_unsplit(env, "+", garbage);
-	return (ft_split(str, '+', garbage));
+	newenv = ft_setpos(minishell->garbagecmd);
+	if (!newenv)
+		ft_exit(minishell, "malloc error\n");
+	i = 0;
+	while (minishell->env[i])
+	{
+		line = ft_malloc(sizeof(*line), minishell->garbagecmd);
+		if (!line)
+			ft_exit(minishell, "malloc error\n");
+		ft_lstnew(line, newenv, minishell->garbage);
+		if (!newenv->start->back)
+			ft_exit(minishell, "malloc error\n");
+		line->name = ft_strdup(ft_split(minishell->env[i], '=', minishell->garbage)[0], minishell->garbage);
+		line->lname = ft_strlen(line->name);
+		line->value = ft_substr(minishell->env[i], line->lname + 1, ft_strlen(minishell->env[i]), minishell->garbage);
+		line->lvalue = ft_strlen(line->value);
+		i++;
+	}
+	return(newenv);
 }
 
 t_minishell	*ft_minishellinit(int argc, char **argv, char **env)
@@ -45,14 +64,14 @@ t_minishell	*ft_minishellinit(int argc, char **argv, char **env)
 	minishell->garbage = garbage;
 	minishell->argc = argc;
 	minishell->argv = argv;
-	minishell->env = env;
-	minishell->actenv = ft_envinit(env, garbage);
-	if (!minishell->actenv)
-		ft_exit(minishell, "malloc error\n");
-	minishell->pipe = ft_pipeinit(minishell);
 	minishell->garbagecmd = ft_setpos(0);
 	if (minishell->garbagecmd == 0)
 		ft_exit(minishell, "malloc error\n");
+	minishell->env = env;
+	minishell->actenv = ft_envinit(minishell);
+	if (!minishell->actenv)
+		ft_exit(minishell, "malloc error\n");
+	minishell->pipe = ft_pipeinit(minishell);
 	minishell->error = 0;
 	minishell->prompt = ft_strjoin(ft_strjoin(
 				ft_strdup("\x1b[32m", garbage), ft_strdup(argv[0], garbage),

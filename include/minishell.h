@@ -64,6 +64,14 @@ enum e_type
 	CMD
 };
 
+typedef struct s_env
+{
+	char	*name;
+	char	*value;
+	size_t	lname;
+	size_t	lvalue;
+}	t_env;
+
 typedef struct s_list
 {
 	struct s_list	*next;
@@ -77,7 +85,7 @@ typedef struct s_minishell
 	t_pos		*garbage;
 	t_pos		*garbagecmd;
 	char		**env;
-	char		**actenv;
+	t_pos		*actenv;
 	char		**argv;
 	int			argc;
 	int			*pipe;
@@ -147,5 +155,12 @@ char		*ft_readline(char *str, t_pos *garbage);
 t_minishell	*ft_minishellinit(int argc, char **argv, char **env);
 void		ft_expanddoublequote(t_token *token);
 void		ft_expanddollar(t_token *token);
+void	ft_printenv(t_minishell	*minishell, void *ptr);
+
+/* builtin */
+
+void		ft_echo(t_command *command);
+void		ft_fillofdout(t_command *command, unsigned int i);
+int			ft_nonewline(char *str);
 
 #endif

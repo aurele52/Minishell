@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../include/minishell.h"
 
 int	ft_tokenspace(t_minishell *minishell, char *str)
 {
@@ -33,7 +33,7 @@ int	ft_tokenspace(t_minishell *minishell, char *str)
 
 int	ft_isendword(char c)
 {
-	if (c == ' ' || c == '|' || c == '&' || c == '<' || c == '>' || c == '$')
+	if (c == ' ' || c == '|' || c == '&' || c == '<' || c == '>')
 		return (1);
 	if (c == '\'' || c == '"' || c == '$')
 		return (1);
@@ -384,8 +384,9 @@ void	ft_tokencreate(t_minishell *minishell, char *str)
 {
 	if (ft_strcmp(str, "exit") == 0)
 		ft_exit(minishell, 0);
-	if (!minishell->tokenlist)
-		ft_exit(minishell, "malloc error\n");
+/* 	if (!minishell->tokenlist)
+		ft_exit(minishell, "malloc error\n"); */
+		// peut etre redondant car on le check deja dans minishellinit
 	if (ft_numbercheck(str))
 	{
 		ft_char(minishell, str);
@@ -393,4 +394,5 @@ void	ft_tokencreate(t_minishell *minishell, char *str)
 	}
 	else
 		ft_error(minishell, "synthax error\n");
+		// message d'erreur a paufiner pour preciser quelle erreur de synthax
 }

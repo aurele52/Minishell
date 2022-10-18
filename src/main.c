@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../include/minishell.h"
 
 int	main(int argc, char **argv, char **env)
 {
@@ -27,7 +27,7 @@ int	main(int argc, char **argv, char **env)
 		if (ft_strlen(str) != 0)
 		{
 			ft_closevaria(1, 1);
-			ft_tokencreate(minishell, str);
+			/* ft_tokencreate(minishell, str);
 			printf("debut first-------------------\n");
 			ft_posprint(minishell, minishell->tokenlist, &ft_printtoken);
 			printf("fin first---------------------\n\n");
@@ -39,8 +39,9 @@ int	main(int argc, char **argv, char **env)
 			ft_tokencmdclean(minishell);
 			printf("debut third-------------------\n");
 			ft_posprint(minishell, minishell->tokenlist, &ft_printtoken);
-			printf("fin third---------------------\n\n");
-			ft_child(minishell, minishell->tokenlist->start);
+			printf("fin third---------------------\n\n"); */
+			ft_posprint(minishell, minishell->actenv, &ft_printenv);
+			// ft_child(minishell, minishell->tokenlist->start);
 			ft_posclear(minishell->garbagecmd, 1);
 			minishell->tokenlist->start = 0;
 			*minishell->tokenlist->size = 0;

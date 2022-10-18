@@ -6,11 +6,11 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 22:50:21 by audreyer          #+#    #+#             */
-/*   Updated: 2022/10/18 18:48:59 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/10/18 18:54:47 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../include/minishell.h"
 
 int	ft_type(t_list *list)
 {
@@ -144,7 +144,7 @@ void	ft_tokenredirclean(t_minishell *minishell)
 			if (ft_type(tokenlist->next) <= 4)
 				ft_expandforfd(minishell, tokenlist);
 		}
-		tokenlist = tokenlist->next;	
+		tokenlist = tokenlist->next;
 	}
 	if (ft_type(tokenlist) >= 5 && ft_type(tokenlist) <= 8)
 		ft_errorcmd(tokenlist);

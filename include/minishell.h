@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 16:37:40 by audreyer          #+#    #+#             */
-/*   Updated: 2022/10/18 18:56:07 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/10/20 13:35:10 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ typedef struct s_command
 	int		ofdin;
 	char	*error;
 	char	**cmd;
+	char	*file;
 	int		type;
 }	t_command;
 
@@ -127,11 +128,11 @@ void		ft_putnbrfd(int n, int fd);
 void		ft_printtoken(t_minishell *minishell, void *ptr);
 void		ft_posprint(t_minishell *minishell, t_pos *pos, void (*fct)(t_minishell *, void *));
 char		*ft_strdup(const char *s, t_pos *garbage);
-char		*ft_substr(char const *s, unsigned int start, size_t len, t_pos *garb);
+char		*ft_substr(char const *s, int start, int len, t_pos *garb);
 int			ft_strcmp(const char *str1, const char *str2);
 void		*ft_malloc(int size, t_pos *free);
 int			ft_exit(t_minishell *minishell, char *str);
-size_t		ft_strlen(const char *s);
+int			ft_strlen(const char *s);
 int			ft_isalpha(int c);
 int			ft_isalnum(int c);
 char		*ft_unsplit(char **tab, char *charset, t_pos *garbage);
@@ -140,7 +141,9 @@ char		*ft_itoa(int n, t_pos *garbage);
 
 /* minishell */
 
+char		*ft_searchinenv(t_minishell *minishell, char *str);
 void		ft_heredocclean(t_minishell *minishell);
+int			ft_isbuiltin(t_command *command);
 void		ft_child(t_minishell *minishell, t_list *tokenlist);
 char		*ft_getcmdfile(t_minishell *minishell, t_command *command);
 int			ft_type(t_list *tokenlist);
@@ -155,12 +158,13 @@ void		ft_createleaf(t_minishell *minishell);
 void		ft_parseleaf(t_minishell *minishell);
 char		*ft_readline(char *str, t_pos *garbage);
 t_minishell	*ft_minishellinit(int argc, char **argv, char **env);
-void		ft_expanddoublequote(char *str);
-void		ft_expanddollar(char *str);
+char		*ft_expanddoublequote(t_minishell *minishell, char *str);
+char		*ft_expanddollar(t_minishell *minishell, char *str);
 void		ft_printenv(t_minishell	*minishell, void *ptr);
 
 /* builtin */
 
+void		ft_builtin(t_minishell *minishell, t_command *command);
 void		ft_echo(t_command *command);
 void		ft_fillofdout(t_command *command, unsigned int i);
 int			ft_nonewline(char *str);

@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 11:53:25 by audreyer          #+#    #+#             */
-/*   Updated: 2022/10/17 00:52:49 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/10/19 18:17:11 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,7 +158,6 @@ int	ft_tokeninbraket(t_minishell *minishell, char *str)
 	while (str[i] && str[i] == '<')
 		i++;
 	token->str = ft_strdup("", minishell->garbagecmd);
-//	ft_substr(str, 0, i, minishell->garbagecmd);
 	if (i == 1)
 		token->type = IN;
 	else
@@ -181,7 +180,6 @@ int	ft_tokenoutbraket(t_minishell *minishell, char *str)
 	while (str[i] && str[i] == '>')
 		i++;
 	token->str = ft_strdup("", minishell->garbagecmd);
-//	ft_substr(str, 0, i, minishell->garbagecmd);
 	if (i == 1)
 		token->type = WRITE;
 	else
@@ -384,9 +382,6 @@ void	ft_tokencreate(t_minishell *minishell, char *str)
 {
 	if (ft_strcmp(str, "exit") == 0)
 		ft_exit(minishell, 0);
-/* 	if (!minishell->tokenlist)
-		ft_exit(minishell, "malloc error\n"); */
-		// peut etre redondant car on le check deja dans minishellinit
 	if (ft_numbercheck(str))
 	{
 		ft_char(minishell, str);

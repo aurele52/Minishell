@@ -6,11 +6,11 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 22:50:21 by audreyer          #+#    #+#             */
-/*   Updated: 2022/10/18 18:54:47 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/10/19 20:13:48 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "minishell.h"
 
 int	ft_type(t_list *list)
 {
@@ -45,11 +45,29 @@ void	ft_errorcmd(t_list *tokenlist)
 	}
 }
 
+char	*ft_name(t_env *env)
+{
+	char	*str;
+
+	str = (char *)env->name;
+	return (str);
+}
+
+char	*ft_value(t_env *env)
+{
+	char	*str;
+
+	str = (char *)env->value;
+	return (str);
+}
+
 char	*ft_searchinenv(t_minishell *minishell, char *str)
 {
 	t_list	*line;
 	char	*new;
+	int		lol;
 
+	lol = 0;
 	if (!str[0])
 	{
 		new = ft_strdup("$", minishell->garbagecmd);
@@ -58,7 +76,7 @@ char	*ft_searchinenv(t_minishell *minishell, char *str)
 		return (new);
 	}
 	line = minishell->actenv->start;
-	while (line != minishell->actenv->start)
+	while (line != minishell->actenv->start || lol++ == 0)
 	{
 		if (ft_strcmp(ft_name(line->content), str) == 0)
 			return (ft_value(line->content));
@@ -70,7 +88,7 @@ char	*ft_searchinenv(t_minishell *minishell, char *str)
 	return (new);
 }
 
-void	ft_expanddollar(t_minishell *minishell, char *str)
+char	*ft_expanddollar(t_minishell *minishell, char *str)
 {
 	char *new;
 
@@ -78,47 +96,85 @@ void	ft_expanddollar(t_minishell *minishell, char *str)
 	return (new);
 }
 
-void	ft_expanddoublequote(t_minishell *minishell, char *str)
+char	*ft_recupbeforedollar(t_minishell *minishell, char *str)
 {
-	char	temp;
 	int		i;
-	char	*new;
-	int		j;
+	char	*ret;
 
 	i = 0;
+	ret = 0;
+	if (!str[i])
+		ret = ft_strdup("", minishell->garbagecmd);
+	while (str[i] && str[i] != '$')
+		i++;
+	ret = ft_substr(str, 0, i, minishell->garbagecmd);
+	if (!ret)
+		ft_exit(minishell, "malloc error\n");
+	str = str + i;
+	return (ret);
+}
+
+char	*ft_expanddoublequote(t_minishell *minishell, char *str)
+{
+	char	*temp;
+	int		i;
+	char	*new;
+
+	new = ft_strdup("", minishell->garbagecmd);
 	while (*str)
 	{
-		while (str[i] && str[i] != '$')
-			i++;
-		new = ft_substr(str, 0, i - 1, minishell->garbagecmd);
-		str = str + i;
+		temp = ft_recupbeforedollar(minishell, str);
+		str = str  + ft_strlen(temp);
+		new = ft_strjoin(new, temp, minishell->garbagecmd);
 		i = 0;
 		if (str[i] == '$')
 		{
+			str++;
 			while (str[i] && str[i] != ' ' && str[i] != '$')
 				i++;
-			temp = ft_expanddollar(ft_substr(str, 0, i, minishell->garbagecmd));	
+			temp = ft_expanddollar(minishell, ft_substr(str, 0, i, minishell->garbagecmd));	
 			new = ft_strjoin(new, temp, minishell->garbagecmd);
 			str = str + i;
-			i = 0;
 		}
 	}
 	return (new);
 }
 
+int		ft_strhavespace(char *str)
+{
+	int	i;
+
+	while (str && str[i])
+	{
+		if (str[i] == ' ')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 void	ft_tokenjoin(t_minishell *minishell, t_list *tokenlist1, t_list	*tokenlist2)
 {
-	t_token *token;
+	t_token *token1;
+	t_token	*token2;
 
-	token = (t_token *)tokenlist1->content;
-	if (ft_type(tokenlist1) == HEREDOC && (ft_type(tokenlist2) == DOUBLEQUOTE || ft_type(tokenlist2) == SINGLEQUOTE))
-		token->type = HEREDOCEXT;
-	if (ft_type(tokenlist1) != HEREDOC && ft_type(tokenlist2) == DOLLAR)
-		ft_expanddollar(tokenlist2->content);
-	if (ft_type(tokenlist1) != HEREDOC && ft_type(tokenlist2) == DOUBLEQUOTE)
-		ft_expanddoublequote(tokenlist2->content);
-	token->str = ft_strjoin(ft_str(tokenlist1), ft_str(tokenlist2), minishell->garbagecmd);
-	if (token->str == 0)
+	token1 = (t_token *)tokenlist1->content;
+	token2 = (t_token *)tokenlist2->content;
+	if (token1->type == HEREDOC && (token2->type == DOUBLEQUOTE || token2->type == SINGLEQUOTE))
+		token1->type = HEREDOCEXT;
+	if (token1->type != HEREDOC && token1->type != HEREDOCEXT && token2->type == DOLLAR)
+	{
+		token2->str = ft_expanddollar(minishell, &token2->str[1]);
+		if (ft_strhavespace(token2->str) == 1)
+		{
+			ft_error(minishell, "ambigus redirection\n");
+			return ;
+		}
+	}
+	if (token1->type != HEREDOC && token1->type != HEREDOCEXT && token2->type == DOUBLEQUOTE)
+		token2->str = ft_expanddoublequote(minishell, token2->str);
+	token1->str = ft_strjoin(token1->str, token2->str, minishell->garbagecmd);
+	if (token1->str == 0)
 		ft_exit(minishell, "malloc error\n");
 	ft_lstdelone(tokenlist2, 0);
 

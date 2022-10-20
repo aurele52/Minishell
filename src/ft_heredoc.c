@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 15:02:33 by audreyer          #+#    #+#             */
-/*   Updated: 2022/10/18 16:04:58 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/10/19 16:05:56 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,10 @@ void	ft_heredoc(t_minishell *minishell, t_token *token)
 			ft_exit(minishell, "readline error\n");
 		if (ft_strcmp(str, read) != 0)
 		{
-			if (token->type == HEREDOCEXT)
-				ft_expanddoublequote(read);
+			if (token->type == HEREDOC)
+				read = ft_expanddoublequote(minishell, read);
 			write(fd, read, ft_strlen(read));
+			write(fd, "\n", 1);
 		}
 	}
 	minishell->heredoc++;

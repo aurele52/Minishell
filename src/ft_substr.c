@@ -6,17 +6,17 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/25 16:23:35 by audreyer          #+#    #+#             */
-/*   Updated: 2022/10/14 14:11:41 by mgirardo         ###   ########.fr       */
+/*   Updated: 2022/10/18 22:12:55 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*ft_substr(char const *s, unsigned int start, size_t len, t_pos *garb)
+char	*ft_substr(char const *s, int start, int len, t_pos *garb)
 {
 	char	*str;
 
-	if (start > ft_strlen(s))
+	if (start > ft_strlen(s) || len <= 0)
 		return (ft_strdup("", garb));
 	while (start + len > ft_strlen(s))
 		len--;

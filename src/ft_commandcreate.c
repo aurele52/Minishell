@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 13:47:33 by audreyer          #+#    #+#             */
-/*   Updated: 2022/10/18 00:18:13 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/10/19 18:13:14 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	**ft_getpath(t_minishell *minishell)
 	char	*pathline;
 	char	**pathtab;
 
-	pathline = ft_getpathline(minishell->actenv);
+	pathline = ft_searchinenv(minishell, "PATH");
 	pathtab = ft_split(pathline, ':', minishell->garbage);
 	return (pathtab);
 }
@@ -64,6 +64,8 @@ char	*ft_getcmdfile(t_minishell *minishell, t_command *command)
 		else
 			command->error = ft_strjoin(ft_strdup("enro =", minishell->garbagecmd), cmdtmp, minishell->garbagecmd);
 	}
+	command->error = ft_strjoin(ft_strdup("command not found : ", minishell->garbagecmd), command->cmd[0], minishell->garbagecmd);
+	command->error = ft_strjoin(command->error, "\n", minishell->garbagecmd);
 	return (0);
 }
 

@@ -6,13 +6,13 @@
 /*   By: aurele <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/15 18:03:37 by aurele            #+#    #+#             */
-/*   Updated: 2022/10/14 14:11:31 by mgirardo         ###   ########.fr       */
+/*   Updated: 2022/10/18 22:14:10 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-size_t	ft_strlen(const char *s)
+int	ft_strlen(const char *s)
 {
 	int	i;
 

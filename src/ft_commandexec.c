@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 13:35:21 by audreyer          #+#    #+#             */
-/*   Updated: 2022/10/18 15:30:36 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/10/20 13:35:10 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	ft_changefdout(t_list *tokenlist, int fd)
 
 	token = (t_token *)tokenlist->content;
 	command = (t_command *)token->str;
-	if (command->ofdout == 0)
+	if (command->ofdout == 1)
 		command->ofdout = fd;
 }
 
@@ -86,11 +86,6 @@ t_command *ft_commandget(t_list *tokenlist)
 	token = (t_token *)tokenlist->content;
 	command = (t_command *)token->str;
 	return (command);
-}
-
-void	ft_heredocend(t_command *command)
-{
-	(void)command;
 }
 
 void	ft_openend(t_command *command)
@@ -123,11 +118,19 @@ void	ft_arg(t_minishell *minishell, t_list *tokenlist)
 
 void	ft_executecmd(t_minishell *minishell, t_command *command)
 {
-	dup2(command->ofdin, 0);
-	dup2(command->ofdout, 1);
+	if (command->ofdin != 0)
+		dup2(command->ofdin, 0);
+	if (command->ofdout != 1)
+		dup2(command->ofdout, 1);
+
 	ft_closevaria(2, command->ofdin, command->ofdout);
 	if (command->error == 0)
-		execve(command->cmd[0], command->cmd, minishell->actenv);
+	{
+//		dprintf(2,"1 = %s\n", command->file);
+		execve(command->file, command->cmd, minishell->env); //env a changer en act env
+//		printf("%s \n", strerror(errno));
+	}
+	ft_exit(minishell, command->error);
 }
 
 int	ft_cmdnbr(t_list *tokenlist)
@@ -150,28 +153,42 @@ void	ft_child(t_minishell *minishell, t_list *tokenlist)
 	int			*childid;
 	t_command	*command;
 
+	if (ft_type(tokenlist) == NL)
+		return ;
 	command = ft_commandget(tokenlist);
-	i = 0;
-	childid = ft_malloc(sizeof(int) *ft_cmdnbr(tokenlist), minishell->garbagecmd);
-	if (command->cmd)
-		command->cmd[0] = ft_getcmdfile(minishell, command);
-	while (ft_type(tokenlist) != NL)
+	if (ft_type(tokenlist->next) == NL && ft_isbuiltin(command) == 1)
+		ft_builtin(minishell, command);
+	else
 	{
-//		childid[i] = fork();
-//		if (childid[i] == 0)
-		if (command->error == 0)
+		if (command->cmd && command->cmd[0] != 0)
+			command->file = ft_getcmdfile(minishell, command);
+		i = 0;
+		childid = ft_malloc(sizeof(int) *ft_cmdnbr(tokenlist), minishell->garbagecmd);
+		while (ft_type(tokenlist->back) != NL || i == 0)
 		{
-			ft_arg(minishell, tokenlist);
-			ft_executecmd(minishell, command);
-		}
-		else
-			write(2, command->error, ft_strlen(command->error));
-//		else
+			if (command->error == 0)
+				ft_arg(minishell, tokenlist);
+			childid[i] = fork();
+			if (childid[i] == 0)
+			{
+				if (command->error == 0)
+					ft_executecmd(minishell, command);
+				else
+				{
+					write(2, command->error, ft_strlen(command->error));
+					ft_exit(minishell, 0);
+				}
+			}
+			i++;
 			ft_closevaria(2, ft_ofdout(tokenlist), ft_ofdin(tokenlist));
-		tokenlist = tokenlist->next;
+			tokenlist = tokenlist->next->next;
+			command = ft_commandget(tokenlist);
+		if (command->cmd && command->cmd[0] != 0)
+			command->file = ft_getcmdfile(minishell, command);
+		}
+		while (--i >= 0)
+			waitpid(childid[i], 0, 0);
 	}
-	while (i-- > 0)
-		waitpid(childid[i], 0, 0);
 }
 
 

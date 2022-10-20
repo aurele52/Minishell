@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 17:54:06 by audreyer          #+#    #+#             */
-/*   Updated: 2022/10/18 15:30:22 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/10/19 02:03:49 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,11 +67,35 @@ void	ft_printcmd(t_minishell *minishell, t_command *cmd)
 	if (cmd->fdin == 0)
 		write(2, "fdin = 0\n", 9);
 	else
+	{
+		write(2, "fdin = ", 8);
 		write(2, cmd->fdin, ft_strlen(cmd->fdin));
+		write(2, "\n", 1);
+	}
 	if (cmd->fdout == 0)
 		write(2, "fdout = 0\n", 10);
 	else
+	{
+		write(2, "fdout = ", 8);
 		write(2, cmd->fdout, ft_strlen(cmd->fdout));
+		write(2, "\n", 1);
+	}
+	if (cmd->ofdout == 0)
+		write(2, "ofdout = 0\n", 11);
+	else
+	{
+		write(2, "ofdout = ", 9);
+		ft_putnbrfd(cmd->ofdout, 2);
+		write(2, "\n", 1);
+	}
+	if (cmd->ofdin == 0)
+		write(2, "ofdin = 0\n", 10);
+	else
+	{
+		write(2, "ofdin = ", 8);
+		ft_putnbrfd(2, cmd->ofdin);
+		write(2, "\n", 1);
+	}
 	if (cmd->error == 0)
 		write(2, "error = 0\n", 10);
 	else
@@ -109,7 +133,7 @@ void	ft_posprint(t_minishell *minishell, t_pos *pos, void (*fct)(t_minishell *, 
 {
 	t_list	*list;
 
-	if (pos->start)
+	if (pos->start != 0)
 	{
 		list = pos->start;
 		while (list != list->pos->start->back)

@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 14:11:29 by audreyer          #+#    #+#             */
-/*   Updated: 2022/10/18 15:29:55 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/10/19 20:02:45 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,32 +169,70 @@ void	ft_expandsimplequote(t_token *token)
 	token->str = str;
 }
 
+void	ft_multipletoken(t_minishell *minishell, t_list *tokenlist)
+{
+	char	**str;
+	int		i;
+	t_list	*memstart;
+	t_token	*token;
+
+	memstart = tokenlist->pos->start;
+	tokenlist->pos->start = tokenlist->next;
+	i = 0;
+	str = ft_split(ft_str(tokenlist), ' ', minishell->garbagecmd);
+	if (!str)
+		ft_exit(minishell, "malloc error\n");
+	while (str[i])
+	{
+		token = ft_malloc(sizeof(*token), minishell->garbagecmd);
+		if (!token)
+			ft_exit(minishell, "malloc error\n");
+		ft_lstnew(token, minishell->tokenlist, minishell->garbagecmd);
+		if (minishell->tokenlist->start->back == 0)
+			ft_exit(minishell, "malloc error\n");
+		token->str = str[i];
+		token->type = WORD;
+		i++;
+	}
+	tokenlist->pos->start = memstart;
+	tokenlist = tokenlist->next;
+	ft_lstdelone(tokenlist->back, 0);
+}
+
 void	ft_tokencmdclean(t_minishell *minishell)
 {
 	t_list	*tokenlist;
-	int	i;
+	t_token	*token;
 
-	i = 0;
 	tokenlist = minishell->tokenlist->start;
 	while (ft_type(tokenlist) != NL)
 	{
-		if (ft_type(tokenlist) == DOUBLEQUOTE)
-			ft_expanddoublequote(ft_str(tokenlist));
-		if (ft_type(tokenlist) == SINGLEQUOTE)
-			ft_expandsimplequote((t_token *)tokenlist->content);
-		if (ft_type(tokenlist) == DOLLAR)
-			ft_expanddollar(ft_str(tokenlist));
-		if (ft_type(tokenlist->next) == SPACES)
-			ft_lstdelone(tokenlist->next, 0);
-		tokenlist = tokenlist->next;	
+		token = tokenlist->content;
+		if (token->type == DOUBLEQUOTE)
+		{
+			token->str = ft_expanddoublequote(minishell, token->str);
+			token->type = WORD;
+		}
+		if (token->type == SINGLEQUOTE)
+			token->type = WORD;
+		if (token->type == DOLLAR)
+		{
+			token->str = ft_expanddollar(minishell, token->str + 1);
+			ft_multipletoken(minishell, tokenlist);
+		}
+		if (ft_type(tokenlist) == SPACES)
+		{
+			tokenlist = tokenlist->next;
+			ft_lstdelone(tokenlist->back, 0);
+		}
+		else
+			tokenlist = tokenlist->next;	
 	}
 	tokenlist = tokenlist->next;
-	while (ft_type(tokenlist) != NL && i++ < 5)
+	while (ft_type(tokenlist) != NL)
 	{
 		tokenlist = ft_commandcreate(minishell, tokenlist);
-		ft_posprint(minishell, minishell->tokenlist, &ft_printtoken);
 		if (ft_type(tokenlist) != NL)
 			tokenlist = tokenlist->next;
 	}
 }
-

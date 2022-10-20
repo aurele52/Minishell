@@ -48,7 +48,7 @@ int	main(int argc, char **argv, char **env)
 //			printf("debut third-------------------\n");
 //			ft_posprint(minishell, minishell->tokenlist, &ft_printtoken);
 //			printf("fin third---------------------\n\n");
-//			ft_posprint(minishell, minishell->actenv, &ft_printenv);
+			// ft_posprint(minishell, minishell->actenv, &ft_printenv);
 			ft_child(minishell, minishell->tokenlist->start);
 			ft_posclear(minishell->garbagecmd, 1);
 			minishell->tokenlist->start = 0;

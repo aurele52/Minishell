@@ -24,6 +24,7 @@ void	ft_updateenv(t_minishell *minishell)
 
 int	ft_cd(t_minishell *minishell, t_command *command)
 {
+	/*	faire test cd : quand cwd deleted ou celui superieur deleted*/
 	if (ft_strlen(command->cmd) > 2)
 	{
 		write(command->ofdout, "minishell: cd: too many arguments\n", ft_strlen("minishell: cd: too many arguments\n"));
@@ -62,8 +63,21 @@ int	ft_cd(t_minishell *minishell, t_command *command)
 
 void	ft_export(t_minishell *minishell, t_command *command)
 {
-	/* only accept alphanum and underscore to define env variables name */
-	if (ft_strcmp)
+	/*	only accept alphanum and underscore to define env variables name
+		if no '=' in cmd[1 et +] do nothing
+		if '=' and nothing behind put value at '\0'
+		for each arg make the check and conversion*/
+	/*	prend un env au debut de l'exec, fait ses operations a partir de cet env
+		qu'ils sauvegarde dans le nouveau qui sera renvoyer a la fin*/
+	/*	may need to remake the parsing for export*/
+	if (ft_envvarexist(minishell, command))
+		{
+			/* replace envact value by new one */
+		}
+	else
+	{
+		/* lstnew with command */
+	}
 }
 
 void	ft_builtin(t_minishell *minishell, t_command *command)

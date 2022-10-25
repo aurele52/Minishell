@@ -181,8 +181,8 @@ void	ft_builtin(t_minishell *minishell, t_command *command)
 		printf("CD_MAISON\n"); //
 		printf("ft_cd = %i\n", ft_cd(minishell, command));
 		char buff[PATH_MAX];//
-		getcwd(buff, PATH_MAX);//
-		printf("curent directory = %s\n", buff);//
+		if (getcwd(buff, PATH_MAX));//
+			printf("curent directory = %s\n", buff);//
 	}
 	/*	else if (!ft_strcmp(command->cmd[0], "pwd"))
 		ft_pwd(minishell, command);

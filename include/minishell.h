@@ -34,7 +34,9 @@
 # include <sys/types.h>
 # include <sys/stat.h>
 # include <fcntl.h>
-# include <errno.h>  
+# include <errno.h>
+# include <linux/limits.h>
+# include <limits.h>
 
 typedef struct s_pos
 {
@@ -138,6 +140,7 @@ int			ft_isalnum(int c);
 char		*ft_unsplit(char **tab, char *charset, t_pos *garbage);
 char		**ft_split(char const *s, char c, t_pos *free);
 char		*ft_itoa(int n, t_pos *garbage);
+int			ft_doublstrlen(char **s);
 
 /* minishell */
 
@@ -170,5 +173,11 @@ void		ft_builtin(t_minishell *minishell, t_command *command);
 void		ft_echo(t_command *command);
 void		ft_fillofdout(t_command *command, unsigned int i);
 int			ft_nonewline(char *str);
+int			ft_homechdir(t_env *varenv);
+void		ft_addvarenv(t_minishell *minishell, char *name, char *value);
+void		ft_updateenv(t_minishell *minishell, char *buff);
+void		ft_preaddvarenv(t_minishell *minishell, char *name, t_env *varenv);
+t_list		*ft_envvarexist(t_pos *envact, char *str);
+int			ft_ispartenv(t_env	*varenv, char *str);
 
 #endif

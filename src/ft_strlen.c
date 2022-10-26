@@ -23,3 +23,15 @@ int	ft_strlen(const char *s)
 		i++;
 	return (i);
 }
+
+int	ft_doublstrlen(char **s)
+{
+	int i;
+
+	i = 0;
+	if (!s)
+		return (-1);
+	while (s[i])
+		i++;
+	return (i);
+}

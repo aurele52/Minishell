@@ -56,7 +56,7 @@ char	*ft_getcmdfile(t_minishell *minishell, t_command *command)
 			if (!access(cmdtmp, X_OK))
 				return (cmdtmp);
 			else
-				command->error = ft_strjoin(ft_strdup("enro =", minishell->garbagecmd), cmdtmp, minishell->garbagecmd);
+				command->error = ft_strjoin(ft_strdup("enrro =", minishell->garbagecmd), cmdtmp, minishell->garbagecmd);
 		}
 	}
 	if (!access(command->cmd[0], F_OK))
@@ -64,7 +64,7 @@ char	*ft_getcmdfile(t_minishell *minishell, t_command *command)
 		if (!access(command->cmd[0], X_OK))
 			return (command->cmd[0]);
 		else
-			command->error = ft_strjoin(ft_strdup("enro =", minishell->garbagecmd), cmdtmp, minishell->garbagecmd);
+			command->error = ft_strjoin(ft_strdup("enrro =", minishell->garbagecmd), cmdtmp, minishell->garbagecmd);
 	}
 	command->error = ft_strjoin(ft_strdup("command not found : ", minishell->garbagecmd), command->cmd[0], minishell->garbagecmd);
 	command->error = ft_strjoin(command->error, "\n", minishell->garbagecmd);

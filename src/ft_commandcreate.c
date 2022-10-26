@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 13:47:33 by audreyer          #+#    #+#             */
-/*   Updated: 2022/10/25 15:55:46 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/10/26 20:32:18 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,15 @@ char	*ft_getcmdfile(t_minishell *minishell, t_command *command)
 	if (ft_isbuiltin(command) == 1)
 		return (command->cmd[0]);
 	pathtab = ft_getpath(minishell);
+	if (ft_strlen(command->cmd[0]) <= 2 && command->cmd[0][0] == '.')
+	{
+		if (ft_strlen(command->cmd[0]) == 1)
+		command->error = ft_strdup("'.' must be follow by a command\n", minishell->garbagecmd);
+		if (command->cmd[0][1] == '.')
+			command->error = ft_strdup("command not found : ..\n", minishell->garbagecmd);
+		if (command->error != 0)
+			return (0);
+	}
 	while (pathtab && pathtab[i] != 0)
 	{
 		cmdtmp = ft_strjoin(ft_strjoin(pathtab[i++],

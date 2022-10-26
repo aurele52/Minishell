@@ -6,7 +6,7 @@
 #    By: audreyer <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/21 22:50:22 by audreyer          #+#    #+#              #
-#    Updated: 2022/10/26 13:03:39 by audreyer         ###   ########.fr        #
+#    Updated: 2022/10/26 19:16:33 by audreyer         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,7 @@ SRC=	src/minishell.c	\
 		src/ft_builtin.c	\
 		src/ft_commandexec.c	\
 		src/ft_commandcreate.c	\
+		src/ft_atoi.c	\
 		src/ft_tokenredirclean.c	\
 		src/ft_heredoc.c	\
 		src/ft_itoa.c	\

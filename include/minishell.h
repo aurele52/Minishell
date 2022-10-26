@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 16:37:40 by audreyer          #+#    #+#             */
-/*   Updated: 2022/10/25 18:14:33 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/10/27 00:42:05 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ typedef struct s_minishell
 	char		*prompt;
 	char		*error;
 	t_pos		*tokenlist;
+	int			laststatus;
 }	t_minishell;
 
 typedef struct s_token
@@ -128,7 +129,7 @@ int			ft_closevaria(int i, ...);
 char		*ft_strjoin(char *s1, char *s2, t_pos *garbage);
 void		ft_putnbrfd(int n, int fd);
 void		ft_printtoken(t_minishell *minishell, void *ptr);
-void		ft_posprint(t_minishell *minishell, t_pos *pos, void (*fct)(t_minishell *, void *));
+void		ft_posprint(t_minishell *minishell, t_pos *pos, void (*fct)(t_minishell *, void *, int), int fd);
 char		*ft_strdup(const char *s, t_pos *garbage);
 char		*ft_substr(char const *s, int start, int len, t_pos *garb);
 int			ft_strcmp(const char *str1, const char *str2);
@@ -141,6 +142,7 @@ char		*ft_unsplit(char **tab, char *charset, t_pos *garbage);
 char		**ft_split(char const *s, char c, t_pos *free);
 char		*ft_itoa(int n, t_pos *garbage);
 int			ft_doublstrlen(char **s);
+int			ft_atoi(char *str);
 
 /* minishell */
 
@@ -165,7 +167,8 @@ char		*ft_readline(char *str, t_pos *garbage);
 t_minishell	*ft_minishellinit(int argc, char **argv, char **env);
 char		*ft_expanddoublequote(t_minishell *minishell, char *str);
 char		*ft_expanddollar(t_minishell *minishell, char *str);
-void		ft_printenv(t_minishell	*minishell, void *ptr);
+void		ft_printenv(t_minishell	*minishell, void *ptr, int fd);
+int			ft_errorstr(char *str);
 
 /* builtin */
 

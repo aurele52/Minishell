@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 17:54:06 by audreyer          #+#    #+#             */
-/*   Updated: 2022/10/25 18:20:50 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/10/27 00:43:19 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ char	*ft_unsplit(char **tab, char *charset, t_pos *free)
 	return (str);
 }
 
-void	ft_printenv(t_minishell	*minishell, void *ptr)
+void	ft_printenv(t_minishell	*minishell, void *ptr, int fd)
 {
 	t_env	*env;
 	(void)minishell;
@@ -47,24 +47,25 @@ void	ft_printenv(t_minishell	*minishell, void *ptr)
 //	if (!env->name)
 //		write(2, " NULL", 5);
 //	else
-		write(2, env->name, ft_strlen(env->name));
-	write(2, "=", 1);
+		write(fd, env->name, ft_strlen(env->name));
+	write(fd, "=", 1);
 //	write(2, "\nvalue = ", 9);
 //	if (!env->value)
 //		write(2," NULL", 5);
 //	else
-		write(2, env->value, ft_strlen(env->value));
+		write(fd, env->value, ft_strlen(env->value));
 //	write(2, "\nlname = ", 9);
 //	ft_putnbrfd(env->lname, 2);
 //	write(2, "\nlvalue = ", 10);
 //	ft_putnbrfd(env->lvalue, 2);
-	write(2, "\n", 1);
+	write(fd, "\n", 1);
 }
 
-void	ft_printcmd(t_minishell *minishell, t_command *cmd)
+void	ft_printcmd(t_minishell *minishell, t_command *cmd, int fd)
 {
 	char	*str;
 
+	(void)fd;
 	if (cmd->fdin == 0)
 		write(2, "fdin = 0\n", 9);
 	else
@@ -124,13 +125,13 @@ void	ft_printtoken(t_minishell *minishell, void *ptr)
 	ft_putnbrfd(token->type, 2);
 	write(2, "\n", 1);
 	if (token->type == CMD)
-		ft_printcmd(minishell, (t_command *)token->str);
+		ft_printcmd(minishell, (t_command *)token->str, 0);
 	else
 		write(2, token->str, ft_strlen(token->str));
 	write(2, "\n", 1);
 }
 
-void	ft_posprint(t_minishell *minishell, t_pos *pos, void (*fct)(t_minishell *, void *))
+void	ft_posprint(t_minishell *minishell, t_pos *pos, void (*fct)(t_minishell *, void *, int fd), int fd)
 {
 	t_list	*list;
 
@@ -140,12 +141,12 @@ void	ft_posprint(t_minishell *minishell, t_pos *pos, void (*fct)(t_minishell *, 
 		while (list != list->pos->start->back)
 		{
 //			printf("------\n");
-			(*fct)(minishell, list->content);
+			(*fct)(minishell, list->content, fd);
 //			printf("------\n");
 			list = list->next;
 		}
 //		printf("------\n");
-		(*fct)(minishell, list->content);
+		(*fct)(minishell, list->content, fd);
 //		printf("------\n");
 	}
 }

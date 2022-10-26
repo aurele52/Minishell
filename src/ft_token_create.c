@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 11:53:25 by audreyer          #+#    #+#             */
-/*   Updated: 2022/10/25 15:47:33 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/10/26 22:32:55 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int	ft_tokendoublecote(t_minishell *minishell, char *str)
 		i++;
 	if (str[i] == '\0')
 	{
-		ft_error(minishell, "synthax error\n");
+		ft_error(minishell, "syntax error\n");
 		return (-1);
 	}
 	else
@@ -190,6 +190,14 @@ int	ft_tokenpipe(t_minishell *minishell, char *str)
 	t_token	*token;
 
 	i = 0;
+	if (*minishell->tokenlist->size == 0)
+		return (-1);
+	if (*minishell->tokenlist->size == 1 && ft_type(minishell->tokenlist->start) == SPACES)
+		return (-1);
+	if (ft_type(minishell->tokenlist->start->back) == SPACES && ft_type(minishell->tokenlist->start->back->back) == PIPE)
+		return (-1);
+	if (ft_type(minishell->tokenlist->start->back) == PIPE)
+		return (-1);
 	token = ft_malloc(sizeof(*token), minishell->garbagecmd);
 	if (!token)
 		ft_exit(minishell, "malloc error\n");
@@ -237,8 +245,13 @@ int	ft_tokendollar(t_minishell *minishell, char *str)
 	ft_lstnew(token, minishell->tokenlist, minishell->garbagecmd);
 	if (minishell->tokenlist->start->back == 0)
 		ft_exit(minishell, "malloc error\n");
-	while (str[i] && !ft_isendword(str[i]))
+	if (str[i] <= '9' && str[i] >= '0')
 		i++;
+	else
+	{
+		while (str[i] && !ft_isendword(str[i]) && str[i] != '=' && str[i] != '+' && str[i] != '/')
+			i++;
+	}
 	token->str = ft_substr(str, 0, i, minishell->garbagecmd);
 	token->type = DOLLAR;
 	return (i);
@@ -357,8 +370,6 @@ int	ft_parenthesischeck(char *str)
 		return (++i);
 }
 
-
-
 int	ft_numbercheck(char *str)
 {
 	if (!ft_checkuptwo(str, '|'))
@@ -386,6 +397,10 @@ int	ft_tokencreate(t_minishell *minishell, char *str)
 	if (ft_numbercheck(str))
 	{
 		if (ft_char(minishell, str) == -1)
+			return (-1);
+		if (ft_type(minishell->tokenlist->start->back) == SPACES)
+			ft_lstdelone(minishell->tokenlist->start->back, 0);
+		if (ft_type(minishell->tokenlist->start->back) == PIPE)
 			return (-1);
 		ft_tokennl(minishell);	
 	}

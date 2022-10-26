@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 22:50:21 by audreyer          #+#    #+#             */
-/*   Updated: 2022/10/25 18:34:27 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/10/26 22:31:37 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,6 @@ char	*ft_searchinenv(t_minishell *minishell, char *str)
 		line = line->next;
 	}
 	new = ft_strdup("", minishell->garbagecmd);
-	if (!new)
-		ft_exit(minishell, "malloc error\n");
 	return (new);
 }
 
@@ -92,7 +90,16 @@ char	*ft_expanddollar(t_minishell *minishell, char *str)
 {
 	char *new;
 
-	new = ft_searchinenv(minishell, str);
+	if (str[0] == '?')
+		new = ft_itoa(minishell->laststatus, minishell->garbagecmd);
+	else if (str[0] == '+')
+		new = ft_strdup("$+", minishell->garbagecmd);
+	else if (str[0] == '=')
+		new = ft_strdup("$=", minishell->garbagecmd);
+	else
+		new = ft_searchinenv(minishell, str);
+	if (!new)
+		ft_exit(minishell, "malloc error\n");
 	return (new);
 }
 
@@ -130,11 +137,16 @@ char	*ft_expanddoublequote(t_minishell *minishell, char *str)
 		if (str[i] == '$')
 		{
 			str++;
-			while (str[i] && str[i] != ' ' && str[i] != '$' && str[i] != '=')
-				i++;
-			temp = ft_expanddollar(minishell, ft_substr(str, 0, i, minishell->garbagecmd));	
-			new = ft_strjoin(new, temp, minishell->garbagecmd);
-			str = str + i;
+			if (str[i] <= '9' && str[i] >= '0')
+				str++;
+			else
+			{
+				while (str[i] && str[i] != ' ' && str[i] != '$' && str[i] != '=' && str[i] != '/')
+					i++;
+				temp = ft_expanddollar(minishell, ft_substr(str, 0, i, minishell->garbagecmd));	
+				new = ft_strjoin(new, temp, minishell->garbagecmd);
+				str = str + i;
+			}
 		}
 	}
 	return (new);

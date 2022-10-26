@@ -6,24 +6,26 @@
 /*   By: mgirardo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 16:25:54 by mgirardo          #+#    #+#             */
-/*   Updated: 2022/10/26 16:10:29 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/10/27 01:22:52 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-void	ft_env(t_minishell *minishell)
+void	ft_env(t_minishell *minishell, t_command *command)
 {
-	ft_posprint(minishell, minishell->actenv, &ft_printenv);	
+	ft_posprint(minishell, minishell->actenv, &ft_printenv, command->ofdout);	
+	minishell->laststatus = 0;
 }
 
-void	ft_pwd(t_minishell *minishell)
+void	ft_pwd(t_minishell *minishell, t_command *command)
 {
 	char	*str;
 
 	str = ft_searchinenv(minishell, "PWD");
-	write(1, str, ft_strlen(str));
-	write(1, "\n", 1);
+	write(command->ofdout, str, ft_strlen(str));
+	write(command->ofdout, "\n", 1);
+	minishell->laststatus = 0;
 }
 
 void	ft_preexit(t_minishell *minishell, t_command *command)
@@ -83,6 +85,11 @@ void	ft_export(t_minishell *minishell, t_command *command)
 	t_env	*line;
 
 	i = 1;
+	if (command->cmd[1][0] == 0)
+	{
+		ft_error(minishell, "minishell: export: `': not a valid identifier\n");
+		return ;
+	}
 	while (command->cmd[i])
 	{
 		if (ft_strhaveegal(command->cmd[i]) == 1)
@@ -109,6 +116,7 @@ void	ft_export(t_minishell *minishell, t_command *command)
 		}
 		i++;
 	}
+	minishell->laststatus = 0;
 }
 
 void	ft_unset(t_minishell *minishell, t_command *command)
@@ -118,6 +126,7 @@ void	ft_unset(t_minishell *minishell, t_command *command)
 	envlist = ft_envlist(minishell, command->cmd[1]);
 	if (envlist != 0)
 		ft_lstdelone(envlist, 0);
+	minishell->laststatus = 0;
 }
 
 int	ft_ispartenv(t_env	*varenv, char *str)
@@ -183,14 +192,14 @@ int	ft_homechdir(t_env *varenv)
 {
 	if (!varenv)
 		return (1);
-	printf("HOME = %s\n", varenv->value);//
+//	printf("HOME = %s\n", varenv->value);//
 	if (chdir(varenv->value) == 0)
 		return (0);
 	else
 		return (1);
 }
 
-int	ft_PWDcheck(t_minishell *minishell, t_command *command)
+int	ft_PWDcheck(t_minishell *minishell)
 {
 	char	*buff;
 
@@ -203,17 +212,18 @@ int	ft_PWDcheck(t_minishell *minishell, t_command *command)
 			ft_addvarenv(minishell, "PWD", buff);
 		else
 		{
-			(write(command->ofdout, "minishell: cd: could not get current working directory\n", ft_strlen("minishell: cd: could not get current working directory\n")));
+			ft_error(minishell, "minishell: cd: could not get current working directory\n");
 			return (1);
 		}
 	}
 	return (0);
 }
 
-int	ft_cd(t_minishell *minishell, t_command *command)
+void	ft_cd(t_minishell *minishell, t_command *command)
 {
 	t_list	*list;
 	char	*buff;
+	char	*str;
 
 	buff = ft_malloc(PATH_MAX, minishell->garbage);
 	/*
@@ -222,89 +232,57 @@ int	ft_cd(t_minishell *minishell, t_command *command)
 	if (!buff)
 		ft_exit(minishell, "malloc error\n");
 	if (ft_doublstrlen(command->cmd) > 2)
-	{
-		write(command->ofdout, "minishell: cd: too many arguments\n", ft_strlen("minishell: cd: too many arguments\n"));
-		return (1);
-	}
+		ft_error(minishell, "minishell: cd: too many arguments\n");
 	else if (ft_doublstrlen(command->cmd) == 2)
 	{
-		if (ft_PWDcheck(minishell, command))
-			return (1);
+		if (ft_PWDcheck(minishell))
+			return ;
 		if (chdir(command->cmd[1]) == 0)
 		{
 			if (getcwd(buff, PATH_MAX))
 				ft_updateenv(minishell, buff);
+			minishell->laststatus = 0;
 		}
 		else
 		{
-			write (command->ofdout, "minishell: cd: ", ft_strlen("minishell: cd: "));
-			write (command->ofdout, command->cmd[1], ft_strlen(command->cmd[1]));
-			write (command->ofdout, ": No such file or directory\n", ft_strlen(": No such file or directory\n"));
-			return (1);
+			str = ft_strdup("minishell: cd: ", minishell->garbagecmd);
+			str = ft_strjoin(str, command->cmd[1], minishell->garbagecmd);
+			str = ft_strjoin(str, ft_strdup(": No such file or directory\n", minishell->garbagecmd), minishell->garbagecmd);
+			if (!str)
+				ft_exit(minishell, "malloc error\n");
+			ft_error(minishell, str);
 		}
 	}
 	else if (ft_doublstrlen(command->cmd) == 1)
 	{
-		if (ft_PWDcheck(minishell, command))
-			return (1);
+		if (ft_PWDcheck(minishell))
+			return ;
 		list = ft_envvarexist(minishell->actenv, "HOME");
 		if (ft_homechdir(list->content) == 0)
 		{
 			if (getcwd(buff, PATH_MAX))
 				ft_updateenv(minishell, buff);
+			minishell->laststatus = 0;
 		}
 		else
-		{
-			write(command->ofdout, "minishell: cd: no home defined\n", ft_strlen("minishell: cd: no home defined\n"));
-			return (1);
-		}
+			ft_error(minishell, "minishell: cd: no home defined\n");
 	}
-	return (0);
 }
-
-// void	ft_export(t_minishell *minishell, t_command *command)
-// {
-// 	/*	only accept alphanum and underscore to define env variables name
-// 		if no '=' in cmd[1 et +] do nothing
-// 		if '=' and nothing behind put value at '\0'
-// 		for each arg make the check and conversion*/
-// 	/*	prend un env au debut de l'exec, fait ses operations a partir de cet env
-// 		qu'ils sauvegarde dans le nouveau qui sera renvoyer a la fin*/
-// 	/*	may need to remake the parsing for export*/
-// 	if (ft_envvarexist(minishell, "str"))
-// 	{
-// 		/* replace envact value by new one */
-// 	}
-// 	else
-// 	{
-// 		/* lstnew with command */
-// 	}
-// }
 
 void	ft_builtin(t_minishell *minishell, t_command *command)
 {
 	if (!ft_strcmp(command->cmd[0], "echo"))
-	{
-		printf("ECHO_MAISON\n"); //
 		ft_echo(command);
-	}
 	else if (!ft_strcmp(command->cmd[0], "cd"))
-	{
-		// ft_cd(minishell, command);
-		printf("CD_MAISON\n"); //
-		printf("ft_cd = %i\n", ft_cd(minishell, command));//
-		char buff[PATH_MAX];//
-		if (getcwd(buff, PATH_MAX))//
-			printf("curent directory = %s\n", buff);//
-	}
+		ft_cd(minishell, command);
 	else if (!ft_strcmp(command->cmd[0], "pwd"))
-		ft_pwd(minishell);
+		ft_pwd(minishell, command);
 	else if (!ft_strcmp(command->cmd[0], "env"))
-		ft_env(minishell);
+		ft_env(minishell, command);
 	else if (!ft_strcmp(command->cmd[0], "exit"))
 		ft_preexit(minishell, command);
 	else if (!ft_strcmp(command->cmd[0], "export"))
-			ft_export(minishell, command);
+		ft_export(minishell, command);
 	else if (!ft_strcmp(command->cmd[0], "unset"))
 		ft_unset(minishell, command);
 }

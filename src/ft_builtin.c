@@ -6,7 +6,7 @@
 /*   By: mgirardo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 16:25:54 by mgirardo          #+#    #+#             */
-/*   Updated: 2022/10/20 16:49:30 by mgirardo         ###   ########.fr       */
+/*   Updated: 2022/10/26 11:02:14 by mgirardo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,18 @@ int	ft_ispartenv(t_env	*varenv, char *str)
 t_list	*ft_envvarexist(t_pos *envact, char *str)
 {
 	t_list	*varenv;
+	int		i;
 
+	i = 0;
 	if (envact->start != 0)
 	{
 		varenv = envact->start;
-		while (varenv != varenv->pos->start->back)
+		while (i <= *envact->size/* varenv != varenv->pos->start->back */)
 		{
-			if (ft_ispartenv(varenv->content, str) == 0)
+			if (!ft_ispartenv(varenv->content, str))
 				return (varenv);
 			varenv = varenv->next;
+			i++;
 		}
 	}
 	return (NULL);
@@ -66,13 +69,13 @@ void	ft_addvarenv(t_minishell *minishell, char *name, char *value)
 	line->lname = ft_strlen(line->name);
 	line->value = value;
 	line->lvalue = ft_strlen(line->value);
-}
+	}
 
 int	ft_homechdir(t_env *varenv)
 {
 	if (!varenv)
 		return (1);
-	printf("HOME = %s\n", varenv->value);
+	printf("HOME = %s\n", varenv->value);//
 	if (chdir(varenv->value) == 0)
 		return (0);
 	else
@@ -82,10 +85,10 @@ int	ft_homechdir(t_env *varenv)
 int	ft_PWDcheck(t_minishell *minishell, t_command *command)
 {
 	char	*buff;
-	
+
 	buff = ft_malloc(PATH_MAX, minishell->garbage);
 	if (!buff)
-		return (1);
+		ft_exit(minishell, "malloc error\n");
 	if (!ft_envvarexist(minishell->actenv, "PWD"))
 	{
 		if (getcwd(buff, PATH_MAX))
@@ -103,16 +106,17 @@ int	ft_cd(t_minishell *minishell, t_command *command)
 {
 	t_list	*list;
 	char	*buff;
-	
+
 	buff = ft_malloc(PATH_MAX, minishell->garbage);
+	/*
+		peut etre definir PATH_MAX dans le *.h
+		*/
 	if (!buff)
-		return (1);
+		ft_exit(minishell, "malloc error\n");
 	/*
 		faire test cd : quand cwd deleted ou celui superieur deleted
 		use acces
 		*/
-	if (ft_PWDcheck(minishell, command))
-		return (1);
 	if (ft_doublstrlen(command->cmd) > 2)
 	{
 		write(command->ofdout, "minishell: cd: too many arguments\n", ft_strlen("minishell: cd: too many arguments\n"));
@@ -120,13 +124,19 @@ int	ft_cd(t_minishell *minishell, t_command *command)
 	}
 	else if (ft_doublstrlen(command->cmd) == 2)
 	{
+		if (ft_PWDcheck(minishell, command))
+			return (1);
 		if (chdir(command->cmd[1]) == 0)
 		{
+			/* 			if (ft_PWDcheck(minishell, command))
+						return (1); */
 			if (getcwd(buff, PATH_MAX))
 				ft_updateenv(minishell, buff);
 		}
 		else
 		{
+			/* 			if (ft_PWDcheck(minishell, command))
+						return (1); */
 			write (command->ofdout, "minishell: cd: ", ft_strlen("minishell: cd: "));
 			write (command->ofdout, command->cmd[1], ft_strlen(command->cmd[1]));
 			write (command->ofdout, ": No such file or directory\n", ft_strlen(": No such file or directory\n"));
@@ -135,14 +145,20 @@ int	ft_cd(t_minishell *minishell, t_command *command)
 	}
 	else if (ft_doublstrlen(command->cmd) == 1)
 	{
+		if (ft_PWDcheck(minishell, command))
+			return (1);
 		list = ft_envvarexist(minishell->actenv, "HOME");
 		if (ft_homechdir(list->content) == 0)
 		{
+			/* 			if (ft_PWDcheck(minishell, command))
+						return (1); */
 			if (getcwd(buff, PATH_MAX))
 				ft_updateenv(minishell, buff);
 		}
 		else
 		{
+			/* 			if (ft_PWDcheck(minishell, command))
+						return (1); */
 			write(command->ofdout, "minishell: cd: no home defined\n", ft_strlen("minishell: cd: no home defined\n"));
 			return (1);
 		}
@@ -178,22 +194,25 @@ void	ft_builtin(t_minishell *minishell, t_command *command)
 	}
 	else if (!ft_strcmp(command->cmd[0], "cd"))
 	{
+		// ft_cd(minishell, command);
 		printf("CD_MAISON\n"); //
-		printf("ft_cd = %i\n", ft_cd(minishell, command));
+		printf("ft_cd = %i\n", ft_cd(minishell, command));//
 		char buff[PATH_MAX];//
-		if (getcwd(buff, PATH_MAX));//
+		if (getcwd(buff, PATH_MAX))//
 			printf("curent directory = %s\n", buff);//
 	}
+	else if (!ft_strcmp(command->cmd[0], "env"))//
+		ft_posprint(minishell, minishell->actenv, &ft_printenv);//
 	/*	else if (!ft_strcmp(command->cmd[0], "pwd"))
 		ft_pwd(minishell, command);
 		else if (!ft_strcmp(command->cmd[0], "export"))
 		ft_export(minishell, command);	
 		else if (!ft_strcmp(command->cmd[0], "unset"))
 		ft_unset(minishell, command);
-		else if (!ft_strcmp(command->cmd[0], "env"))
-		ft_env(minishell, command);
 		else if (!ft_strcmp(command->cmd[0], "exit"))
 		ft_exit(minishell, command);
+		else if (!ft_strcmp(command->cmd[0], "env"))//
+		ft_env(minishell, command);
 		*/
 	(void)minishell;
 }

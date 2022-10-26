@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 22:50:21 by audreyer          #+#    #+#             */
-/*   Updated: 2022/10/19 20:13:48 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/10/25 18:34:27 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ char	*ft_searchinenv(t_minishell *minishell, char *str)
 			return (ft_value(line->content));
 		line = line->next;
 	}
-	new = ft_strdup("\n", minishell->garbagecmd);
+	new = ft_strdup("", minishell->garbagecmd);
 	if (!new)
 		ft_exit(minishell, "malloc error\n");
 	return (new);
@@ -130,7 +130,7 @@ char	*ft_expanddoublequote(t_minishell *minishell, char *str)
 		if (str[i] == '$')
 		{
 			str++;
-			while (str[i] && str[i] != ' ' && str[i] != '$')
+			while (str[i] && str[i] != ' ' && str[i] != '$' && str[i] != '=')
 				i++;
 			temp = ft_expanddollar(minishell, ft_substr(str, 0, i, minishell->garbagecmd));	
 			new = ft_strjoin(new, temp, minishell->garbagecmd);
@@ -177,7 +177,6 @@ void	ft_tokenjoin(t_minishell *minishell, t_list *tokenlist1, t_list	*tokenlist2
 	if (token1->str == 0)
 		ft_exit(minishell, "malloc error\n");
 	ft_lstdelone(tokenlist2, 0);
-
 }
 
 void	ft_expandforfd(t_minishell *minishell, t_list *tokenlist)

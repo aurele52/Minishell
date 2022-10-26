@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 15:02:33 by audreyer          #+#    #+#             */
-/*   Updated: 2022/10/19 16:05:56 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/10/25 13:22:03 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	ft_heredoc(t_minishell *minishell, t_token *token)
 	}
 	minishell->heredoc++;
 	token->type = IN;
-	close(fd);
+	ft_closevaria(1, fd);
 }
 
 void	ft_heredocclean(t_minishell *minishell)

@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 14:11:29 by audreyer          #+#    #+#             */
-/*   Updated: 2022/10/19 20:02:45 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/10/25 15:28:11 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	ft_open(t_minishell *minishell, t_token *token, t_command *command)
 			command->error = ft_strjoin(command->error, ft_strdup("\n", minishell->garbagecmd), minishell->garbagecmd);
 			return (1);
 		}
-		close(i);
+		ft_closevaria(1, i);
 		command->fdout = token->str;
 	}
 	else if (token->type == APPEND)
@@ -59,7 +59,7 @@ int	ft_open(t_minishell *minishell, t_token *token, t_command *command)
 			command->error = ft_strjoin(command->error, ft_strdup("\n", minishell->garbagecmd), minishell->garbagecmd);
 			return (1);
 		}
-		close(i);
+		ft_closevaria(1, i);
 		command->fdout = token->str;
 	}
 	else if (token->type == IN)
@@ -74,7 +74,7 @@ int	ft_open(t_minishell *minishell, t_token *token, t_command *command)
 			command->error = ft_strjoin(command->error, ft_strdup("\n", minishell->garbagecmd), minishell->garbagecmd);
 			return (1);
 		}
-		close(i);
+		ft_closevaria(1, i);
 		command->fdin = token->str;
 	}
 	return (0);
@@ -220,15 +220,39 @@ void	ft_tokencmdclean(t_minishell *minishell)
 			token->str = ft_expanddollar(minishell, token->str + 1);
 			ft_multipletoken(minishell, tokenlist);
 		}
+		tokenlist = tokenlist->next;	
+	}
+	tokenlist = tokenlist->next;
+	char	*temp;
+	char	*temp2;
+	t_token	*tokenact;
+
+	while (ft_type(tokenlist) != NL)
+	{
+		if (ft_type(tokenlist) == WORD && ft_type(tokenlist->next) == WORD)
+		{
+			tokenact = (t_token *)tokenlist->content;
+			temp = ft_str(tokenlist);
+			temp2 = ft_str(tokenlist->next);
+			tokenact->str = ft_strjoin(temp, temp2, minishell->garbagecmd);
+			ft_lstdelone(tokenlist->next, 0);
+		}
+		else
+			tokenlist = tokenlist->next;	
+	}
+	tokenlist = tokenlist->next;	
+	while (ft_type(tokenlist) != NL)
+	{
 		if (ft_type(tokenlist) == SPACES)
 		{
 			tokenlist = tokenlist->next;
 			ft_lstdelone(tokenlist->back, 0);
 		}
 		else
-			tokenlist = tokenlist->next;	
+			tokenlist = tokenlist->next;
 	}
 	tokenlist = tokenlist->next;
+
 	while (ft_type(tokenlist) != NL)
 	{
 		tokenlist = ft_commandcreate(minishell, tokenlist);

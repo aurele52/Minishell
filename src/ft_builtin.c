@@ -6,11 +6,11 @@
 /*   By: mgirardo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 16:25:54 by mgirardo          #+#    #+#             */
-/*   Updated: 2022/10/27 01:22:52 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/10/27 01:31:53 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "minishell.h"
 
 void	ft_env(t_minishell *minishell, t_command *command)
 {

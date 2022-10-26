@@ -46,7 +46,9 @@ SRC=	src/minishell.c	\
 		src/ft_isalnum.c \
 		src/ft_error.c \
 		src/ft_split.c \
-		src/ft_echo.c
+		src/ft_echo.c \
+		src/ft_cd.c \
+		src/ft_signal.c
 
 SRC_MAIN=	src/main.c
 

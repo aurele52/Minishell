@@ -14,9 +14,16 @@
 
 int	main(int argc, char **argv, char **env)
 {
-	t_minishell	*minishell;
-	char		*str;
+	t_minishell		*minishell;
+	char			*str;
+	t_sigaction	sa;
 
+	sa.sa_flags = SA_SIGINFO;
+	sa.sa_sigaction = ft_signal;
+	sigemptyset(&sa.sa_mask);
+	sigaction(SIGINT, &sa, NULL);
+	sigaction(SIGQUIT, &sa, NULL);
+	sigaction(/* to be found for ctrl-\ */, &sa, NULL);
 	rl_outstream = stderr;
 	if (!env || !env[0])
 	{

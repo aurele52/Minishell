@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 13:35:21 by audreyer          #+#    #+#             */
-/*   Updated: 2022/10/20 13:35:10 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/10/25 17:21:28 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,18 +116,53 @@ void	ft_arg(t_minishell *minishell, t_list *tokenlist)
 		ft_openend(ft_commandget(tokenlist));
 }
 
+char	**ft_reenv(t_minishell *minishell)
+{
+	char	**str;
+	int		i;
+	t_env	*line;
+	t_list	*listact;
+
+	i = 0;
+	str = ft_malloc(sizeof(char *) * (*minishell->actenv->size + 1), minishell->garbagecmd);
+	if (!str)
+		ft_exit(minishell, "malloc error\n");
+	str[*minishell->actenv->size] = 0;
+	listact = minishell->actenv->start;
+	while (i < *minishell->actenv->size)
+	{
+		line = (t_env *)listact->content;
+		str[i] = ft_strjoin(line->name, line->value, minishell->garbagecmd);
+		if (!str[i])
+			ft_exit(minishell, "malloc error\n");
+		listact = listact->next;
+		i++;
+	}
+	return (str);
+}
+
 void	ft_executecmd(t_minishell *minishell, t_command *command)
 {
 	if (command->ofdin != 0)
+	{
+//		printf("in = %i\n", command->ofdin);
 		dup2(command->ofdin, 0);
+	}
 	if (command->ofdout != 1)
+	{
+//		printf("out = %i\n", command->ofdout);
 		dup2(command->ofdout, 1);
-
+		if (command->ofdin != minishell->pipe[0])
+			ft_closevaria(1, minishell->pipe[0]);
+	}
 	ft_closevaria(2, command->ofdin, command->ofdout);
 	if (command->error == 0)
 	{
 //		dprintf(2,"1 = %s\n", command->file);
-		execve(command->file, command->cmd, minishell->env); //env a changer en act env
+		if (ft_isbuiltin(command) == 1)
+			ft_builtin(minishell, command);
+		else
+			execve(command->file, command->cmd, ft_reenv(minishell)); //env a changer en act env
 //		printf("%s \n", strerror(errno));
 	}
 	ft_exit(minishell, command->error);
@@ -183,8 +218,8 @@ void	ft_child(t_minishell *minishell, t_list *tokenlist)
 			ft_closevaria(2, ft_ofdout(tokenlist), ft_ofdin(tokenlist));
 			tokenlist = tokenlist->next->next;
 			command = ft_commandget(tokenlist);
-		if (command->cmd && command->cmd[0] != 0)
-			command->file = ft_getcmdfile(minishell, command);
+			if (command->cmd && command->cmd[0] != 0)
+				command->file = ft_getcmdfile(minishell, command);
 		}
 		while (--i >= 0)
 			waitpid(childid[i], 0, 0);

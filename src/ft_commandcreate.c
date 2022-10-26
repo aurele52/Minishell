@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 13:47:33 by audreyer          #+#    #+#             */
-/*   Updated: 2022/10/19 18:13:14 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/10/25 15:55:46 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ char	*ft_getcmdfile(t_minishell *minishell, t_command *command)
 	char	*cmdtmp;
 
 	i = 0;
+	if (ft_isbuiltin(command) == 1)
+		return (command->cmd[0]);
 	pathtab = ft_getpath(minishell);
 	while (pathtab && pathtab[i] != 0)
 	{

@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 16:37:40 by audreyer          #+#    #+#             */
-/*   Updated: 2022/10/20 13:35:10 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/10/25 18:14:33 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,6 +145,8 @@ int			ft_doublstrlen(char **s);
 /* minishell */
 
 char		*ft_searchinenv(t_minishell *minishell, char *str);
+char		*ft_value(t_env *env);
+char		*ft_name(t_env *env);
 void		ft_heredocclean(t_minishell *minishell);
 int			ft_isbuiltin(t_command *command);
 void		ft_child(t_minishell *minishell, t_list *tokenlist);
@@ -154,7 +156,7 @@ char		*ft_str(t_list *tokenlist);
 void		ft_tokenredirclean(t_minishell *minishell);
 void		ft_tokencmdclean(t_minishell *minishell);
 void		ft_parsetoken(t_minishell *minishell);
-void		ft_tokencreate(t_minishell *minishell, char *str);
+int			ft_tokencreate(t_minishell *minishell, char *str);
 void		ft_error(t_minishell *minishell, char *str);
 void		ft_leaf(t_minishell *minishell);
 void		ft_createleaf(t_minishell *minishell);

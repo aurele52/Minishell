@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 17:54:06 by audreyer          #+#    #+#             */
-/*   Updated: 2022/10/19 02:03:49 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/10/25 18:20:50 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,20 +43,21 @@ void	ft_printenv(t_minishell	*minishell, void *ptr)
 	(void)minishell;
 
 	env = (t_env *)ptr;
-	write(2, "name = ", 7);
-	if (!env->name)
-		write(2, " NULL", 5);
-	else
+//	write(2, "name = ", 7);
+//	if (!env->name)
+//		write(2, " NULL", 5);
+//	else
 		write(2, env->name, ft_strlen(env->name));
-	write(2, "\nvalue = ", 9);
-	if (!env->value)
-		write(2," NULL", 5);
-	else
+	write(2, "=", 1);
+//	write(2, "\nvalue = ", 9);
+//	if (!env->value)
+//		write(2," NULL", 5);
+//	else
 		write(2, env->value, ft_strlen(env->value));
-	write(2, "\nlname = ", 9);
-	ft_putnbrfd(env->lname, 2);
-	write(2, "\nlvalue = ", 10);
-	ft_putnbrfd(env->lvalue, 2);
+//	write(2, "\nlname = ", 9);
+//	ft_putnbrfd(env->lname, 2);
+//	write(2, "\nlvalue = ", 10);
+//	ft_putnbrfd(env->lvalue, 2);
 	write(2, "\n", 1);
 }
 
@@ -93,7 +94,7 @@ void	ft_printcmd(t_minishell *minishell, t_command *cmd)
 	else
 	{
 		write(2, "ofdin = ", 8);
-		ft_putnbrfd(2, cmd->ofdin);
+		ft_putnbrfd(cmd->ofdin, 2);
 		write(2, "\n", 1);
 	}
 	if (cmd->error == 0)
@@ -138,13 +139,13 @@ void	ft_posprint(t_minishell *minishell, t_pos *pos, void (*fct)(t_minishell *, 
 		list = pos->start;
 		while (list != list->pos->start->back)
 		{
-			printf("------\n");
+//			printf("------\n");
 			(*fct)(minishell, list->content);
-			printf("------\n");
+//			printf("------\n");
 			list = list->next;
 		}
-		printf("------\n");
+//		printf("------\n");
 		(*fct)(minishell, list->content);
-		printf("------\n");
+//		printf("------\n");
 	}
 }

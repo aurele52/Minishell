@@ -113,10 +113,6 @@ int	ft_cd(t_minishell *minishell, t_command *command)
 		*/
 	if (!buff)
 		ft_exit(minishell, "malloc error\n");
-	/*
-		faire test cd : quand cwd deleted ou celui superieur deleted
-		use acces
-		*/
 	if (ft_doublstrlen(command->cmd) > 2)
 	{
 		write(command->ofdout, "minishell: cd: too many arguments\n", ft_strlen("minishell: cd: too many arguments\n"));
@@ -128,15 +124,11 @@ int	ft_cd(t_minishell *minishell, t_command *command)
 			return (1);
 		if (chdir(command->cmd[1]) == 0)
 		{
-			/* 			if (ft_PWDcheck(minishell, command))
-						return (1); */
 			if (getcwd(buff, PATH_MAX))
 				ft_updateenv(minishell, buff);
 		}
 		else
 		{
-			/* 			if (ft_PWDcheck(minishell, command))
-						return (1); */
 			write (command->ofdout, "minishell: cd: ", ft_strlen("minishell: cd: "));
 			write (command->ofdout, command->cmd[1], ft_strlen(command->cmd[1]));
 			write (command->ofdout, ": No such file or directory\n", ft_strlen(": No such file or directory\n"));
@@ -150,15 +142,11 @@ int	ft_cd(t_minishell *minishell, t_command *command)
 		list = ft_envvarexist(minishell->actenv, "HOME");
 		if (ft_homechdir(list->content) == 0)
 		{
-			/* 			if (ft_PWDcheck(minishell, command))
-						return (1); */
 			if (getcwd(buff, PATH_MAX))
 				ft_updateenv(minishell, buff);
 		}
 		else
 		{
-			/* 			if (ft_PWDcheck(minishell, command))
-						return (1); */
 			write(command->ofdout, "minishell: cd: no home defined\n", ft_strlen("minishell: cd: no home defined\n"));
 			return (1);
 		}

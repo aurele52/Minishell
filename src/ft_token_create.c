@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 11:53:25 by audreyer          #+#    #+#             */
-/*   Updated: 2022/10/26 22:32:55 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/10/27 13:29:18 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -249,8 +249,15 @@ int	ft_tokendollar(t_minishell *minishell, char *str)
 		i++;
 	else
 	{
-		while (str[i] && !ft_isendword(str[i]) && str[i] != '=' && str[i] != '+' && str[i] != '/')
+		while (str[i] && !ft_isendword(str[i]) && str[i] != '=' && str[i] != '+' && str[i] != '/' && str[i] != '"')
 			i++;
+		if (str[i] == '"' && i == 1)
+		{
+			token->str = ft_strdup("$$", minishell->garbagecmd);
+			token->type = DOLLAR;
+			return (i);
+		}
+
 	}
 	token->str = ft_substr(str, 0, i, minishell->garbagecmd);
 	token->type = DOLLAR;

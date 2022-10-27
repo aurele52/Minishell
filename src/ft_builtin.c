@@ -6,7 +6,7 @@
 /*   By: mgirardo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 16:25:54 by mgirardo          #+#    #+#             */
-/*   Updated: 2022/10/27 01:31:53 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/10/27 15:04:11 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,11 @@ void	ft_pwd(t_minishell *minishell, t_command *command)
 	char	*str;
 
 	str = ft_searchinenv(minishell, "PWD");
+	if (access(str, F_OK))
+	{
+		ft_error(minishell, "pwd: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory\n");
+		return ;
+	}
 	write(command->ofdout, str, ft_strlen(str));
 	write(command->ofdout, "\n", 1);
 	minishell->laststatus = 0;
@@ -85,7 +90,12 @@ void	ft_export(t_minishell *minishell, t_command *command)
 	t_env	*line;
 
 	i = 1;
-	if (command->cmd[1][0] == 0)
+	if (command->cmd[1] == 0)
+	{
+		ft_error(minishell, "minishell: export: `': not a valid identifier\n");
+		return ;
+	}
+	if (command->cmd[1][0] == 0 || command->cmd[1][0] == '=' || (command->cmd[1][0] <= '9' && command->cmd[1][0] >= '0'))
 	{
 		ft_error(minishell, "minishell: export: `': not a valid identifier\n");
 		return ;

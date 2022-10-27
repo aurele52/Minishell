@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:07:09 by audreyer          #+#    #+#             */
-/*   Updated: 2022/10/27 01:15:47 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/10/27 15:04:11 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ int	ft_errorstr(char *str)
 	if (ft_demistrcmp("command not found", str) == 0)
 		return (127);
 	if (ft_demistrcmp("minishell: ", str) == 0)
+		return (1);
+	if (ft_demistrcmp("pwd: error retrieving current directory", str) == 0)
 		return (1);
 	if (ft_demistrcmp("syntax error", str) == 0)
 		return (2);

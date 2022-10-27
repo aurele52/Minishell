@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 19:45:28 by audreyer          #+#    #+#             */
-/*   Updated: 2022/10/26 17:43:03 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/10/27 13:18:03 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,14 @@ int	main(int argc, char **argv, char **env)
 {
 	t_minishell		*minishell;
 	char			*str;
-	t_sigaction	sa;
+//	t_sigaction	sa;
 
-	sa.sa_flags = SA_SIGINFO;
-	sa.sa_sigaction = ft_signal;
-	sigemptyset(&sa.sa_mask);
-	sigaction(SIGINT, &sa, NULL);
-	sigaction(SIGQUIT, &sa, NULL);
-	sigaction(/* to be found for ctrl-\ */, &sa, NULL);
+//	sa.sa_flags = SA_SIGINFO;
+//	sa.sa_sigaction = ft_signal;
+//	sigemptyset(&sa.sa_mask);
+//	sigaction(SIGINT, &sa, NULL);
+//	sigaction(SIGQUIT, &sa, NULL);
+//	sigaction(/* to be found for ctrl-\ */, &sa, NULL);
 	rl_outstream = stderr;
 	if (!env || !env[0])
 	{

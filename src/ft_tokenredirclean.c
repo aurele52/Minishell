@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 22:50:21 by audreyer          #+#    #+#             */
-/*   Updated: 2022/10/26 22:31:37 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/10/27 13:23:05 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,9 @@ char	*ft_expanddoublequote(t_minishell *minishell, char *str)
 				str++;
 			else
 			{
-				while (str[i] && str[i] != ' ' && str[i] != '$' && str[i] != '=' && str[i] != '/')
+				while (str[i] && str[i] != ' ' && str[i] != '$' && str[i] != '=' && str[i] != '/' && str[i] != '?')
+					i++;
+				if (i == 0 && str[i] == '?')
 					i++;
 				temp = ft_expanddollar(minishell, ft_substr(str, 0, i, minishell->garbagecmd));	
 				new = ft_strjoin(new, temp, minishell->garbagecmd);

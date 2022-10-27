@@ -6,7 +6,7 @@
 #    By: audreyer <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/21 22:50:22 by audreyer          #+#    #+#              #
-#    Updated: 2022/10/26 19:16:33 by audreyer         ###   ########.fr        #
+#    Updated: 2022/10/27 11:30:35 by audreyer         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,8 +47,6 @@ SRC=	src/minishell.c	\
 		src/ft_error.c \
 		src/ft_split.c \
 		src/ft_echo.c \
-		src/ft_cd.c \
-		src/ft_signal.c
 
 SRC_MAIN=	src/main.c
 

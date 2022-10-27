@@ -172,6 +172,7 @@ char		*ft_expanddoublequote(t_minishell *minishell, char *str);
 char		*ft_expanddollar(t_minishell *minishell, char *str);
 void		ft_printenv(t_minishell	*minishell, void *ptr, int fd);
 int			ft_errorstr(char *str);
+void		ft_signal(int sig, siginfo_t *siginfo, void *ucontext);
 
 /* builtin */
 

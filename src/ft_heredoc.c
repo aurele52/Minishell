@@ -29,9 +29,9 @@ void	ft_heredoc(t_minishell *minishell, t_token *token)
 		write(2, "fuck me\n", 8);
 	while (ft_strcmp(str, read) != 0)
 	{
-		read = ft_readline(">", minishell->garbagecmd);
-		if (read == 0)
-			ft_exit(minishell, "readline error\n");
+		read = ft_readline("> ", minishell->garbagecmd);
+		if (!read)
+			ft_exit(minishell, "exit\n");
 		if (ft_strcmp(str, read) != 0)
 		{
 			if (token->type == HEREDOC)

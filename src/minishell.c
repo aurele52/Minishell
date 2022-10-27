@@ -76,7 +76,7 @@ t_minishell	*ft_minishellinit(int argc, char **argv, char **env)
 	minishell->pipe = ft_pipeinit(minishell);
 	minishell->error = 0;
 	minishell->prompt = ft_strjoin(ft_strjoin(
-				ft_strdup("\x1b[32m", garbage), ft_strdup(argv[0], garbage),
+				ft_strdup("\x1b[32m", garbage), ft_strdup("Minishell$", garbage),
 				garbage), ft_strdup("\x1b[0m ", garbage), garbage);
 	if (minishell->prompt == 0)
 		ft_exit(minishell, "malloc error\n");

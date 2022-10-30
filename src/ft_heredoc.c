@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 15:02:33 by audreyer          #+#    #+#             */
-/*   Updated: 2022/10/28 15:23:22 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/10/30 16:43:26 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,9 @@ void	ft_heredoc(t_minishell *minishell, t_token *token)
 		write(2, "fuck me\n", 8);
 	while (ft_strcmp(str, read) != 0)
 	{
-		read = get_next_line(0, minishell->garbagecmd);
+		read = ft_readline("> ", minishell->garbagecmd);
+		if (!read)
+			ft_exit(minishell, "exit\n");
 		if (ft_strcmp(str, read) != 0)
 		{
 			if (token->type == HEREDOC)

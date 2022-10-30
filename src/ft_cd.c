@@ -26,7 +26,7 @@ t_list	*ft_envvarexist(t_pos *envact, char *str)
 	if (envact->start != 0)
 	{
 		varenv = envact->start;
-		while (i <= *envact->size/* varenv != varenv->pos->start->back */)
+		while (i <= *envact->size)
 		{
 			if (!ft_ispartenv(varenv->content, str))
 				return (varenv);
@@ -75,14 +75,13 @@ int	ft_homechdir(t_env *varenv)
 {
 	if (!varenv)
 		return (1);
-	printf("HOME = %s\n", varenv->value);//
 	if (chdir(varenv->value) == 0)
 		return (0);
 	else
 		return (1);
 }
 
-int	ft_PWDcheck(t_minishell *minishell, t_command *command)
+int	ft_PWDcheck(t_minishell *minishell)
 {
 	char	*buff;
 
@@ -95,61 +94,66 @@ int	ft_PWDcheck(t_minishell *minishell, t_command *command)
 			ft_addvarenv(minishell, "PWD", buff);
 		else
 		{
-			(write(command->ofdout, "minishell: cd: could not get current working directory\n", ft_strlen("minishell: cd: could not get current working directory\n")));
+			ft_error(minishell, "minishell: cd: could not get current working directory\n");
 			return (1);
 		}
 	}
 	return (0);
 }
 
-int	ft_cd(t_minishell *minishell, t_command *command)
+void	ft_cd(t_minishell *minishell, t_command *command)
 {
 	t_list	*list;
 	char	*buff;
+	char	*str;
 
 	buff = ft_malloc(PATH_MAX, minishell->garbage);
-	/*
-		peut etre definir PATH_MAX dans le *.h
-		*/
 	if (!buff)
 		ft_exit(minishell, "malloc error\n");
 	if (ft_doublstrlen(command->cmd) > 2)
-	{
-		write(command->ofdout, "minishell: cd: too many arguments\n", ft_strlen("minishell: cd: too many arguments\n"));
-		return (1);
-	}
+		ft_error(minishell, "minishell: cd: too many arguments\n");
 	else if (ft_doublstrlen(command->cmd) == 2)
 	{
-		if (ft_PWDcheck(minishell, command))
-			return (1);
+		if (ft_PWDcheck(minishell))
+			return ;
 		if (chdir(command->cmd[1]) == 0)
 		{
 			if (getcwd(buff, PATH_MAX))
-				ft_updateenv(minishell, buff);
+			{
+				if (!ft_strcmp(command->cmd[1], "//"))
+					ft_updateenv(minishell, "//");
+				else
+					ft_updateenv(minishell, buff);
+				minishell->laststatus = 0;
+			}
 		}
 		else
 		{
-			write (command->ofdout, "minishell: cd: ", ft_strlen("minishell: cd: "));
-			write (command->ofdout, command->cmd[1], ft_strlen(command->cmd[1]));
-			write (command->ofdout, ": No such file or directory\n", ft_strlen(": No such file or directory\n"));
-			return (1);
+			str = ft_strdup("minishell: cd: ", minishell->garbagecmd);
+			str = ft_strjoin(str, command->cmd[1], minishell->garbagecmd);
+			str = ft_strjoin(str, ft_strdup(": No such file or directory\n", minishell->garbagecmd), minishell->garbagecmd);
+			if (!str)
+				ft_exit(minishell, "malloc error\n");
+			ft_error(minishell, str);
+			return ;
 		}
 	}
 	else if (ft_doublstrlen(command->cmd) == 1)
 	{
-		if (ft_PWDcheck(minishell, command))
-			return (1);
+		if (ft_PWDcheck(minishell))
+			return ;
 		list = ft_envvarexist(minishell->actenv, "HOME");
 		if (ft_homechdir(list->content) == 0)
 		{
 			if (getcwd(buff, PATH_MAX))
 				ft_updateenv(minishell, buff);
+			minishell->laststatus = 0;
 		}
 		else
 		{
-			write(command->ofdout, "minishell: cd: no home defined\n", ft_strlen("minishell: cd: no home defined\n"));
-			return (1);
+			ft_error(minishell, "minishell: cd: no home defined\n");
+			return ;
 		}
 	}
-	return (0);
+	return ;
 }

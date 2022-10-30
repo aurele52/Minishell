@@ -1,33 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcmp.c                                        :+:      :+:    :+:   */
+/*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/01 22:29:22 by audreyer          #+#    #+#             */
-/*   Updated: 2022/10/27 18:30:50 by audreyer         ###   ########.fr       */
+/*   Created: 2021/12/13 09:52:33 by audreyer          #+#    #+#             */
+/*   Updated: 2022/10/28 15:09:09 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-
-int	ft_strcmp(const char *str1, const char *str2)
+int	ft_strlengnl(char *str)
 {
 	int	i;
 
 	i = 0;
-	if (str1 == 0 || str2 == 0)
-		return (-1);
-	if (ft_strlen(str1) < ft_strlen(str2))
-		return (-1);
-	if (ft_strlen(str1) > ft_strlen(str2))
-		return (1);
-	while (str1[i])
+	while (str[i] && str[i] != -1)
+		i++;
+	return (i);
+}
+
+int	ft_atoignl(const char *str)
+{
+	int	i;
+	int	res;
+
+	i = 0;
+	res = 0;
+	if (str[0] == '0')
+		return (0);
+	while (str[i] <= '9' && str[i] >= '0' && str[i])
 	{
-		if (str1[i] != str2[i])
-			return (str1[i] - str2[i]);
+		res = res * 10 + (str[i] - '0');
 		i++;
 	}
-	return (0);
+	return (res);
 }

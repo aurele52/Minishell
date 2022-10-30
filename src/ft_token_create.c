@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 11:53:25 by audreyer          #+#    #+#             */
-/*   Updated: 2022/10/27 13:29:18 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/10/28 18:48:51 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -412,7 +412,7 @@ int	ft_tokencreate(t_minishell *minishell, char *str)
 		ft_tokennl(minishell);	
 	}
 	else
-		ft_error(minishell, "synthax error\n");
+		ft_error(minishell, "syntax error\n");
 		// message d'erreur a paufiner pour preciser quelle erreur de synthax
 	return (0);
 }

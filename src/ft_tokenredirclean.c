@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 22:50:21 by audreyer          #+#    #+#             */
-/*   Updated: 2022/10/27 13:23:05 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/10/28 18:45:06 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,6 +212,11 @@ void	ft_tokenredirclean(t_minishell *minishell)
 				ft_lstdelone(tokenlist->next, 0);
 			if (ft_type(tokenlist->next) <= 4)
 				ft_expandforfd(minishell, tokenlist);
+			else
+			{
+				ft_error(minishell, "minishell: syntax error near unexpected token\n");
+				return ;
+			}
 		}
 		tokenlist = tokenlist->next;
 	}

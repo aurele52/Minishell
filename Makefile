@@ -6,7 +6,7 @@
 #    By: audreyer <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/21 22:50:22 by audreyer          #+#    #+#              #
-#    Updated: 2022/10/27 11:30:35 by audreyer         ###   ########.fr        #
+#    Updated: 2022/10/28 15:12:10 by audreyer         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,8 @@ CC = gcc
 FLAG = -g -Wall -Werror -Wextra 
 
 SRC=	src/minishell.c	\
+		src/get_next_line.c	\
+		src/get_next_line_utils.c	\
 		src/ft_builtin.c	\
 		src/ft_commandexec.c	\
 		src/ft_commandcreate.c	\

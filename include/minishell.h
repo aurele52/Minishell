@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 16:37:40 by audreyer          #+#    #+#             */
-/*   Updated: 2022/10/27 11:30:48 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/10/30 16:23:54 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # define CYAN   "\x1B[36m"
 # define WHITE   "\x1B[37m"
 # define RESET "\x1B[0m"
+# define BUFFER_SIZE	2000
 
 # include <stdarg.h>
 # include <fcntl.h>
@@ -121,28 +122,29 @@ typedef struct s_command
 
 /* liste */
 
-t_pos		*ft_setpos(t_pos *free);
-void		ft_lstdelone(t_list *lst, int freee);
-t_list		*ft_lstnew(void *content, t_pos *pos, t_pos *free);
-void		ft_posclear(t_pos *pos, int freee);
+t_pos		*ft_setpos(t_pos *garbage);
+void		ft_lstdelone(t_list *lst, int garbage);
+t_list		*ft_lstnew(void *content, t_pos *pos, t_pos *garbage);
+void		ft_posclear(t_pos *pos, int garbage);
 
 /* libft */
 
 int			ft_closevaria(int i, ...);
 char		*ft_strjoin(char *s1, char *s2, t_pos *garbage);
 void		ft_putnbrfd(int n, int fd);
-void		ft_printtoken(t_minishell *minishell, void *ptr);
+void		ft_printtoken(t_minishell *minishell, void *ptr, int fd);
 void		ft_posprint(t_minishell *minishell, t_pos *pos, void (*fct)(t_minishell *, void *, int), int fd);
 char		*ft_strdup(const char *s, t_pos *garbage);
 char		*ft_substr(char const *s, int start, int len, t_pos *garb);
 int			ft_strcmp(const char *str1, const char *str2);
-void		*ft_malloc(int size, t_pos *free);
+void		*ft_malloc(int size, t_pos *garbage);
 int			ft_exit(t_minishell *minishell, char *str);
 int			ft_strlen(const char *s);
 int			ft_isalpha(int c);
+char		*get_next_line(int fd, t_pos *garbage);
 int			ft_isalnum(int c);
 char		*ft_unsplit(char **tab, char *charset, t_pos *garbage);
-char		**ft_split(char const *s, char c, t_pos *free);
+char		**ft_split(char const *s, char c, t_pos *garbage);
 char		*ft_itoa(int n, t_pos *garbage);
 int			ft_doublstrlen(char **s);
 int			ft_atoi(char *str);
@@ -175,6 +177,8 @@ int			ft_errorstr(char *str);
 
 /* builtin */
 
+void		ft_underscore(t_minishell *minishell, t_command *command);
+void		ft_export(t_minishell *minishell, t_command *command);
 void		ft_builtin(t_minishell *minishell, t_command *command);
 void		ft_echo(t_command *command);
 void		ft_fillofdout(t_command *command, unsigned int i);

@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 13:35:21 by audreyer          #+#    #+#             */
-/*   Updated: 2022/10/27 01:10:55 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/10/30 16:23:28 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,9 +165,11 @@ void	ft_executecmd(t_minishell *minishell, t_command *command)
 	if (command->error == 0)
 	{
 //		dprintf(2,"1 = %s\n", command->file);
-		execve(command->file, command->cmd, ft_reenv(minishell)); //env a changer en act env
+		execve(command->file, command->cmd, ft_reenv(minishell));
 //		printf("%s \n", strerror(errno));
 	}
+	if (command->error == 0)
+		command->error = ft_strjoin(strerror(errno), "\n", minishell->garbagecmd);
 	ft_exit(minishell, command->error);
 }
 
@@ -195,6 +197,7 @@ void	ft_child(t_minishell *minishell, t_list *tokenlist)
 
 	if (ft_type(tokenlist) == NL)
 		return ;
+	ft_posprint(minishell, minishell->tokenlist, &ft_printtoken, 2);
 	command = ft_commandget(tokenlist);
 	if (ft_type(tokenlist->next) == NL && ft_isbuiltin(command) == 1)
 	{

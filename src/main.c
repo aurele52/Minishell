@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 19:45:28 by audreyer          #+#    #+#             */
-/*   Updated: 2022/10/27 13:18:03 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/10/28 18:43:53 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,20 +44,14 @@ int	main(int argc, char **argv, char **env)
 			{
 				if (*minishell->tokenlist->size != 0)
 				{
-//					printf("debut first-------------------\n");
 //					ft_posprint(minishell, minishell->tokenlist, &ft_printtoken);
-//					printf("fin first---------------------\n\n");
 					ft_tokenredirclean(minishell);
-//					printf("debut second------------------\n");
-//					ft_posprint(minishell, minishell->tokenlist, &ft_printtoken);
-//					printf("fin second--------------------\n\n");
-					ft_heredocclean(minishell);
-					ft_tokencmdclean(minishell);
-//					printf("debut third-------------------\n");
-//					ft_posprint(minishell, minishell->tokenlist, &ft_printtoken);
-//					printf("fin third---------------------\n\n");
-//						ft_posprint(minishell, minishell->actenv, &ft_printenv);
-					ft_child(minishell, minishell->tokenlist->start);
+					if (*minishell->tokenlist->size != 0)
+					{
+						ft_heredocclean(minishell);
+						ft_tokencmdclean(minishell);
+						ft_child(minishell, minishell->tokenlist->start);
+					}
 				}
 			}
 			ft_posclear(minishell->garbagecmd, 1);

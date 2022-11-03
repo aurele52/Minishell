@@ -1,19 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isalpha.c                                       :+:      :+:    :+:   */
+/*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgirardo <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aurele <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/23 12:08:13 by mgirardo          #+#    #+#             */
-/*   Updated: 2022/10/14 14:09:01 by mgirardo         ###   ########.fr       */
+/*   Created: 2021/10/15 18:03:37 by aurele            #+#    #+#             */
+/*   Updated: 2022/11/02 12:47:10 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_isalpha(int c)
+#include "minishell.h"
+
+int	ft_strlen(const char *s)
 {
-	if (c < 'A' || (c > 'Z' && c < 'a') || c > 'z')
-		return (0);
-	else
-		return (1024);
+	int	i;
+
+	i = 0;
+	if (s == 0)
+		return (-1);
+	while (s[i])
+		i++;
+	return (i);
 }

@@ -1,31 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main_test.c                                        :+:      :+:    :+:   */
+/*   castenv.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/13 19:45:28 by audreyer          #+#    #+#             */
-/*   Updated: 2022/10/13 19:54:54 by audreyer         ###   ########.fr       */
+/*   Created: 2022/11/02 12:43:42 by audreyer          #+#    #+#             */
+/*   Updated: 2022/11/02 12:43:46 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_echo(t_command *command);
-
-int	main(int argc, char **argv, char **env)
+char	*ft_name(t_env *env)
 {
-	// t_minishell	*minishell;
-	t_command	*command;
+	char	*str;
 
-	// minishell = ft_minishellinit(argc, argv, env);
-	// (void)minishell;
-	(void)argc;
-	(void)env;
-	command = malloc(sizeof(*command) * 1);
-	command->cmd = argv;
-	command->fdout = 1;
-	ft_echo(command);
-	return (0);
+	str = (char *)env->name;
+	return (str);
+}
+
+char	*ft_value(t_env *env)
+{
+	char	*str;
+
+	str = (char *)env->value;
+	return (str);
 }

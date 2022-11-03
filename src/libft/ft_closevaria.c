@@ -1,37 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_closevaria.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aurele <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/15 18:03:37 by aurele            #+#    #+#             */
-/*   Updated: 2022/10/18 22:14:10 by audreyer         ###   ########.fr       */
+/*   Created: 2022/10/17 23:52:12 by audreyer          #+#    #+#             */
+/*   Updated: 2022/11/02 12:45:35 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_strlen(const char *s)
+int	ft_closevaria(int i, ...)
 {
-	int	i;
+	va_list	param;
+	int		fd;
 
-	i = 0;
-	if (s == 0)
-		return (-1);
-	while (s[i])
-		i++;
-	return (i);
-}
-
-int	ft_doublstrlen(char **s)
-{
-	int i;
-
-	i = 0;
-	if (!s)
-		return (-1);
-	while (s[i])
-		i++;
-	return (i);
+	va_start(param, i);
+	while (i > 0)
+	{
+		fd = va_arg(param, int);
+		if (fd != 0 && fd != 2 && fd != 1)
+		{
+			fd = close(fd);
+			if (fd == -1)
+				write(2, "n2p", 3);
+		}
+		i--;
+	}
+	return (0);
 }

@@ -12,49 +12,6 @@
 
 #include "minishell.h"
 
-int	ft_ispartenv(t_env	*varenv, char *str)
-{
-	return (ft_strcmp(varenv->name, str));
-}
-
-t_list	*ft_envvarexist(t_pos *envact, char *str)
-{
-	t_list	*varenv;
-	int		i;
-
-	i = 0;
-	if (envact->start != 0)
-	{
-		varenv = envact->start;
-		while (i <= *envact->size)
-		{
-			if (!ft_ispartenv(varenv->content, str))
-				return (varenv);
-			varenv = varenv->next;
-			i++;
-		}
-	}
-	return (NULL);
-}
-
-void	ft_preaddvarenv(t_minishell *minishell, char *name, t_env *varenv)
-{
-	ft_addvarenv(minishell, name, varenv->value);
-}
-
-void	ft_updateenv(t_minishell *minishell, char *buff)
-{
-	t_list	*list;
-
-	list = ft_envvarexist(minishell->actenv, "PWD");
-	if (ft_envvarexist(minishell->actenv, "OLDPWD"))
-		ft_lstdelone(ft_envvarexist(minishell->actenv, "OLDPWD"), 0);
-	ft_preaddvarenv(minishell, "OLDPWD", list->content);
-	if (ft_envvarexist(minishell->actenv, "PWD"))
-		ft_lstdelone(ft_envvarexist(minishell->actenv, "PWD"), 0);
-	ft_addvarenv(minishell, "PWD", buff);
-}
-
 void	ft_addvarenv(t_minishell *minishell, char *name, char *value)
 {
 	t_env	*line;
@@ -69,6 +26,29 @@ void	ft_addvarenv(t_minishell *minishell, char *name, char *value)
 	line->lname = ft_strlen(line->name);
 	line->value = value;
 	line->lvalue = ft_strlen(line->value);
+}
+
+int	ft_ispartenv(t_env	*varenv, char *str)
+{
+	return (ft_strcmp(varenv->name, str));
+}
+
+void	ft_preaddvarenv(t_minishell *minishell, char *name, t_env *varenv)
+{
+	ft_addvarenv(minishell, name, varenv->value);
+}
+
+void	ft_updateenv(t_minishell *minishell, char *buff)
+{
+	t_list	*list;
+
+	list = ft_envlist(minishell, "PWD");
+	if (ft_envlist(minishell, "OLDPWD"))
+		ft_lstdelone(ft_envlist(minishell, "OLDPWD"), 0);
+	ft_preaddvarenv(minishell, "OLDPWD", list->content);
+	if (ft_envlist(minishell, "PWD"))
+		ft_lstdelone(ft_envlist(minishell, "PWD"), 0);
+	ft_addvarenv(minishell, "PWD", buff);
 }
 
 int	ft_homechdir(t_env *varenv)
@@ -88,7 +68,7 @@ int	ft_PWDcheck(t_minishell *minishell)
 	buff = ft_malloc(PATH_MAX, minishell->garbage);
 	if (!buff)
 		ft_exit(minishell, "malloc error\n");
-	if (!ft_envvarexist(minishell->actenv, "PWD"))
+	if (!ft_envlist(minishell, "PWD"))
 	{
 		if (getcwd(buff, PATH_MAX))
 			ft_addvarenv(minishell, "PWD", buff);
@@ -110,9 +90,9 @@ void	ft_cd(t_minishell *minishell, t_command *command)
 	buff = ft_malloc(PATH_MAX, minishell->garbage);
 	if (!buff)
 		ft_exit(minishell, "malloc error\n");
-	if (ft_doublstrlen(command->cmd) > 2)
+	if (ft_strlen(command->cmd[0]) > 2)
 		ft_error(minishell, "minishell: cd: too many arguments\n");
-	else if (ft_doublstrlen(command->cmd) == 2)
+	else if (ft_strlen(command->cmd[0]) == 2)
 	{
 		if (ft_PWDcheck(minishell))
 			return ;
@@ -138,11 +118,11 @@ void	ft_cd(t_minishell *minishell, t_command *command)
 			return ;
 		}
 	}
-	else if (ft_doublstrlen(command->cmd) == 1)
+	else if (ft_strlen(command->cmd[0]) == 1)
 	{
 		if (ft_PWDcheck(minishell))
 			return ;
-		list = ft_envvarexist(minishell->actenv, "HOME");
+		list = ft_envlist(minishell, "HOME");
 		if (ft_homechdir(list->content) == 0)
 		{
 			if (getcwd(buff, PATH_MAX))

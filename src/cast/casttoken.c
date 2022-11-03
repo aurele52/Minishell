@@ -1,38 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   casttoken.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/13 09:52:33 by audreyer          #+#    #+#             */
-/*   Updated: 2022/10/28 15:09:09 by audreyer         ###   ########.fr       */
+/*   Created: 2022/11/02 12:44:06 by audreyer          #+#    #+#             */
+/*   Updated: 2022/11/02 12:44:43 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_strlengnl(char *str)
-{
-	int	i;
+#include "minishell.h"
 
-	i = 0;
-	while (str[i] && str[i] != -1)
-		i++;
-	return (i);
+int	ft_type(t_list *list)
+{
+	t_token	*token;
+
+	token = (t_token *)list->content;
+	return (token->type);
 }
 
-int	ft_atoignl(const char *str)
+char	*ft_str(t_list *list)
 {
-	int	i;
-	int	res;
+	t_token	*token;
 
-	i = 0;
-	res = 0;
-	if (str[0] == '0')
-		return (0);
-	while (str[i] <= '9' && str[i] >= '0' && str[i])
-	{
-		res = res * 10 + (str[i] - '0');
-		i++;
-	}
-	return (res);
+	token = (t_token *)list->content;
+	return (token->str);
 }

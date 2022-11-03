@@ -1,34 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_closevaria.c                                    :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/17 23:52:12 by audreyer          #+#    #+#             */
-/*   Updated: 2022/10/25 14:33:03 by audreyer         ###   ########.fr       */
+/*   Created: 2022/11/02 12:47:48 by audreyer          #+#    #+#             */
+/*   Updated: 2022/11/02 12:48:04 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_closevaria(int i, ...)
+t_list	*ft_envlist(t_minishell *minishell, char *str)
 {
-	va_list	param;
-	int		fd;
+	int		lol;
+	t_list	*line;
 
-	va_start(param, i);
-	while (i > 0)
+	lol = 0;
+	line = minishell->actenv->start;
+	while (line != minishell->actenv->start || lol++ == 0)
 	{
-		fd = va_arg(param, int);
-//			printf("%i\n", fd);
-		if (fd != 0 && fd != 2 && fd != 1)
-		{
-			fd = close(fd);
-			if (fd == -1)
-				write(2, "n2p", 3);
-		}
-		i--;
+		if (ft_strcmp(ft_name(line->content), str) == 0)
+			return (line);
+		line = line->next;
 	}
 	return (0);
 }

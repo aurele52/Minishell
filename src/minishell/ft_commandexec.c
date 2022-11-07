@@ -12,8 +12,6 @@
 
 #include "minishell.h"
 
-
-
 void	ft_changefdin(t_list *tokenlist, int fd)
 {
 	t_token		*token;

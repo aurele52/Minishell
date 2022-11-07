@@ -57,3 +57,9 @@ void	ft_heredocclean(t_minishell *minishell)
 		tokenlist = tokenlist->next;
 	}
 }
+
+/*
+	when ctrl + d, EOF
+	minishell: warning: here-document at line <where we are at> delimited by end-of-file
+	(wanted `<heredoc delimiter>')
+*/

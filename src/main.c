@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 19:45:28 by audreyer          #+#    #+#             */
-/*   Updated: 2022/11/02 12:42:02 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/11/03 15:45:16 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,13 @@ void	ft_minishell(t_minishell *minishell)
 int	main(int argc, char **argv, char **env)
 {
 	t_minishell		*minishell;
-	t_sigaction		sa;
+//	t_sigaction		sa;
 
-	sa.sa_flags = SA_SIGINFO;
-	sa.sa_sigaction = ft_signal;
-	sigemptyset(&sa.sa_mask);
-	sigaction(SIGINT, &sa, NULL);
-	sigaction(SIGQUIT, &sa, NULL);
+//	sa.sa_flags = SA_SIGINFO;
+//	sa.sa_sigaction = ft_signal;
+//	sigemptyset(&sa.sa_mask);
+//	sigaction(SIGINT, &sa, NULL);
+//	sigaction(SIGQUIT, &sa, NULL);
 	rl_outstream = stderr;
 	if (!env || !env[0])
 	{

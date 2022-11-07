@@ -7,5 +7,4 @@ a.out
 *.swp
 *.vscode
 *.d
-minishell
 tester/tester

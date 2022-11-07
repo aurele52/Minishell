@@ -15,6 +15,7 @@
 void	ft_error(t_minishell *minishell, char *str)
 {
 	minishell->laststatus = ft_errorstr(str);
+	printf("in ft_error\n");//
 	if (str)
 		write(2, str, ft_strlen(str));
 	if (minishell->garbagecmd != NULL)

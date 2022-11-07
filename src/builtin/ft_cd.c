@@ -12,6 +12,26 @@
 
 #include "minishell.h"
 
+t_list	*ft_envvarexist(t_pos *envact, char *str)
+{
+	t_list	*varenv;
+	int		i;
+
+	i = 0;
+	if (envact->start)
+	{
+		varenv = envact->start;
+		while (i <= *envact->size)
+		{
+			if (!ft_ispartenv(varenv->content, str))
+				return (varenv);
+			varenv = varenv->next;
+			i++;
+		}
+	}
+	return (NULL);
+}
+
 void	ft_addvarenv(t_minishell *minishell, char *name, char *value)
 {
 	t_env	*line;
@@ -42,12 +62,12 @@ void	ft_updateenv(t_minishell *minishell, char *buff)
 {
 	t_list	*list;
 
-	list = ft_envlist(minishell, "PWD");
-	if (ft_envlist(minishell, "OLDPWD"))
-		ft_lstdelone(ft_envlist(minishell, "OLDPWD"), 0);
+	list = ft_envvarexist(minishell->actenv, "PWD");
+	if (ft_envvarexist(minishell->actenv, "OLDPWD"))
+		ft_lstdelone(ft_envvarexist(minishell->actenv, "OLDPWD"), 0);
 	ft_preaddvarenv(minishell, "OLDPWD", list->content);
-	if (ft_envlist(minishell, "PWD"))
-		ft_lstdelone(ft_envlist(minishell, "PWD"), 0);
+	if (ft_envvarexist(minishell->actenv, "PWD"))
+		ft_lstdelone(ft_envvarexist(minishell->actenv, "PWD"), 0);
 	ft_addvarenv(minishell, "PWD", buff);
 }
 
@@ -68,7 +88,7 @@ int	ft_PWDcheck(t_minishell *minishell)
 	buff = ft_malloc(PATH_MAX, minishell->garbage);
 	if (!buff)
 		ft_exit(minishell, "malloc error\n");
-	if (!ft_envlist(minishell, "PWD"))
+	if (!ft_envvarexist(minishell->actenv, "PWD"))
 	{
 		if (getcwd(buff, PATH_MAX))
 			ft_addvarenv(minishell, "PWD", buff);
@@ -90,9 +110,9 @@ void	ft_cd(t_minishell *minishell, t_command *command)
 	buff = ft_malloc(PATH_MAX, minishell->garbage);
 	if (!buff)
 		ft_exit(minishell, "malloc error\n");
-	if (ft_strlen(command->cmd[0]) > 2)
+	if (ft_doublstrlen(command->cmd) > 2)
 		ft_error(minishell, "minishell: cd: too many arguments\n");
-	else if (ft_strlen(command->cmd[0]) == 2)
+	else if (ft_doublstrlen(command->cmd) == 2)
 	{
 		if (ft_PWDcheck(minishell))
 			return ;
@@ -118,13 +138,19 @@ void	ft_cd(t_minishell *minishell, t_command *command)
 			return ;
 		}
 	}
-	else if (ft_strlen(command->cmd[0]) == 1)
+	else if (ft_doublstrlen(command->cmd) == 1)
 	{
 		if (ft_PWDcheck(minishell))
 			return ;
-		list = ft_envlist(minishell, "HOME");
-		if (ft_homechdir(list->content) == 0)
+		list = ft_envvarexist(minishell->actenv, "HOME");
+		if (!list)
 		{
+			ft_error(minishell, "minishell: cd: no home defined\n");
+			return ;
+		}
+		else if (ft_homechdir(list->content) == 0)
+		{
+			printf("je suis avec un seul argument et un home qui existe\n");//
 			if (getcwd(buff, PATH_MAX))
 				ft_updateenv(minishell, buff);
 			minishell->laststatus = 0;

@@ -78,6 +78,12 @@ typedef struct s_env
 	size_t	lvalue;
 }	t_env;
 
+// typedef struct s_export
+// {
+// 	int		i;
+// 	t_env	envline;
+// }
+
 typedef struct s_list
 {
 	struct s_list	*next;

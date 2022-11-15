@@ -148,6 +148,8 @@ char		**ft_split(char const *s, char c, t_pos *garbage);
 char		*ft_itoa(int n, t_pos *garbage);
 int			ft_atoi(char *str);
 int			ft_doublstrlen(char **str);
+int			ft_isalpha(int c);
+int			ft_strlenchar(char *str, char c);
 
 /* minishell */
 

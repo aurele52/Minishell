@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 14:11:29 by audreyer          #+#    #+#             */
-/*   Updated: 2022/10/31 13:33:28 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/11/15 17:49:26 by mgirardo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,33 +185,57 @@ void	ft_expandsimplequote(t_token *token)
 
 void	ft_multipletoken(t_minishell *minishell, t_list *tokenlist)
 {
-	char	**str;
-	int		i;
+	char	*str;
 	t_list	*memstart;
 	t_token	*token;
 
 	memstart = tokenlist->pos->start;
 	tokenlist->pos->start = tokenlist->next;
-	i = 0;
-	str = ft_split(ft_str(tokenlist), ' ', minishell->garbagecmd);
-	if (!str)
+	str = ft_str(tokenlist);
+	token = ft_malloc(sizeof(*token), minishell->garbagecmd);
+	if (!token)
 		ft_exit(minishell, "malloc error\n");
-	while (str[i])
-	{
-		token = ft_malloc(sizeof(*token), minishell->garbagecmd);
-		if (!token)
-			ft_exit(minishell, "malloc error\n");
-		ft_lstnew(token, minishell->tokenlist, minishell->garbagecmd);
-		if (minishell->tokenlist->start->back == 0)
-			ft_exit(minishell, "malloc error\n");
-		token->str = str[i];
-		token->type = WORD;
-		i++;
-	}
+	ft_lstnew(token, minishell->tokenlist, minishell->garbagecmd);
+	if (minishell->tokenlist->start->back == 0)
+		ft_exit(minishell, "malloc error\n");
+	token->str = str;
+	token->type = WORD;
 	tokenlist->pos->start = memstart;
 	tokenlist = tokenlist->next;
 	ft_lstdelone(tokenlist->back, 0);
 }
+
+
+
+// void	ft_multipletoken(t_minishell *minishell, t_list *tokenlist)
+// {
+// 	char	**str;
+// 	int		i;
+// 	t_list	*memstart;
+// 	t_token	*token;
+
+// 	memstart = tokenlist->pos->start;
+// 	tokenlist->pos->start = tokenlist->next;
+// 	i = 0;
+// 	str = ft_split(ft_str(tokenlist), ' ', minishell->garbagecmd);
+// 	if (!str)
+// 		ft_exit(minishell, "malloc error\n");
+// 	while (str[i])
+// 	{
+// 		token = ft_malloc(sizeof(*token), minishell->garbagecmd);
+// 		if (!token)
+// 			ft_exit(minishell, "malloc error\n");
+// 		ft_lstnew(token, minishell->tokenlist, minishell->garbagecmd);
+// 		if (minishell->tokenlist->start->back == 0)
+// 			ft_exit(minishell, "malloc error\n");
+// 		token->str = str[i];
+// 		token->type = WORD;
+// 		i++;
+// 	}
+// 	tokenlist->pos->start = memstart;
+// 	tokenlist = tokenlist->next;
+// 	ft_lstdelone(tokenlist->back, 0);
+// }
 
 void	ft_tokencmdclean(t_minishell *minishell)
 {

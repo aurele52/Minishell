@@ -229,46 +229,44 @@ int	ft_cmdexportvalid(char *cmd)
 char	**ft_cmdexport(t_minishell *minishell, char *cmd)
 {
 	char	**var;
+	int		lname;
+	int		lvalue;
 
-	var = ft_malloc(sizeof(var) * 3, minishell->garbagecmd);
+	var = ft_malloc(sizeof(*var) * 3, minishell->garbage);
 	if (!var)
 		ft_exit(minishell, "malloc error\n");
-	printf("this is after the end of envname : %c\nthis its place : %i\n", cmd[ft_strlenchar(cmd, '=')], ft_strlenchar(cmd, '='));//
+	lname = ft_strlenchar(cmd, '=');
+	lvalue = ft_strlen(cmd) - ft_strlenchar(cmd, '=') - 1;
+	var[0] = ft_substr(cmd, 0, lname, minishell->garbage);
+	var[1] = ft_substr(cmd, lname + 1, lvalue, minishell->garbage);
 	return (var);
 }
 
 void	ft_export(t_minishell *minishell, t_command *command)
 {
-	int v = -1;//
-	while (command->cmd[++v])//
-	{//
-		printf("cmd = %s\n", command->cmd[v]);//
-	}//
+	int		i;
+	char	**cmdexport;
 
 	if (ft_doublstrlen(command->cmd) == 1)
 	{
 		ft_soloexport(command);
 		return ;
 	}
-
-	int		i = 1;
-	char	**cmdexport;
-	while (command->cmd[i])
+	i = 0;
+	while (command->cmd[++i])
 	{
 		if (ft_cmdexportvalid(command->cmd[i]))
 		{
-			printf("cmd is valid\n");//
 			cmdexport = ft_cmdexport(minishell, command->cmd[i]);
-			(void)cmdexport;//
-			// ft_updateenv(cmdexport);/*	remasteriser celle de cd pour que ca soit
-										// adapter a export */
+			if (ft_envvarexist(minishell->actenv, cmdexport[0]))
+				ft_lstdelone(ft_envvarexist(minishell->actenv, cmdexport[0]), 0);
+			ft_addvarenv(minishell, cmdexport[0], cmdexport[1]);
 		}
 		else
 		{
 			ft_error(minishell, /* recup message d'erreur sur bash */"error in export");
 			return ;
 		}
-		++i;
 	}
 	minishell->laststatus = 0;
 	return ;

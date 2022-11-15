@@ -196,6 +196,7 @@ void		ft_echo(t_command *command);
 void		ft_cd(t_minishell *minishell, t_command *command);
 t_list		*ft_envvarexist(t_pos *envact, char *str);
 int			ft_ispartenv(t_env	*varenv, char *str);
+void		ft_addvarenv(t_minishell *minishell, char *name, char *value);
 
 /*cast*/
 

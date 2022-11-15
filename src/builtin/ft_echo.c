@@ -52,11 +52,11 @@ void	ft_echo(t_command *command)
 {
 	unsigned int	i;
 
-	int v = -1;//
-	while (command->cmd[++v])//
-	{//
-		printf("cmd = %s\n", command->cmd[v]);//
-	}//
+	// int v = -1;//
+	// while (command->cmd[++v])//
+	// {//
+	// 	printf("cmd = %s\n", command->cmd[v]);//
+	// }//
 
 	i = 0;
 	if (command->cmd[i + 1])

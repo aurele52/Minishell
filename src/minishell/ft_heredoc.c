@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 15:02:33 by audreyer          #+#    #+#             */
-/*   Updated: 2022/10/30 16:43:26 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/11/07 17:57:50 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ void	ft_heredoc(t_minishell *minishell, t_token *token)
 	char	*read;
 
 	str = token->str;
-	str = ft_strjoin(str, "\n", minishell->garbagecmd);
 	read = 0;
 	token->str = ft_strdup("./tmp/heredoc", minishell->garbagecmd);
+	str = ft_strjoin(str, "\n", minishell->garbagecmd);
 	heredocnbr = ft_itoa(minishell->heredoc, minishell->garbagecmd);
 	token->str = ft_strjoin(token->str, heredocnbr, minishell->garbagecmd);
 	fd = open(token->str, O_CREAT | O_TRUNC | O_RDWR, 0777);
@@ -33,6 +33,7 @@ void	ft_heredoc(t_minishell *minishell, t_token *token)
 		read = ft_readline("> ", minishell->garbagecmd);
 		if (!read)
 			ft_exit(minishell, "exit\n");
+		read = ft_strjoin(read, "\n", minishell->garbagecmd);
 		if (ft_strcmp(str, read) != 0)
 		{
 			if (token->type == HEREDOC)

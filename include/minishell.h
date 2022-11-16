@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 16:37:40 by audreyer          #+#    #+#             */
-/*   Updated: 2022/11/01 12:58:44 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/11/16 12:48:13 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,25 @@ int			ft_doublstrlen(char **str);
 int			ft_isalpha(int c);
 int			ft_strlenchar(char *str, char c);
 
+/*token*/
+
+int			ft_checkuptwo(char *str, char c);
+int			ft_checktwo(char *str, char c);
+int			ft_parenthesischeck(char *str);
+int			ft_numbercheck(char *str);
+int			ft_isendword(char c);
+int			ft_tokenoutbraket(t_minishell *minishell, char *str);
+int			ft_tokenpipe(t_minishell *minishell, char *str);
+int			ft_tokenand(t_minishell *minishell, char *str);
+int			ft_tokendollar(t_minishell *minishell, char *str);
+int			ft_tokeninbraket(t_minishell *minishell, char *str);
+int			ft_tokencreate(t_minishell *minishell, char *str);
+int			ft_tokenword(t_minishell *minishell, char *str);
+int			ft_tokendoublecote(t_minishell *minishell, char *str);
+int			ft_tokensinglecote(t_minishell *minishell, char *str);
+int			ft_tokenparenthesis(t_minishell *minishell, char *str);
+int			ft_tokenspace(t_minishell *minishell, char *str);
+
 /* minishell */
 
 void		ft_heredocclean(t_minishell *minishell);
@@ -158,7 +177,6 @@ void		ft_child(t_minishell *minishell, t_list *tokenlist);
 void		ft_tokenredirclean(t_minishell *minishell);
 void		ft_tokencmdclean(t_minishell *minishell);
 void		ft_parsetoken(t_minishell *minishell);
-int			ft_tokencreate(t_minishell *minishell, char *str);
 void		ft_leaf(t_minishell *minishell);
 void		ft_createleaf(t_minishell *minishell);
 void		ft_parseleaf(t_minishell *minishell);

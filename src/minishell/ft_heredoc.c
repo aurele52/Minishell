@@ -6,11 +6,33 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 15:02:33 by audreyer          #+#    #+#             */
-/*   Updated: 2022/11/07 17:57:50 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/11/16 16:42:51 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+//	when ctrl + d, EOF
+//	minishell: warning: here-document at line <where we ar
+//e at> delimited by end-of-file
+//	(wanted `<heredoc delimiter>')
+
+char	*ft_whileheredoc(t_minishell *minishell, char *str, t_token *t, int fd)
+{
+	char	*read;
+
+	read = ft_readline("> ", minishell->garbagecmd);
+	if (!read)
+		ft_exit(minishell, "exit\n");
+	read = ft_strjoin(read, "\n", minishell->garbagecmd);
+	if (ft_strcmp(str, read) != 0)
+	{
+		if (t->type == HEREDOC)
+			read = ft_expanddoublequote(minishell, read);
+		write(fd, read, ft_strlen(read));
+	}
+	return (read);
+}
 
 void	ft_heredoc(t_minishell *minishell, t_token *token)
 {
@@ -29,18 +51,7 @@ void	ft_heredoc(t_minishell *minishell, t_token *token)
 	if (fd == -1)
 		write(2, "fuck me\n", 8);
 	while (ft_strcmp(str, read) != 0)
-	{
-		read = ft_readline("> ", minishell->garbagecmd);
-		if (!read)
-			ft_exit(minishell, "exit\n");
-		read = ft_strjoin(read, "\n", minishell->garbagecmd);
-		if (ft_strcmp(str, read) != 0)
-		{
-			if (token->type == HEREDOC)
-				read = ft_expanddoublequote(minishell, read);
-			write(fd, read, ft_strlen(read));
-		}
-	}
+		read = ft_whileheredoc(minishell, str, token, fd);
 	minishell->heredoc++;
 	token->type = IN;
 	ft_closevaria(1, fd);
@@ -48,19 +59,13 @@ void	ft_heredoc(t_minishell *minishell, t_token *token)
 
 void	ft_heredocclean(t_minishell *minishell)
 {
-	t_list *tokenlist;
+	t_list	*tokenlist;
 
 	tokenlist = minishell->tokenlist->start;
 	while (ft_type(tokenlist) != NL)
 	{
 		if (ft_type(tokenlist) == HEREDOC || ft_type(tokenlist) == HEREDOCEXT)
-				ft_heredoc(minishell, tokenlist->content);
+			ft_heredoc(minishell, tokenlist->content);
 		tokenlist = tokenlist->next;
 	}
 }
-
-/*
-	when ctrl + d, EOF
-	minishell: warning: here-document at line <where we are at> delimited by end-of-file
-	(wanted `<heredoc delimiter>')
-*/

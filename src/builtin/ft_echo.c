@@ -6,7 +6,7 @@
 /*   By: mgirardo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 15:20:58 by mgirardo          #+#    #+#             */
-/*   Updated: 2022/10/26 15:21:00 by mgirardo         ###   ########.fr       */
+/*   Updated: 2022/11/16 14:12:59 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,6 @@ void	ft_echo(t_command *command)
 {
 	unsigned int	i;
 
-	// int v = -1;//
-	// while (command->cmd[++v])//
-	// {//
-	// 	printf("cmd = %s\n", command->cmd[v]);//
-	// }//
-
 	i = 0;
 	if (command->cmd[i + 1])
 	{
@@ -77,4 +71,3 @@ void	ft_echo(t_command *command)
 	else
 		write(command->ofdout, "\n", 1);
 }
-

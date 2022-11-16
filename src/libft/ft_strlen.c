@@ -6,7 +6,7 @@
 /*   By: aurele <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/15 18:03:37 by aurele            #+#    #+#             */
-/*   Updated: 2022/11/02 12:47:10 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/11/16 16:09:16 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ int	ft_doublstrlen(char **str)
 
 int	ft_strlenchar(char *str, char c)
 {
-	int i;
-	
+	int	i;
+
 	i = 0;
 	if (!str)
 		return (-1);

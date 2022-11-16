@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 19:45:28 by audreyer          #+#    #+#             */
-/*   Updated: 2022/11/03 15:45:16 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/11/16 12:51:19 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,10 @@ void	ft_minishell(t_minishell *minishell)
 	{
 		str = ft_readline(minishell->prompt, minishell->garbagecmd);
 		if (!str)
-		{//
-			printf("EOF, main\n");//
+		{
+			printf("EOF, main\n");
 			ft_exit(minishell, "exit\n");
-		}//
+		}
 		add_history(str);
 		if (ft_tokencreate(minishell, str) == 0
 			|| *minishell->tokenlist->size != 0)

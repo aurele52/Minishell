@@ -1,2 +1,1 @@
-Hello_Word
-2
+./tester: /lib/x86_64-linux-gnu/libc.so.6: version `GLIBC_2.34' not found (required by ./tester)

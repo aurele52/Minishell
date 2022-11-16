@@ -53,6 +53,7 @@ SRC=	src/minishell/minishellinit.c	\
 		src/libft/ft_split.c \
 		src/libft/ft_itoa.c	\
 		src/libft/ft_atoi.c	\
+		src/libft/ft_isalpha.c \
 		src/cast/castenv.c	\
 		src/cast/castcommand.c	\
 		src/cast/casttoken.c

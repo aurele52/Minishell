@@ -1,24 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_error.c                                         :+:      :+:    :+:   */
+/*   ft_isalpha.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mgirardo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/14 14:08:01 by mgirardo          #+#    #+#             */
-/*   Updated: 2022/10/27 01:13:43 by audreyer         ###   ########.fr       */
+/*   Created: 2021/11/23 12:08:13 by mgirardo          #+#    #+#             */
+/*   Updated: 2021/11/23 13:02:52 by mgirardo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-
-void	ft_error(t_minishell *minishell, char *str)
+int	ft_isalpha(int c)
 {
-	minishell->laststatus = ft_errorstr(str);
-	if (str)
-		write(2, str, ft_strlen(str));
-	if (minishell->garbagecmd != NULL)
-		ft_posclear(minishell->garbagecmd, 1);
-	minishell->tokenlist->start = 0;
-	*minishell->tokenlist->size = 0;
+	if (c < 'A' || (c > 'Z' && c < 'a') || c > 'z')
+		return (0);
+	else
+		return (1024);
 }

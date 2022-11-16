@@ -35,3 +35,15 @@ int	ft_doublstrlen(char **str)
 		i++;
 	return (i);
 }
+
+int	ft_strlenchar(char *str, char c)
+{
+	int i;
+	
+	i = 0;
+	if (!str)
+		return (-1);
+	while (str[i] != c)
+		++i;
+	return (i);
+}

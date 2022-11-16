@@ -78,6 +78,12 @@ typedef struct s_env
 	size_t	lvalue;
 }	t_env;
 
+// typedef struct s_export
+// {
+// 	int		i;
+// 	t_env	envline;
+// }
+
 typedef struct s_list
 {
 	struct s_list	*next;
@@ -142,6 +148,8 @@ char		**ft_split(char const *s, char c, t_pos *garbage);
 char		*ft_itoa(int n, t_pos *garbage);
 int			ft_atoi(char *str);
 int			ft_doublstrlen(char **str);
+int			ft_isalpha(int c);
+int			ft_strlenchar(char *str, char c);
 
 /* minishell */
 
@@ -188,6 +196,7 @@ void		ft_echo(t_command *command);
 void		ft_cd(t_minishell *minishell, t_command *command);
 t_list		*ft_envvarexist(t_pos *envact, char *str);
 int			ft_ispartenv(t_env	*varenv, char *str);
+void		ft_addvarenv(t_minishell *minishell, char *name, char *value);
 
 /*cast*/
 

@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 13:35:21 by audreyer          #+#    #+#             */
-/*   Updated: 2022/10/31 11:24:35 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/11/15 17:14:09 by mgirardo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ void	ft_openend(t_command *cmd)
 	if (cmd->fdin != 0)
 		cmd->ofdin = open(cmd->fdin, O_RDONLY, 0777);
 	if (cmd->fdout != 0 && cmd->type == 'T')
-		cmd->ofdout = open(cmd->fdout, O_WRONLY | O_CREAT | O_TRUNC , 0777);
+		cmd->ofdout = open(cmd->fdout, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	if (cmd->fdout != 0 && cmd->type == 'A')
-		cmd->ofdout = open(cmd->fdout, O_WRONLY | O_CREAT | O_APPEND , 0777);
+		cmd->ofdout = open(cmd->fdout, O_WRONLY | O_CREAT | O_APPEND, 0777);
 }
 
 void	ft_arg(t_minishell *minishell, t_list *tokenlist)
@@ -70,7 +70,8 @@ char	**ft_reenv(t_minishell *minishell)
 	t_list	*listact;
 
 	i = 0;
-	str = ft_malloc(sizeof(char *) * (*minishell->actenv->size + 1), minishell->garbagecmd);
+	str = ft_malloc(sizeof(char *) * (*minishell->actenv->size + 1),
+			minishell->garbagecmd);
 	if (!str)
 		ft_exit(minishell, "malloc error\n");
 	str[*minishell->actenv->size] = 0;
@@ -78,7 +79,8 @@ char	**ft_reenv(t_minishell *minishell)
 	while (i < *minishell->actenv->size)
 	{
 		line = (t_env *)listact->content;
-		str[i] = ft_strjoin(line->name, ft_strdup("=", minishell->garbagecmd), minishell->garbagecmd);
+		str[i] = ft_strjoin(line->name, ft_strdup("=", minishell->garbagecmd),
+				minishell->garbagecmd);
 		str[i] = ft_strjoin(str[i], line->value, minishell->garbagecmd);
 		if (!str[i])
 			ft_exit(minishell, "malloc error\n");
@@ -107,7 +109,8 @@ void	ft_executecmd(t_minishell *minishell, t_command *command)
 	if (command->error == 0)
 		execve(command->file, command->cmd, ft_reenv(minishell));
 	if (command->error == 0)
-		command->error = ft_strjoin(strerror(errno), "\n", minishell->garbagecmd);
+		command->error = ft_strjoin(strerror(errno), "\n",
+				minishell->garbagecmd);
 	ft_exit(minishell, command->error);
 }
 
@@ -125,6 +128,67 @@ int	ft_cmdnbr(t_list *tokenlist)
 	return (i);
 }
 
+int	ft_spacehere(char *str)
+{
+	int	i;
+	int	nbspaces;
+
+	i = -1;
+	nbspaces = 0;
+	while (str[++i])
+	{
+		if (str[i] == ' ')
+			nbspaces++;
+	}
+	return (nbspaces);
+}
+
+char	**ft_nospaces(t_minishell *minishell, char **str, int size)
+{
+	char	**cmd;
+	int		i;
+	char	**tmp;
+	int		j;
+	int		k;
+
+	cmd = ft_malloc(sizeof(*cmd) * (size + 1), minishell->garbage);
+	if (!cmd)
+		ft_exit(minishell, "malloc error\n");
+	i = -1;
+	k = 0;
+	while (str[++i])
+	{
+		if (ft_spacehere(str[i]))
+		{
+			tmp = ft_split(str[i], ' ', minishell->garbage);
+			j = -1;
+			while (tmp[++j])
+				cmd[k++] = tmp[j];
+		}
+		else
+			cmd[k++] = str[i];
+	}
+	return (cmd);
+}
+
+char	**ft_cmdcheckbfexecve(t_minishell *minishell, char **cmd)
+{
+	int		i;
+	int		nbcmdtoadd;
+
+	i = -1;
+	nbcmdtoadd = 0;
+	while (cmd[++i])
+		nbcmdtoadd += ft_spacehere(cmd[i]);
+	if (nbcmdtoadd == 0)
+		return (cmd);
+	else
+	{
+		cmd = ft_nospaces(minishell, cmd, nbcmdtoadd + ft_doublstrlen(cmd));
+		return (cmd);
+	}
+}
+
 void	ft_child(t_minishell *minishell, t_list *tokenlist)
 {
 	int			i;
@@ -135,7 +199,6 @@ void	ft_child(t_minishell *minishell, t_list *tokenlist)
 
 	if (ft_type(tokenlist) == NL)
 		return ;
-//	ft_posprint(minishell, minishell->tokenlist, &ft_printtoken, 2);
 	command = ft_commandget(tokenlist);
 	if (ft_type(tokenlist->next) == NL && ft_isbuiltin(command) == 1)
 	{
@@ -144,10 +207,12 @@ void	ft_child(t_minishell *minishell, t_list *tokenlist)
 	}
 	else
 	{
+		command->cmd = ft_cmdcheckbfexecve(minishell, command->cmd);
 		if (command->cmd && command->cmd[0] != 0)
 			command->file = ft_getcmdfile(minishell, command);
 		i = 0;
-		childid = ft_malloc(sizeof(int) *ft_cmdnbr(tokenlist), minishell->garbagecmd);
+		childid = ft_malloc(sizeof(int) * ft_cmdnbr(tokenlist),
+				minishell->garbagecmd);
 		while (ft_type(tokenlist->back) != NL || i == 0)
 		{
 			if (command->error == 0)

@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 16:37:40 by audreyer          #+#    #+#             */
-/*   Updated: 2022/11/17 18:41:19 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/11/17 19:00:18 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,6 +206,7 @@ char		*ft_expanddollar(t_minishell *minishell, char *str);
 char		*ft_recupbeforedollar(t_minishell *minishell, char *str);
 char		*ft_searchinenv(t_minishell *minishell, char *str);
 int			ft_elsedouble(t_minishell *minishell, char **str, char **temp, char **new);
+void		ft_expandsimplequote(t_token *token);
 
 /*bazar*/
 

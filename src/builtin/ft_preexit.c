@@ -14,6 +14,30 @@
 
 void	ft_preexit(t_minishell *minishell, t_command *command)
 {
+	char	*error;
+	int		i;
+	
+	i = 1;
+	if (ft_doublstrlen(command->cmd) == 1)
+		ft_exit(minishell, "exit\n");
+	else if (ft_doublstrlen(command->cmd) > 1 && !ft_isnum(command->cmd[i]))
+		{
+			error = ft_strdup(command->cmd[i], minishell->garbage);
+			ft_error(minishell, "exit\n");
+			error = ft_strjoin("minishell: exit: ", error, minishell->garbage);
+			error = ft_strjoin(error, ": numeric argument required\n", minishell->garbage);
+			ft_exit(minishell, error);
+		}
+	else if (ft_doublstrlen(command->cmd) > 2)
+		ft_error(minishell, "minishell: exit: too many arguments\n");
+	else
+	{
+		i = (ft_atoi(command->cmd[i]) % 256);
+		ft_error(minishell, "exit\n");
+		ft_exit(minishell, ft_itoa(i, minishell->garbage));
+	}
+}
+
 //	printf("exit\n");
 /* 
 	The exit status shall be n, if specified, except that the behavior is
@@ -25,14 +49,7 @@ void	ft_preexit(t_minishell *minishell, t_command *command)
  */
 // if command->cmd[1] < 0 || command->cmd > 255 --> undefined behavior
 
-// ajouter check lettre, on veut que des chiffre
-	if (ft_doublstrlen(command->cmd) == 1)
-		ft_exit(minishell, "exit\n");
-	else if (ft_doublstrlen(command->cmd) == 2)
-	{
-		if (command->cmd[1] < 0 || command->cmd[1] > 255)
-		{
-			minishell->laststatus = command->cmd[1] % 256
-		}
-	}
-}
+/*
+	ajouter check lettre, on veut que des chiffres, exit quqnd meme mais mettre
+	message derreur type <bash: exit: <command->cmd[1]>: numeric argument required>
+*/

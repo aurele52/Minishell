@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 14:11:29 by audreyer          #+#    #+#             */
-/*   Updated: 2022/11/17 19:00:18 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/11/17 19:30:58 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,17 @@ void	ft_whiletokencreat(t_minishell *minishell, char **str)
 		ft_exit(minishell, "malloc error\n");
 	token->str = *str;
 	token->type = WORD;
-	token = ft_malloc(sizeof(*token), minishell->garbagecmd);
-	if (!token)
-		ft_exit(minishell, "malloc error\n");
-	ft_lstnew(token, minishell->tokenlist, minishell->garbagecmd);
-	if (minishell->tokenlist->start->back == 0)
-		ft_exit(minishell, "malloc error\n");
-	token->str = ft_strdup(" ", minishell->garbagecmd);
-	token->type = SPACES;
+	if (*(str + 1) != 0)
+	{
+		token = ft_malloc(sizeof(*token), minishell->garbagecmd);
+		if (!token)
+			ft_exit(minishell, "malloc error\n");
+		ft_lstnew(token, minishell->tokenlist, minishell->garbagecmd);
+		if (minishell->tokenlist->start->back == 0)
+			ft_exit(minishell, "malloc error\n");
+		token->str = ft_strdup(" ", minishell->garbagecmd);
+		token->type = SPACES;
+	}
 }
 
 void	ft_multipletoken(t_minishell *minishell, t_list *tokenlist)

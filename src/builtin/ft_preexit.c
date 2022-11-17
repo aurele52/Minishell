@@ -15,5 +15,5 @@
 void	ft_preexit(t_minishell *minishell, t_command *command)
 {
 //	printf("exit\n");
-	ft_exit(minishell, command->cmd[1]);
+	ft_exit(minishell, command->cmd[0]);
 }

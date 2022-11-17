@@ -207,7 +207,7 @@ void	ft_child(t_minishell *minishell, t_list *tokenlist)
 	}
 	else
 	{
-		command->cmd = ft_cmdcheckbfexecve(minishell, command->cmd);
+		// command->cmd = ft_cmdcheckbfexecve(minishell, command->cmd);
 		if (command->cmd && command->cmd[0] != 0)
 			command->file = ft_getcmdfile(minishell, command);
 		i = 0;

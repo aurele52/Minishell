@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 16:37:40 by audreyer          #+#    #+#             */
-/*   Updated: 2022/11/16 12:48:13 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/11/17 18:41:19 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,6 +181,31 @@ void		ft_leaf(t_minishell *minishell);
 void		ft_createleaf(t_minishell *minishell);
 void		ft_parseleaf(t_minishell *minishell);
 char		*ft_readline(char *str, t_pos *garbage);
+void		ft_changefdin(t_list *tokenlist, int fd);
+void		ft_arg(t_minishell *minishell, t_list *tokenlist);
+void		ft_openend(t_command *cmd);
+char		**ft_reenv(t_minishell *minishell);
+void		ft_changefdout(t_list *tokenlist, int fd);
+void		ft_executecmd(t_minishell *minishell, t_command *command);
+int			ft_spacehere(char *str);
+char		**ft_cmdcheckbfexecve(t_minishell *minishell, char **cmd);
+int			ft_cmdnbr(t_list *tokenlist);
+char		**ft_nospaces(t_minishell *minishell, char **str, int size);
+t_list		*ft_cmdclear(t_list *tokenlist);
+t_command	*ft_commandinit(t_minishell *minishell);
+t_list		*ft_commandcreate(t_minishell *minishell, t_list *tokenlist);
+t_list		*ft_whiletoken(t_minishell *minishell, t_list **tokenlist, t_command *command, t_token *cmdtoken);
+char		**ft_cmdcharcreate(t_minishell *minishell, t_list *tokenlist);
+int			ft_openin(t_minishell *minishell, t_command *command, t_token *token);
+int			ft_open(t_minishell *minishell, t_token *token, t_command *command);
+void		ft_resetcommand(t_command *command);
+int			ft_openwrite(t_minishell *minishell, t_command *command, t_token *token);
+int			ft_openappend(t_minishell *minishell, t_command *command, t_token *token);
+void		ft_errorcmd(t_list *tokenlist);
+char		*ft_expanddollar(t_minishell *minishell, char *str);
+char		*ft_recupbeforedollar(t_minishell *minishell, char *str);
+char		*ft_searchinenv(t_minishell *minishell, char *str);
+int			ft_elsedouble(t_minishell *minishell, char **str, char **temp, char **new);
 
 /*bazar*/
 
@@ -215,6 +240,15 @@ void		ft_cd(t_minishell *minishell, t_command *command);
 t_list		*ft_envvarexist(t_pos *envact, char *str);
 int			ft_ispartenv(t_env	*varenv, char *str);
 void		ft_addvarenv(t_minishell *minishell, char *name, char *value);
+char		*ft_lasti(char *str);
+t_env		*ft_envtoken(t_minishell *minishell, char *str);
+int			ft_egalplus(char *str);
+char		*ft_searchname(t_minishell *minishell, char *str);
+void		ft_addvarenv(t_minishell *minishell, char *name, char *value);
+void		ft_preaddvarenv(t_minishell *minishell, char *name, t_env *varenv);
+void		ft_updateenv(t_minishell *minishell, char *buff);
+t_list		*ft_envvarexist(t_pos *envact, char *str);
+int			ft_ispartenv(t_env	*varenv, char *str);
 
 /*cast*/
 

@@ -6,7 +6,7 @@
 /*   By: mgirardo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 13:50:09 by mgirardo          #+#    #+#             */
-/*   Updated: 2022/11/15 13:50:12 by mgirardo         ###   ########.fr       */
+/*   Updated: 2022/11/17 17:49:47 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,58 +35,68 @@ char	**ft_getpath(t_minishell *minishell)
 	return (pathtab);
 }
 
-char	*ft_getcmdfile(t_minishell *minishell, t_command *command)
+char	*ft_iferror(t_minishell *minishell, t_command *command)
 {
-	char	**pathtab;
+	if (ft_strlen(command->cmd[0]) == 1)
+	command->error = ft_strdup("'.' must be follow by a command\n",
+				minishell->garbagecmd);
+	if (command->cmd[0][1] == '.')
+		command->error = ft_strdup("command not found : ..\n",
+				minishell->garbagecmd);
+	return (command->error);
+}
+
+char	*ft_whilepath(t_minishell *minishell, t_command *command, char **cmdtmp)
+{
 	int		i;
-	char	*cmdtmp;
-	t_pos	*gar;
+	char	**pathtab;
 
 	i = 0;
-	gar = minishell->garbagecmd;
-	if (ft_isbuiltin(command) == 1)
-		return (command->cmd[0]);
 	pathtab = ft_getpath(minishell);
-	if (ft_strlen(command->cmd[0]) <= 2 && command->cmd[0][0] == '.')
-	{
-		if (ft_strlen(command->cmd[0]) == 1)
-		command->error = ft_strdup("'.' must be follow by a command\n", gar);
-		if (command->cmd[0][1] == '.')
-			command->error = ft_strdup("command not found : ..\n", gar);
-		if (command->error != 0)
-			return (0);
-	}
 	while (pathtab && pathtab[i] != 0)
 	{
-		cmdtmp = ft_strjoin(ft_strjoin(pathtab[i++],
-					"/", gar), command->cmd[0], gar);
-		if (!cmdtmp)
+		*cmdtmp = ft_strjoin(ft_strjoin(pathtab[i++], "/",
+					minishell->garbagecmd), command->cmd[0],
+				minishell->garbagecmd);
+		if (!*cmdtmp)
 			ft_exit(minishell, "error malloc\n");
-		if (!access(cmdtmp, F_OK))
+		if (!access(*cmdtmp, F_OK))
 		{
-			if (!access(cmdtmp, X_OK))
-				return (cmdtmp);
+			if (!access(*cmdtmp, X_OK))
+				return (*cmdtmp);
 			else
-				command->error = ft_strjoin(ft_strdup("enrro =", gar), cmdtmp, gar);
+				command->error = ft_strjoin(ft_strdup("enrro =",
+							minishell->garbagecmd),
+						*cmdtmp, minishell->garbagecmd);
 		}
 	}
+	return (0);
+}
+
+char	*ft_getcmdfile(t_minishell *minishell, t_command *command)
+{
+	char	*cmdtmp;
+
+	cmdtmp = 0;
+	if (ft_isbuiltin(command) == 1)
+		return (command->cmd[0]);
+	if (ft_strlen(command->cmd[0]) <= 2 && command->cmd[0][0] == '.'
+			&& ft_iferror(minishell, command) != 0)
+		return (0);
+	if (ft_whilepath(minishell, command, &cmdtmp) != 0)
+		return (cmdtmp);
 	if (!access(command->cmd[0], F_OK))
 	{
 		if (!access(command->cmd[0], X_OK))
 			return (command->cmd[0]);
 		else
-			command->error = ft_strjoin(ft_strdup("enrro =", gar), cmdtmp, gar);
+			command->error = ft_strjoin(ft_strdup("enrro =",
+						minishell->garbagecmd), cmdtmp,
+					minishell->garbagecmd);
 	}
-	command->error = ft_strjoin(ft_strdup("command not found : ", gar), command->cmd[0], gar);
-	command->error = ft_strjoin(command->error, "\n", gar);
+	command->error = ft_strjoin(ft_strdup("command not found : ",
+				minishell->garbagecmd), command->cmd[0],
+			minishell->garbagecmd);
+	command->error = ft_strjoin(command->error, "\n", minishell->garbagecmd);
 	return (0);
 }
-
-
-
-
-
-
-
-
-

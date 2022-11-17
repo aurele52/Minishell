@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishellinit.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/11/16 16:58:58 by audreyer          #+#    #+#             */
+/*   Updated: 2022/11/16 17:00:21 by audreyer         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "minishell.h"
 
@@ -32,13 +43,15 @@ t_pos	*ft_envinit(t_minishell *minishell)
 		ft_lstnew(line, newenv, minishell->garbage);
 		if (!newenv->start->back)
 			ft_exit(minishell, "malloc error\n");
-		line->name = ft_strdup(ft_split(minishell->env[i], '=', minishell->garbage)[0], minishell->garbage);
+		line->name = ft_strdup(ft_split(minishell->env[i],
+					'=', minishell->garbage)[0], minishell->garbage);
 		line->lname = ft_strlen(line->name);
-		line->value = ft_substr(minishell->env[i], line->lname + 1, ft_strlen(minishell->env[i]), minishell->garbage);
+		line->value = ft_substr(minishell->env[i], line->lname + 1,
+				ft_strlen(minishell->env[i]), minishell->garbage);
 		line->lvalue = ft_strlen(line->value);
 		i++;
 	}
-	return(newenv);
+	return (newenv);
 }
 
 void	ft_minishellinit2(t_minishell *minishell)

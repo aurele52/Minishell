@@ -64,6 +64,7 @@ void	ft_arg(t_minishell *minishell, t_list *tokenlist)
 
 char	**ft_reenv(t_minishell *minishell)
 {
+	// probleme ici quand $ est une command
 	char	**str;
 	int		i;
 	t_env	*line;
@@ -92,6 +93,7 @@ char	**ft_reenv(t_minishell *minishell)
 
 void	ft_executecmd(t_minishell *minishell, t_command *command)
 {
+	printf("In ft_executcmd\n");//
 	if (ft_isbuiltin(command) == 1)
 	{
 		ft_builtin(minishell, command);
@@ -107,7 +109,10 @@ void	ft_executecmd(t_minishell *minishell, t_command *command)
 	}
 	ft_closevaria(2, command->ofdin, command->ofdout);
 	if (command->error == 0)
+	{//
+		printf("execve\n");//
 		execve(command->file, command->cmd, ft_reenv(minishell));
+	}//
 	if (command->error == 0)
 		command->error = ft_strjoin(strerror(errno), "\n",
 				minishell->garbagecmd);

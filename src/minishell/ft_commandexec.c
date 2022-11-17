@@ -64,7 +64,6 @@ void	ft_arg(t_minishell *minishell, t_list *tokenlist)
 
 char	**ft_reenv(t_minishell *minishell)
 {
-	// probleme ici quand $ est une command
 	char	**str;
 	int		i;
 	t_env	*line;
@@ -93,7 +92,6 @@ char	**ft_reenv(t_minishell *minishell)
 
 void	ft_executecmd(t_minishell *minishell, t_command *command)
 {
-	printf("In ft_executcmd\n");//
 	if (ft_isbuiltin(command) == 1)
 	{
 		ft_builtin(minishell, command);
@@ -109,10 +107,7 @@ void	ft_executecmd(t_minishell *minishell, t_command *command)
 	}
 	ft_closevaria(2, command->ofdin, command->ofdout);
 	if (command->error == 0)
-	{//
-		printf("execve\n");//
 		execve(command->file, command->cmd, ft_reenv(minishell));
-	}//
 	if (command->error == 0)
 		command->error = ft_strjoin(strerror(errno), "\n",
 				minishell->garbagecmd);
@@ -133,67 +128,6 @@ int	ft_cmdnbr(t_list *tokenlist)
 	return (i);
 }
 
-int	ft_spacehere(char *str)
-{
-	int	i;
-	int	nbspaces;
-
-	i = -1;
-	nbspaces = 0;
-	while (str[++i])
-	{
-		if (str[i] == ' ')
-			nbspaces++;
-	}
-	return (nbspaces);
-}
-
-char	**ft_nospaces(t_minishell *minishell, char **str, int size)
-{
-	char	**cmd;
-	int		i;
-	char	**tmp;
-	int		j;
-	int		k;
-
-	cmd = ft_malloc(sizeof(*cmd) * (size + 1), minishell->garbage);
-	if (!cmd)
-		ft_exit(minishell, "malloc error\n");
-	i = -1;
-	k = 0;
-	while (str[++i])
-	{
-		if (ft_spacehere(str[i]))
-		{
-			tmp = ft_split(str[i], ' ', minishell->garbage);
-			j = -1;
-			while (tmp[++j])
-				cmd[k++] = tmp[j];
-		}
-		else
-			cmd[k++] = str[i];
-	}
-	return (cmd);
-}
-
-char	**ft_cmdcheckbfexecve(t_minishell *minishell, char **cmd)
-{
-	int		i;
-	int		nbcmdtoadd;
-
-	i = -1;
-	nbcmdtoadd = 0;
-	while (cmd[++i])
-		nbcmdtoadd += ft_spacehere(cmd[i]);
-	if (nbcmdtoadd == 0)
-		return (cmd);
-	else
-	{
-		cmd = ft_nospaces(minishell, cmd, nbcmdtoadd + ft_doublstrlen(cmd));
-		return (cmd);
-	}
-}
-
 void	ft_child(t_minishell *minishell, t_list *tokenlist)
 {
 	int			i;
@@ -212,7 +146,6 @@ void	ft_child(t_minishell *minishell, t_list *tokenlist)
 	}
 	else
 	{
-		// command->cmd = ft_cmdcheckbfexecve(minishell, command->cmd);
 		if (command->cmd && command->cmd[0] != 0)
 			command->file = ft_getcmdfile(minishell, command);
 		i = 0;

@@ -230,14 +230,17 @@ void	ft_multipletoken(t_minishell *minishell, t_list *tokenlist)
 			ft_exit(minishell, "malloc error\n");
 		token->str = str[i];
 		token->type = WORD;
-		token = ft_malloc(sizeof(*token), minishell->garbagecmd);
-		if (!token)
-			ft_exit(minishell, "malloc error\n");
-		ft_lstnew(token, minishell->tokenlist, minishell->garbagecmd);
-		if (minishell->tokenlist->start->back == 0)
-			ft_exit(minishell, "malloc error\n");
-		token->str = ft_strdup(" ", minishell->garbagecmd);
-		token->type = SPACES;
+		if (str[i + 1])
+		{
+			token = ft_malloc(sizeof(*token), minishell->garbagecmd);
+			if (!token)
+				ft_exit(minishell, "malloc error\n");
+			ft_lstnew(token, minishell->tokenlist, minishell->garbagecmd);
+			if (minishell->tokenlist->start->back == 0)
+				ft_exit(minishell, "malloc error\n");
+			token->str = ft_strdup(" ", minishell->garbagecmd);
+			token->type = SPACES;
+		}
 		i++;
 	}
 	tokenlist->pos->start = memstart;

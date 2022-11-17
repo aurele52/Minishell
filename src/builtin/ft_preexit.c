@@ -23,5 +23,16 @@ void	ft_preexit(t_minishell *minishell, t_command *command)
 	last command is considered to be the command that executed immediately
 	preceding the trap action.
  */
-	ft_exit(minishell, command->cmd[0]);
+// if command->cmd[1] < 0 || command->cmd > 255 --> undefined behavior
+
+// ajouter check lettre, on veut que des chiffre
+	if (ft_doublstrlen(command->cmd) == 1)
+		ft_exit(minishell, "exit\n");
+	else if (ft_doublstrlen(command->cmd) == 2)
+	{
+		if (command->cmd[1] < 0 || command->cmd[1] > 255)
+		{
+			minishell->laststatus = command->cmd[1] % 256
+		}
+	}
 }

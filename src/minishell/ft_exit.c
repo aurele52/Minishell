@@ -60,6 +60,10 @@ int	ft_errorstr(char *str)
 		return (2);
 	if (ft_demistrcmp("minishell: syntax error near", str) == 0)
 		return (2);
+	if (ft_demistrcmp("minishell: exit: too", str) == 0)
+		return (1);
+	if (ft_demistrcmp("minishell: exit: ", str) == 0)
+		return (2);
 	return (0);
 }
 

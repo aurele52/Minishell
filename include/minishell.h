@@ -102,7 +102,6 @@ typedef struct s_minishell
 	char		**argv;
 	int			argc;
 	int			*pipe;
-	char		*prompt;
 	char		*error;
 	t_pos		*tokenlist;
 	int			laststatus;

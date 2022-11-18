@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 19:45:28 by audreyer          #+#    #+#             */
-/*   Updated: 2022/11/16 12:51:19 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/11/18 15:06:41 by mgirardo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	ft_minishell(t_minishell *minishell)
 	str = 0;
 	while (1)
 	{
-		str = ft_readline(minishell->prompt, minishell->garbagecmd);
+		str = ft_readline("Minishell> ", minishell->garbagecmd);
 		if (!str)
 			ft_exit(minishell, "exit\n");
 		add_history(str);

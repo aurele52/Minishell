@@ -6,7 +6,7 @@
 #    By: audreyer <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/21 22:50:22 by audreyer          #+#    #+#              #
-#    Updated: 2022/11/16 12:46:15 by audreyer         ###   ########.fr        #
+#    Updated: 2022/11/17 19:00:18 by audreyer         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,10 +20,16 @@ FLAG = -g -Wall -Werror -Wextra
 
 SRC=	src/minishell/minishellinit.c	\
 		src/minishell/ft_commandexec.c	\
+		src/minishell/ft_commandexec2.c	\
+		src/minishell/ft_commandexec3.c	\
 		src/minishell/ft_getpath.c	\
 		src/minishell/ft_tokenredirclean.c	\
+		src/minishell/ft_tokenredirclean2.c	\
 		src/minishell/ft_heredoc.c	\
 		src/minishell/ft_tokencmdclean.c	\
+		src/minishell/ft_tokencmdclean2.c	\
+		src/minishell/ft_tokencmdclean3.c	\
+		src/minishell/ft_tokencmdclean4.c	\
 		src/minishell/ft_exit.c	\
 		src/minishell/ft_token_create.c \
 		src/minishell/ft_token_create2.c \
@@ -35,9 +41,11 @@ SRC=	src/minishell/minishellinit.c	\
 		src/env/env.c	\
 		src/builtin/ft_echo.c \
 		src/builtin/ft_cd.c \
+		src/builtin/ft_cd2.c \
 		src/builtin/ft_builtin.c	\
 		src/builtin/ft_unset.c	\
 		src/builtin/ft_export.c	\
+		src/builtin/ft_export2.c	\
 		src/builtin/ft_pwd.c	\
 		src/builtin/ft_env.c	\
 		src/builtin/ft_preexit.c	\

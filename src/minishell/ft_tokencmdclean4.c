@@ -1,18 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_preexit.c                                       :+:      :+:    :+:   */
+/*   ft_tokencmdclean4.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgirardo <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/07 14:33:53 by mgirardo          #+#    #+#             */
-/*   Updated: 2022/11/17 18:45:53 by audreyer         ###   ########.fr       */
+/*   Created: 2022/11/17 18:59:40 by audreyer          #+#    #+#             */
+/*   Updated: 2022/11/17 19:00:18 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_preexit(t_minishell *minishell, t_command *command)
+void	ft_expandsimplequote(t_token *token)
 {
-	ft_exit(minishell, command->cmd[1]);
+	int		i;
+	char	*str;
+
+	i = 0;
+	str = token->str;
+	str++;
+	while (str[i])
+		i++;
+	str[i - 1] = 0;
+	token->str = str;
 }

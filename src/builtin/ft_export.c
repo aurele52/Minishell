@@ -142,26 +142,34 @@
  	line->lvalue = ft_strlen(line->value);
  }
 
- int	ft_checkcmd1(t_minishell *minishell, char *cmd1)
+void	ft_soloexport(t_command *command)
+{
+	write(command->ofdout, "You choose to use", ft_strlen("You choose to use"));
+	write(command->ofdout, " export on its", ft_strlen(" export on its"));
+	write(command->ofdout, " own, and as an", ft_strlen(" own, and as an"));
+	write(command->ofdout, " undefine behavior", ft_strlen(" undefine behavior"));
+	write(command->ofdout, ", it will not do", ft_strlen(", it will not do"));
+	write(command->ofdout, " anything but this", ft_strlen(" anything but this"));
+	write(command->ofdout, ".\n", ft_strlen(".\n"));
+}
+
+ int	ft_checkcmd1(t_minishell *minishell, char *cmd1, t_command *command)
  {
  	if (cmd1 == 0)
  	{
- 		ft_error(minishell, "nop\n");
+		ft_soloexport(command);
+ 		ft_error(minishell, "0");
  		return (1);
  	}
  	if (cmd1[0] == 0 || cmd1[0] == '=' || (cmd1[0] <= '9' && cmd1[0] >= '0')) 
- 	/*
- 		ici cmd[0] doit forcement etre alpha si autre alors on rentre dans condition
- 	*/
  	{
  		ft_error(minishell, "minishell: export: `': not a valid identifier\n");
  		return (1);
  	}
- 	/*
- 		le nom d'une variable peut contenir alphanum et '_' 
- 	*/
  	return (0);
  }
+
+
 
  void	ft_export(t_minishell *minishel, t_command *command)
  {
@@ -171,7 +179,7 @@
 
  	cmd1 = command->cmd[1];
  	i = 1;
- 	if (ft_checkcmd1(minishel, cmd1) == 1)
+ 	if (ft_checkcmd1(minishel, cmd1, command) == 1)
  		return ;
  	while (command->cmd[i])
  	{
@@ -189,21 +197,6 @@
  	}
  }
 /*
-
-
-
-
-
-void	ft_soloexport(t_command *command)
-{
-	write(command->ofdout, "You choose to use", ft_strlen("You choose to use"));
-	write(command->ofdout, " export on its", ft_strlen(" export on its"));
-	write(command->ofdout, " own, and as an", ft_strlen(" own, and as an"));
-	write(command->ofdout, " undefine behavior", ft_strlen(" undefine behavior"));
-	write(command->ofdout, ", it will not do", ft_strlen(", it will not do"));
-	write(command->ofdout, " anything but this", ft_strlen(" anything but this"));
-	write(command->ofdout, ".\n", ft_strlen(".\n"));
-}
 
 int	ft_cmdexportvalid(char *cmd)
 {

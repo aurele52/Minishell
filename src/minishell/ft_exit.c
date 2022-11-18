@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:07:09 by audreyer          #+#    #+#             */
-/*   Updated: 2022/10/31 11:36:36 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/11/18 15:22:26 by mgirardo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,12 @@ int	ft_errorstr(char *str)
 		return (2);
 	if (ft_demistrcmp("minishell: syntax error near", str) == 0)
 		return (2);
+	if (ft_demistrcmp("minishell: exit: too", str) == 0)
+		return (1);
+	if (ft_demistrcmp("minishell: exit: ", str) == 0)
+		return (2);
+	if (ft_demistrcmp("minishell: export: ", str) == 0)
+		return (1);
 	return (0);
 }
 

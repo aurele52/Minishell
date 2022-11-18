@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 13:35:21 by audreyer          #+#    #+#             */
-/*   Updated: 2022/11/17 18:47:22 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/11/18 15:19:04 by mgirardo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ void	ft_else(t_minishell *minishell, t_command *command, t_list *tokenlist)
 	int			wstatus;
 	int			*childid;
 
-	command->cmd = ft_cmdcheckbfexecve(minishell, command->cmd);
 	if (command->cmd && command->cmd[0] != 0)
 		command->file = ft_getcmdfile(minishell, command);
 	i = 0;

@@ -83,7 +83,6 @@ void	ft_elseif2(t_minishell *minishell, char *buff)
 	}
 	else if (ft_homechdir(list->content) == 0)
 	{
-		printf("je suis avec un seul argument et un home qui existe\n");
 		if (getcwd(buff, PATH_MAX))
 			ft_updateenv(minishell, buff);
 		minishell->laststatus = 0;

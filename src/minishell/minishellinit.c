@@ -80,11 +80,6 @@ t_minishell	*ft_minishellinit(char **env)
 	minishell->actenv = ft_envinit(minishell);
 	if (!minishell->actenv)
 		ft_exit(minishell, "malloc error\n");
-	minishell->prompt = ft_strjoin(ft_strjoin(
-				ft_strdup("\x1b[32m", garbage), ft_strdup("Minishell$", garbage),
-				garbage), ft_strdup("\x1b[0m ", garbage), garbage);
-	if (minishell->prompt == 0)
-		ft_exit(minishell, "malloc error\n");
 	minishell->tokenlist = ft_setpos(minishell->garbage);
 	if (!minishell->tokenlist)
 		ft_exit(minishell, "malloc error\n");

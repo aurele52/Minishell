@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 19:45:28 by audreyer          #+#    #+#             */
-/*   Updated: 2022/11/16 12:51:19 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/11/18 17:27:20 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	ft_minishell(t_minishell *minishell)
 	str = 0;
 	while (1)
 	{
-		str = ft_readline(minishell->prompt, minishell->garbagecmd);
+		str = ft_readline("Minishell> ", minishell->garbagecmd);
 		if (!str)
 			ft_exit(minishell, "exit\n");
 		add_history(str);
@@ -44,7 +44,7 @@ void	ft_minishell(t_minishell *minishell)
 				ft_tokencmdclean(minishell);
 				ft_child(minishell, minishell->tokenlist->start);
 			}
-			ft_error(minishell, "");
+			ft_error(minishell, ft_itoa(minishell->laststatus, minishell->garbage));
 		}
 	}
 }

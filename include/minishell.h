@@ -102,7 +102,6 @@ typedef struct s_minishell
 	char		**argv;
 	int			argc;
 	int			*pipe;
-	char		*prompt;
 	char		*error;
 	t_pos		*tokenlist;
 	int			laststatus;
@@ -150,6 +149,7 @@ int			ft_atoi(char *str);
 int			ft_doublstrlen(char **str);
 int			ft_isalpha(int c);
 int			ft_strlenchar(char *str, char c);
+int			ft_isnum(char *str);
 
 /*token*/
 

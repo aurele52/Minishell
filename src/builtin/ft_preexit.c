@@ -19,7 +19,12 @@ void	ft_preexit(t_minishell *minishell, t_command *command)
 	
 	i = 1;
 	if (ft_doublstrlen(command->cmd) == 1)
-		ft_exit(minishell, "exit\n");
+	{
+		// write(command->ofdout, "exit\n", 5);
+		i = minishell->laststatus;
+		ft_error(minishell, "exit\n");
+		ft_exit(minishell, ft_itoa(i, minishell->garbage));
+	}
 	else if (ft_strlen(*command->cmd) > 1 && !ft_isnum(command->cmd[i]))
 		{
 			error = ft_strdup(command->cmd[i], minishell->garbage);

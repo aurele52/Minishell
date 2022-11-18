@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 19:45:28 by audreyer          #+#    #+#             */
-/*   Updated: 2022/11/18 17:27:20 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/11/18 18:48:01 by mgirardo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ char	*ft_readline(char *prompt, t_pos *garbage)
 {
 	char	*str;
 
+	rl_outstream = stderr;
 	str = readline(prompt);
 	ft_lstnew(str, garbage, 0);
 	if (garbage->start->back == 0)

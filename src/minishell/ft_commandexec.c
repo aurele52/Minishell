@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 13:35:21 by audreyer          #+#    #+#             */
-/*   Updated: 2022/11/18 15:19:04 by mgirardo         ###   ########.fr       */
+/*   Updated: 2022/11/18 18:24:38 by mgirardo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,9 @@ int	ft_whil(t_minishell *minishell, t_command **command, t_list **tokenlist)
 	c = fork();
 	if (c == 0)
 	{
-		if ((*command)->error == 0)
+		if ((*command)->cmd[0] == 0)
+			ft_exit(minishell, 0);
+		else if ((*command)->error == 0)
 			ft_executecmd(minishell, (*command));
 		else
 			ft_exit(minishell, (*command)->error);

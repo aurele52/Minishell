@@ -6,7 +6,7 @@
 /*   By: mgirardo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 16:25:54 by mgirardo          #+#    #+#             */
-/*   Updated: 2022/11/18 14:39:21 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/11/18 18:43:10 by mgirardo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ void	ft_builtin(t_minishell *minishell, t_command *command)
 
 int	ft_isbuiltin(t_command *command)
 {
+	if (command->cmd == 0)
+		return (0);
 	if (!ft_strcmp(command->cmd[0], "echo"))
 		return (1);
 	else if (!ft_strcmp(command->cmd[0], "cd"))

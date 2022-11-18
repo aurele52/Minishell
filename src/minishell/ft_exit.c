@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:07:09 by audreyer          #+#    #+#             */
-/*   Updated: 2022/10/31 11:36:36 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/11/18 15:22:26 by mgirardo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,5 +77,6 @@ int	ft_exit(t_minishell *minishell, char *str)
 		ft_posclear(minishell->garbagecmd, 2);
 	if (minishell->garbage != 0)
 		ft_posclear(minishell->garbage, 2);
+	printf("str = '%i'", i);
 	exit(i);
 }

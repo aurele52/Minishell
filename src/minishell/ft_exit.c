@@ -64,6 +64,8 @@ int	ft_errorstr(char *str)
 		return (1);
 	if (ft_demistrcmp("minishell: exit: ", str) == 0)
 		return (2);
+	if (ft_demistrcmp("minishell: export: ", str) == 0)
+		return (1);
 	return (0);
 }
 
@@ -81,6 +83,5 @@ int	ft_exit(t_minishell *minishell, char *str)
 		ft_posclear(minishell->garbagecmd, 2);
 	if (minishell->garbage != 0)
 		ft_posclear(minishell->garbage, 2);
-	printf("str = '%i'", i);
 	exit(i);
 }

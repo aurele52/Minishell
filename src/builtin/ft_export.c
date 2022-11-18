@@ -196,3 +196,4 @@ void	ft_export(t_minishell *minishell, t_command *command)
 		}
 	}
 }
+*/

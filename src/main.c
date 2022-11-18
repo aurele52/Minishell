@@ -44,7 +44,7 @@ void	ft_minishell(t_minishell *minishell)
 				ft_tokencmdclean(minishell);
 				ft_child(minishell, minishell->tokenlist->start);
 			}
-			ft_error(minishell, "");
+			ft_error(minishell, ft_itoa(minishell->laststatus, minishell->garbage));
 		}
 	}
 }

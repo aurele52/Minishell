@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 15:23:31 by audreyer          #+#    #+#             */
-/*   Updated: 2022/11/17 15:26:06 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/11/18 14:40:54 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	ft_executecmd(t_minishell *minishell, t_command *command)
 			ft_closevaria(1, minishell->pipe[0]);
 	}
 	ft_closevaria(2, command->ofdin, command->ofdout);
+	ft_closepipe(minishell);
 	if (command->error == 0)
 		execve(command->file, command->cmd, ft_reenv(minishell));
 	if (command->error == 0)

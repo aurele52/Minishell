@@ -17,7 +17,7 @@ int	ft_isnum(char *str)
 	int	i;
 
 	i = 0;
-	if (str[i] == '-')
+	if (str[i] == '-' || str[i] == '+')
 		i++;
 	while (str[i])
 	{
@@ -65,6 +65,8 @@ int	ft_errorstr(char *str)
 	if (ft_demistrcmp("minishell: exit: ", str) == 0)
 		return (2);
 	if (ft_demistrcmp("minishell: export: ", str) == 0)
+		return (1);
+	if (ft_demistrcmp("minishell: cd: ", str) == 0)
 		return (1);
 	return (0);
 }

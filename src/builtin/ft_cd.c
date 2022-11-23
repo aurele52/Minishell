@@ -78,7 +78,7 @@ void	ft_elseif2(t_minishell *minishell, char *buff)
 	list = ft_envvarexist(minishell->actenv, "HOME");
 	if (!list)
 	{
-		ft_error(minishell, "minishell: cd: no home defined\n");
+		ft_error(minishell, "minishell: cd: HOME not set\n");
 		return ;
 	}
 	else if (ft_homechdir(list->content) == 0)
@@ -89,7 +89,7 @@ void	ft_elseif2(t_minishell *minishell, char *buff)
 	}
 	else
 	{
-		ft_error(minishell, "minishell: cd: no home defined\n");
+		ft_error(minishell, "minishell: cd: HOME not set\n");
 		return ;
 	}
 }

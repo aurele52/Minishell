@@ -78,3 +78,14 @@ char	*ft_searchname(t_minishell *minishell, char *str)
 		ft_exit(minishell, "malloc error\n");
 	return (ret);
 }
+
+void	ft_soloexport(t_command *command)
+{
+	write(command->ofdout, "You choose to use", ft_strlen("You choose to use"));
+	write(command->ofdout, " export on its", ft_strlen(" export on its"));
+	write(command->ofdout, " own, and as an", ft_strlen(" own, and as an"));
+	write(command->ofdout, " undefine behavio", ft_strlen(" undefine behavio"));
+	write(command->ofdout, "r, it will not do", ft_strlen("r, it will not do"));
+	write(command->ofdout, " anything but thi", ft_strlen(" anything but thi"));
+	write(command->ofdout, "s.\n", ft_strlen("s.\n"));
+}

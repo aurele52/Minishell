@@ -13,9 +13,8 @@
 #include "minishell.h"
 
 //	when ctrl + d, EOF
-//	minishell: warning: here-document at line <where we ar
-//e at> delimited by end-of-file
-//	(wanted `<heredoc delimiter>')
+//	minishell: warning: here-document at line <where we are at> delimited by
+//	end-of-file (wanted `<heredoc delimiter>')
 
 char	*ft_whileheredoc(t_minishell *minishell, char *str, t_token *t, int fd)
 {
@@ -24,6 +23,7 @@ char	*ft_whileheredoc(t_minishell *minishell, char *str, t_token *t, int fd)
 	read = ft_readline("> ", minishell->garbagecmd);
 	if (!read)
 		ft_exit(minishell, "exit\n");
+	minishell->heredocprompt++;
 	read = ft_strjoin(read, "\n", minishell->garbagecmd);
 	if (ft_strcmp(str, read) != 0)
 	{
@@ -49,7 +49,7 @@ void	ft_heredoc(t_minishell *minishell, t_token *token)
 	token->str = ft_strjoin(token->str, heredocnbr, minishell->garbagecmd);
 	fd = open(token->str, O_CREAT | O_TRUNC | O_RDWR, 0777);
 	if (fd == -1)
-		write(2, "fuck me\n", 8);
+		write(2, "Could not open file descriptor\n", 8);
 	while (ft_strcmp(str, read) != 0)
 		read = ft_whileheredoc(minishell, str, token, fd);
 	minishell->heredoc++;
@@ -69,3 +69,8 @@ void	ft_heredocclean(t_minishell *minishell)
 		tokenlist = tokenlist->next;
 	}
 }
+
+	/*
+		Pour les signaux qudn EOF message derreur recup str sans \n et
+		minishell->heredocprompt
+	*/

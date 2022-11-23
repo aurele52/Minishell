@@ -10,14 +10,6 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME = minishell
-
-TESTER = tester
-
-CC = gcc
-
-FLAG = -g -Wall -Werror -Wextra 
-
 SRC=	src/minishell/minishellinit.c	\
 		src/minishell/ft_commandexec.c	\
 		src/minishell/ft_commandexec2.c	\
@@ -72,41 +64,54 @@ SRC=	src/minishell/minishellinit.c	\
 
 SRC_MAIN=	src/main.c
 
-SRC_MAIN_TEST=	src/main_test.c
+# TESTER = tester
 
-OBJ = $(SRC:.c=.o)
+# SRC_MAIN_TEST=	src/main_test.c
 
-OBJ_MAIN = $(SRC_MAIN:.c=.o)
+OBJ			=	$(SRC:.c=.o)
 
-OBJ_MAIN_TEST = $(SRC_MAIN_TEST:.c=.o)
+OBJ_MAIN	=	$(SRC_MAIN:.c=.o)
 
+DOBJ		=	${SRC:.c=.d}
+
+DOBJ_MAIN	=	${SRC_MAIN:.c=.d}
+
+# OBJ_MAIN_TEST = $(SRC_MAIN_TEST:.c=.o)
+
+NAME		=	minishell
+
+INC			=	include/minishell.h
+
+CC			=	gcc
+
+FLAG		=	-g -Wall -Werror -Wextra -MMD
+
+RM			=	rm -f
+
+all:		$(NAME)
+
+-include ${DOBJ} ${DOBJ_MAIN}
 .c.o:
-	$(CC) $(FLAG) -I include -lreadline -c $< -o $(<:.c=.o)
+			$(CC) $(FLAG) -I include -lreadline -c $< -o $(<:.c=.o)
 
-INC = include/minishell.h
-
-
-all:	$(NAME)
-
-$(TESTER):	$(OBJ) $(OBJ_MAIN_TEST) $(INC)
-	$(CC) $(FLAG) $(OBJ) $(OBJ_MAIN_TEST) -lreadline -o $(TESTER)
-	rm -f ./tester/tester
-	mv $(TESTER) ./tester/$(TESTER)
-	@make -C ./tester
+# $(TESTER):	$(OBJ) $(OBJ_MAIN_TEST) $(INC)
+# 	$(CC) $(FLAG) $(OBJ) $(OBJ_MAIN_TEST) -lreadline -o $(TESTER)
+# 	rm -f ./tester/tester
+# 	mv $(TESTER) ./tester/$(TESTER)
+# 	@make -C ./tester
 
 $(NAME):	$(OBJ) $(INC) $(OBJ_MAIN)
-	$(CC) $(FLAG) $(OBJ) $(OBJ_MAIN) -lreadline -o $(NAME)
+			$(CC) $(FLAG) $(OBJ) $(OBJ_MAIN) -lreadline -o $(NAME)
 
 norm:
-	norminette
+			norminette
 
 clean:
-	rm -f $(OBJ) $(OBJ_MAIN)
+			${RM} $(OBJ) $(OBJ_MAIN) ${DOBJ} ${DOBJ_MAIN}
 
-fclean:	clean
-	rm -f $(NAME)
+fclean:		clean
+			${RM} $(NAME)
 
-re:	fclean all 
+re:			fclean all 
 
-
-.PHONY: all clean fclean re	
+.PHONY:		all clean fclean re .c.o norm

@@ -34,7 +34,8 @@ void	ft_minishell(t_minishell *minishell)
 		str = ft_readline("Minishell> ", minishell->garbagecmd);
 		if (!str)
 			ft_exit(minishell, "exit\n");
-		add_history(str);
+		if (str[0] != '\0')
+			add_history(str);
 		if (ft_tokencreate(minishell, str) == 0
 			|| *minishell->tokenlist->size != 0)
 		{
@@ -45,7 +46,8 @@ void	ft_minishell(t_minishell *minishell)
 				ft_tokencmdclean(minishell);
 				ft_child(minishell, minishell->tokenlist->start);
 			}
-			ft_error(minishell, ft_itoa(minishell->laststatus, minishell->garbage));
+			ft_error(minishell, ft_itoa(minishell->laststatus,
+					minishell->garbage));
 		}
 	}
 }
@@ -53,13 +55,9 @@ void	ft_minishell(t_minishell *minishell)
 int	main(int argc, char **argv, char **env)
 {
 	t_minishell		*minishell;
-	t_sigaction		sa;
 
-	sa.sa_flags = SA_SIGINFO;
-	sa.sa_sigaction = ft_signal_main;
-	sigemptyset(&sa.sa_mask);
-	sigaction(SIGINT, &sa, NULL);
-	sigaction(SIGQUIT, &sa, NULL);
+	signal(SIGINT, &ft_signal_main);
+	signal(SIGQUIT, &ft_signal_main);
 	rl_outstream = stderr;
 	if (!env || !env[0])
 	{

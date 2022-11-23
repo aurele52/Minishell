@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 16:37:40 by audreyer          #+#    #+#             */
-/*   Updated: 2022/11/18 18:11:53 by mgirardo         ###   ########.fr       */
+/*   Updated: 2022/11/23 18:45:07 by mgirardo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,12 +78,6 @@ typedef struct s_env
 	size_t	lvalue;
 }	t_env;
 
-// typedef struct s_export
-// {
-// 	int		i;
-// 	t_env	envline;
-// }
-
 typedef struct s_list
 {
 	struct s_list	*next;
@@ -97,6 +91,7 @@ typedef struct s_minishell
 	t_pos		*garbage;
 	t_pos		*garbagecmd;
 	int			heredoc;
+	int			heredocprompt;
 	char		**env;
 	t_pos		*actenv;
 	char		**argv;
@@ -131,7 +126,8 @@ t_pos		*ft_setpos(t_pos *garbage);
 void		ft_lstdelone(t_list *lst, int garbage);
 t_list		*ft_lstnew(void *content, t_pos *pos, t_pos *garbage);
 void		ft_posclear(t_pos *pos, int garbage);
-void		ft_posprint(t_minishell *minishell, t_pos *pos, void (*fct)(t_minishell *, void *, int), int fd);
+void		ft_posprint(t_minishell *minishell, t_pos *pos, void (*fct)
+				(t_minishell *, void *, int), int fd);
 
 /* libft */
 
@@ -194,18 +190,23 @@ char		**ft_nospaces(t_minishell *minishell, char **str, int size);
 t_list		*ft_cmdclear(t_list *tokenlist);
 t_command	*ft_commandinit(t_minishell *minishell);
 t_list		*ft_commandcreate(t_minishell *minishell, t_list *tokenlist);
-t_list		*ft_whiletoken(t_minishell *minishell, t_list **tokenlist, t_command *command, t_token *cmdtoken);
+t_list		*ft_whiletoken(t_minishell *minishell, t_list **tokenlist,
+				t_command *command, t_token *cmdtoken);
 char		**ft_cmdcharcreate(t_minishell *minishell, t_list *tokenlist);
-int			ft_openin(t_minishell *minishell, t_command *command, t_token *token);
+int			ft_openin(t_minishell *minishell, t_command *command,
+				t_token *token);
 int			ft_open(t_minishell *minishell, t_token *token, t_command *command);
 void		ft_resetcommand(t_command *command);
-int			ft_openwrite(t_minishell *minishell, t_command *command, t_token *token);
-int			ft_openappend(t_minishell *minishell, t_command *command, t_token *token);
+int			ft_openwrite(t_minishell *minishell, t_command *command,
+				t_token *token);
+int			ft_openappend(t_minishell *minishell, t_command *command,
+				t_token *token);
 void		ft_errorcmd(t_list *tokenlist);
 char		*ft_expanddollar(t_minishell *minishell, char *str);
 char		*ft_recupbeforedollar(t_minishell *minishell, char *str);
 char		*ft_searchinenv(t_minishell *minishell, char *str);
-int			ft_elsedouble(t_minishell *minishell, char **str, char **temp, char **new);
+int			ft_elsedouble(t_minishell *minishell, char **str, char **temp,
+				char **new);
 void		ft_expandsimplequote(t_token *token);
 void		ft_closepipe(t_minishell *minishell);
 
@@ -220,8 +221,8 @@ char		*ft_expanddoublequote(t_minishell *minishell, char *str);
 char		*ft_expanddollar(t_minishell *minishell, char *str);
 void		ft_printenv(t_minishell	*minishell, void *ptr, int fd);
 int			ft_errorstr(char *str);
-void		ft_signal_main(int sig, siginfo_t *siginfo, void *ucontext);
-void		ft_signalhd(int sig, siginfo_t *siginfo, void *ucontext);
+void		ft_signal_main(int sig);
+void		ft_signalhd(int sig);
 
 /*env*/
 
@@ -251,6 +252,7 @@ void		ft_preaddvarenv(t_minishell *minishell, char *name, t_env *varenv);
 void		ft_updateenv(t_minishell *minishell, char *buff);
 t_list		*ft_envvarexist(t_pos *envact, char *str);
 int			ft_ispartenv(t_env	*varenv, char *str);
+void		ft_soloexport(t_command *command);
 
 /*cast*/
 

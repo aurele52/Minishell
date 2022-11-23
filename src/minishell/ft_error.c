@@ -15,7 +15,7 @@
 void	ft_error(t_minishell *minishell, char *str)
 {
 	minishell->laststatus = ft_errorstr(str);
-	if (str && !ft_isnum(str))//
+	if (str && !ft_isnum(str))
 		write(2, str, ft_strlen(str));
 	if (minishell->garbagecmd != NULL)
 		ft_posclear(minishell->garbagecmd, 1);

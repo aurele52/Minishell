@@ -57,6 +57,7 @@ t_pos	*ft_envinit(t_minishell *minishell)
 void	ft_minishellinit2(t_minishell *minishell)
 {
 	minishell->heredoc = 0;
+	minishell->heredocprompt = 0;
 	minishell->laststatus = 0;
 	minishell->error = 0;
 	minishell->garbagecmd = ft_setpos(0);

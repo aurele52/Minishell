@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 12:48:41 by audreyer          #+#    #+#             */
-/*   Updated: 2022/11/17 15:00:51 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/11/23 19:38:41 by mgirardo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,34 +76,21 @@ void	ft_doesnthaveinenv(t_minishell *minishell, char *command)
 	line->lvalue = ft_strlen(line->value);
 }
 
-void	ft_soloexport(t_command *command)
+int	ft_checkcmd1(t_minishell *minishell, char *cmd1, t_command *command)
 {
-	write(command->ofdout, "You choose to use", ft_strlen("You choose to use"));
-	write(command->ofdout, " export on its", ft_strlen(" export on its"));
-	write(command->ofdout, " own, and as an", ft_strlen(" own, and as an"));
-	write(command->ofdout, " undefine behavior", ft_strlen(" undefine behavior"));
-	write(command->ofdout, ", it will not do", ft_strlen(", it will not do"));
-	write(command->ofdout, " anything but this", ft_strlen(" anything but this"));
-	write(command->ofdout, ".\n", ft_strlen(".\n"));
-}
-
- int	ft_checkcmd1(t_minishell *minishell, char *cmd1, t_command *command)
- {
- 	if (cmd1 == 0)
- 	{
+	if (cmd1 == 0)
+	{
 		ft_soloexport(command);
- 		ft_error(minishell, "0");
- 		return (1);
- 	}
- 	if (cmd1[0] == 0 || cmd1[0] == '=' || (cmd1[0] <= '9' && cmd1[0] >= '0')) 
- 	{
- 		ft_error(minishell, "minishell: export: `': not a valid identifier\n");
- 		return (1);
- 	}
- 	return (0);
- }
-
-
+		ft_error(minishell, "0");
+		return (1);
+	}
+	if (cmd1[0] == 0 || cmd1[0] == '=' || (cmd1[0] <= '9' && cmd1[0] >= '0'))
+	{
+		ft_error(minishell, "minishell: export: `': not a valid identifier\n");
+		return (1);
+	}
+	return (0);
+}
 
 void	ft_export(t_minishell *minishel, t_command *command)
 {
@@ -111,89 +98,89 @@ void	ft_export(t_minishell *minishel, t_command *command)
 	t_env	*line;
 	char	*cmd1;
 
- 	cmd1 = command->cmd[1];
- 	i = 1;
- 	if (ft_checkcmd1(minishel, cmd1, command) == 1)
- 		return ;
- 	while (command->cmd[i])
- 	{
- 		if (ft_egalplus(command->cmd[i]))
- 		{
- 			ft_error(minishel, "minishell: export: not a valid identifier\n");
- 			return ;
- 		}
- 		line = ft_envtoken(minishel, ft_searchname(minishel, command->cmd[i]));
- 		if (line)
- 			ft_haveinenv(minishel, line, command->cmd[i], minishel->env[i]);
- 		else
- 			ft_doesnthaveinenv(minishel, command->cmd[i]);
- 		i++;
- 	}
- }
-/*
-
-int	ft_cmdexportvalid(char *cmd)
-{
-	int	i;
-	int	check;
-
-	check = 0;
-	i = -1;
-	while (cmd[++i])
-		if (!ft_isalpha((int)cmd[i]) || cmd[i] != '_')
-		{
-			check++;
-			break ;
-		}
-	if (cmd[i] != '=')
-		check++;
-	if (check != 0)
-		return (1);
-	else
-		return (0);
-}
-
-char	**ft_cmdexport(t_minishell *minishell, char *cmd)
-{
-	char	**var;
-	int		lname;
-	int		lvalue;
-
-	var = ft_malloc(sizeof(*var) * 3, minishell->garbage);
-	if (!var)
-		ft_exit(minishell, "malloc error\n");
-	lname = ft_strlenchar(cmd, '=');
-	lvalue = ft_strlen(cmd) - ft_strlenchar(cmd, '=') - 1;
-	var[0] = ft_substr(cmd, 0, lname, minishell->garbage);
-	var[1] = ft_substr(cmd, lname + 1, lvalue, minishell->garbage);
-	return (var);
-}
-
-void	ft_export(t_minishell *minishell, t_command *command)
-{
-	int		i;
-	char	**cmdexport;
-
-	if (ft_doublstrlen(command->cmd) == 1)
-	{
-		ft_soloexport(command);
+	cmd1 = command->cmd[1];
+	i = 1;
+	if (ft_checkcmd1(minishel, cmd1, command) == 1)
 		return ;
-	}
-	i = 0;
-	while (command->cmd[++i])
+	while (command->cmd[i])
 	{
-		if (ft_cmdexportvalid(command->cmd[i]))
+		if (ft_egalplus(command->cmd[i]))
 		{
-			cmdexport = ft_cmdexport(minishell, command->cmd[i]);
-			if (ft_envvarexist(minishell->actenv, cmdexport[0]))
-				ft_lstdelone(ft_envvarexist(minishell->actenv, cmdexport[0]), 0);
-			ft_addvarenv(minishell, cmdexport[0], cmdexport[1]);
-		}
-		else
-		{
-			ft_error(minishell,  recup message d'erreur sur bash "error in export");
+			ft_error(minishel, "minishell: export: not a valid identifier\n");
 			return ;
 		}
+		line = ft_envtoken(minishel, ft_searchname(minishel, command->cmd[i]));
+		if (line)
+			ft_haveinenv(minishel, line, command->cmd[i], minishel->env[i]);
+		else
+			ft_doesnthaveinenv(minishel, command->cmd[i]);
+		i++;
 	}
 }
-*/
+/*
+
+   int	ft_cmdexportvalid(char *cmd)
+   {
+   int	i;
+   int	check;
+
+   check = 0;
+   i = -1;
+   while (cmd[++i])
+   if (!ft_isalpha((int)cmd[i]) || cmd[i] != '_')
+   {
+   check++;
+   break ;
+   }
+   if (cmd[i] != '=')
+   check++;
+   if (check != 0)
+   return (1);
+   else
+   return (0);
+   }
+
+   char	**ft_cmdexport(t_minishell *minishell, char *cmd)
+   {
+   char	**var;
+   int		lname;
+   int		lvalue;
+
+   var = ft_malloc(sizeof(*var) * 3, minishell->garbage);
+   if (!var)
+   ft_exit(minishell, "malloc error\n");
+   lname = ft_strlenchar(cmd, '=');
+   lvalue = ft_strlen(cmd) - ft_strlenchar(cmd, '=') - 1;
+   var[0] = ft_substr(cmd, 0, lname, minishell->garbage);
+   var[1] = ft_substr(cmd, lname + 1, lvalue, minishell->garbage);
+   return (var);
+   }
+
+   void	ft_export(t_minishell *minishell, t_command *command)
+   {
+   int		i;
+   char	**cmdexport;
+
+   if (ft_doublstrlen(command->cmd) == 1)
+   {
+   ft_soloexport(command);
+   return ;
+   }
+   i = 0;
+   while (command->cmd[++i])
+   {
+   if (ft_cmdexportvalid(command->cmd[i]))
+   {
+   cmdexport = ft_cmdexport(minishell, command->cmd[i]);
+   if (ft_envvarexist(minishell->actenv, cmdexport[0]))
+   ft_lstdelone(ft_envvarexist(minishell->actenv, cmdexport[0]), 0);
+   ft_addvarenv(minishell, cmdexport[0], cmdexport[1]);
+   }
+   else
+   {
+   ft_error(minishell,  recup message d'erreur sur bash "error in export");
+   return ;
+   }
+   }
+   }
+   */

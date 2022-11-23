@@ -39,10 +39,8 @@
 //		close (0); //not good enough
 //	else if (sig == SIGQUIT) //ctrl + /
 
-void	ft_signal_main(int sig, siginfo_t *siginfo, void *ucontext)
+void	ft_signal_main(int sig)
 {
-	(void)siginfo;
-	(void)ucontext;
 	if (sig == SIGINT)
 	{
 		write(1, "\n", 1);
@@ -58,10 +56,8 @@ void	ft_signal_main(int sig, siginfo_t *siginfo, void *ucontext)
 	}
 }
 
-void	ft_signalhd(int sig, siginfo_t *siginfo, void *ucontext)
+void	ft_signalhd(int sig)
 {
-	(void)siginfo;
-	(void)ucontext;
 	if (sig == SIGINT)
 	{
 		close (0);

@@ -102,6 +102,7 @@ typedef struct s_minishell
 	char		*error;
 	t_pos		*tokenlist;
 	int			laststatus;
+	int			fdutil;
 }	t_minishell;
 
 typedef struct s_token
@@ -215,6 +216,8 @@ void		ft_signal_main(int sig);
 void		ft_signalhd(int sig);
 void		ft_minishell(t_minishell *minishell);
 int			*ft_pipeinit(t_minishell *minishell);
+void		ft_setsignalmain(void);
+char		*ft_minishell2(t_minishell *minishell);
 
 /*bazar*/
 

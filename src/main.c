@@ -30,8 +30,7 @@ int	main(int argc, char **argv, char **env)
 {
 	t_minishell		*minishell;
 
-	signal(SIGINT, ft_signal_main);
-	signal(SIGQUIT, ft_signal_main);
+	ft_setsignalmain();
 	rl_outstream = stderr;
 	if (!env || !env[0])
 	{

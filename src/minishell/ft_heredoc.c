@@ -28,6 +28,7 @@ char	*ft_eofheredoc(t_minishell *minishell, char *str)
 	error[ft_strlen(error) - 1] = '\0';
 	error = ft_strjoin(error, "')\n", minishell->garbagecmd);
 	printf("%s", error);
+	minishell->laststatus = 0;
 	return (str);
 }
 
@@ -42,6 +43,7 @@ char	*ft_whileheredoc(t_minishell *minishell, char *str, t_token *t, int fd)
 	{
 		minishell->heredocprompt++;
 		minishell->laststatus = g_heredoc;
+		dup2(minishell->fdutil, 0);
 		g_heredoc = 42;
 		return (str);
 	}

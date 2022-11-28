@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/16 16:58:58 by audreyer          #+#    #+#             */
-/*   Updated: 2022/11/16 17:00:21 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/11/28 18:08:06 by mgirardo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ t_minishell	*ft_minishellinit(char **env)
 		ft_exit(minishell, "malloc error\n");
 	minishell->garbage = garbage;
 	ft_minishellinit2(minishell);
+	minishell->fdutil = dup(0);
 	minishell->env = env;
 	minishell->actenv = ft_envinit(minishell);
 	if (!minishell->actenv)
@@ -89,17 +90,13 @@ t_minishell	*ft_minishellinit(char **env)
 
 void	ft_minishell(t_minishell *minishell)
 {
-	char			*str;
+	char	*str;
 
-	str = 0;
 	while (1)
 	{
-		signal(SIGINT, ft_signal_main);
-		signal(SIGQUIT, ft_signal_main);
-		str = ft_readline("Minishell> ", minishell->garbagecmd);
-		if (!str && g_heredoc == 42)
-			ft_exit(minishell, "exit\n");
-		else if ((!str && g_heredoc == 130) || str[0] == '\0')
+		ft_setsignalmain();
+		str = ft_minishell2(minishell);
+		if (!str)
 			continue ;
 		add_history(str);
 		if (ft_tokencreate(minishell, str) == 0

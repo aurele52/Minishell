@@ -11,6 +11,7 @@
 # **************************************************************************** #
 
 SRC=	src/minishell/minishellinit.c	\
+		src/minishell/minishellinit2.c	\
 		src/minishell/ft_commandexec.c	\
 		src/minishell/ft_commandexec2.c	\
 		src/minishell/ft_commandexec3.c	\

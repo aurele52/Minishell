@@ -39,6 +39,12 @@
 //		close (0); //not good enough
 //	else if (sig == SIGQUIT) //ctrl + /
 
+void	ft_setsignalmain(void)
+{
+	signal(SIGINT, ft_signal_main);
+	signal(SIGQUIT, ft_signal_main);
+}
+
 void	ft_signal_main(int sig)
 {
 	if (sig == SIGINT)

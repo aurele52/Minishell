@@ -17,6 +17,7 @@ SRC=	src/minishell/minishellinit.c	\
 		src/minishell/ft_getpath.c	\
 		src/minishell/ft_tokenredirclean.c	\
 		src/minishell/ft_tokenredirclean2.c	\
+		src/minishell/ft_signal.c	\
 		src/minishell/ft_heredoc.c	\
 		src/minishell/ft_tokencmdclean.c	\
 		src/minishell/ft_tokencmdclean2.c	\
@@ -28,7 +29,6 @@ SRC=	src/minishell/minishellinit.c	\
 		src/minishell/ft_token_create3.c \
 		src/minishell/ft_tokencheck.c \
 		src/minishell/ft_error.c \
-		src/minishell/ft_signal.c	\
 		src/minishell/ft_posprint.c \
 		src/env/env.c	\
 		src/builtin/ft_echo.c \

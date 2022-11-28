@@ -6,23 +6,45 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 15:02:33 by audreyer          #+#    #+#             */
-/*   Updated: 2022/11/16 16:42:51 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/11/28 15:32:31 by mgirardo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//	when ctrl + d, EOF
-//	minishell: warning: here-document at line <where we are at> delimited by
-//	end-of-file (wanted `<heredoc delimiter>')
+char	*ft_eofheredoc(t_minishell *minishell, char *str)
+{
+	char	*error;
+
+	minishell->heredocprompt++;
+	error = ft_strdup("minishell: warning: here-docume", minishell->garbagecmd);
+	error = ft_strjoin(error, "nt at line ", minishell->garbagecmd);
+	error = ft_strjoin(error,
+			ft_itoa(minishell->heredocprompt, minishell->garbagecmd),
+			minishell->garbagecmd);
+	error = ft_strjoin(error, " delimited by end-of-fi", minishell->garbagecmd);
+	error = ft_strjoin(error, "le (wanted `", minishell->garbagecmd);
+	error = ft_strjoin(error, str, minishell->garbagecmd);
+	error[ft_strlen(error) - 1] = '\0';
+	error = ft_strjoin(error, "')\n", minishell->garbagecmd);
+	printf("%s", error);
+	return (str);
+}
 
 char	*ft_whileheredoc(t_minishell *minishell, char *str, t_token *t, int fd)
 {
 	char	*read;
 
 	read = ft_readline("> ", minishell->garbagecmd);
-	if (!read)
-		ft_exit(minishell, "exit\n");
+	if (!read && g_heredoc == 42)
+		return (ft_eofheredoc(minishell, str));
+	else if (!read && g_heredoc == 130)
+	{
+		minishell->heredocprompt++;
+		minishell->laststatus = g_heredoc;
+		g_heredoc = 42;
+		return (str);
+	}
 	minishell->heredocprompt++;
 	read = ft_strjoin(read, "\n", minishell->garbagecmd);
 	if (ft_strcmp(str, read) != 0)
@@ -50,6 +72,8 @@ void	ft_heredoc(t_minishell *minishell, t_token *token)
 	fd = open(token->str, O_CREAT | O_TRUNC | O_RDWR, 0777);
 	if (fd == -1)
 		write(2, "Could not open file descriptor\n", 8);
+	signal(SIGINT, ft_signalhd);
+	signal(SIGQUIT, ft_signalhd);
 	while (ft_strcmp(str, read) != 0)
 		read = ft_whileheredoc(minishell, str, token, fd);
 	minishell->heredoc++;
@@ -69,8 +93,3 @@ void	ft_heredocclean(t_minishell *minishell)
 		tokenlist = tokenlist->next;
 	}
 }
-
-	/*
-		Pour les signaux qudn EOF message derreur recup str sans \n et
-		minishell->heredocprompt
-	*/

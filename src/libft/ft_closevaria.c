@@ -25,7 +25,7 @@ int	ft_closevaria(int i, ...)
 		{
 			fd = close(fd);
 			if (fd == -1)
-				write(2, "n2p", 3);
+				write(2, "Couldn't close fd\n", ft_strlen("Couldn't close fd"));
 		}
 		i--;
 	}

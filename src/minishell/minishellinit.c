@@ -86,3 +86,34 @@ t_minishell	*ft_minishellinit(char **env)
 		ft_exit(minishell, "malloc error\n");
 	return (minishell);
 }
+
+void	ft_minishell(t_minishell *minishell)
+{
+	char			*str;
+
+	str = 0;
+	while (1)
+	{
+		signal(SIGINT, ft_signal_main);
+		signal(SIGQUIT, ft_signal_main);
+		str = ft_readline("Minishell> ", minishell->garbagecmd);
+		if (!str && g_heredoc == 42)
+			ft_exit(minishell, "exit\n");
+		else if ((!str && g_heredoc == 130) || str[0] == '\0')
+			continue ;
+		add_history(str);
+		if (ft_tokencreate(minishell, str) == 0
+			|| *minishell->tokenlist->size != 0)
+		{
+			ft_tokenredirclean(minishell);
+			if (*minishell->tokenlist->size != 0)
+			{
+				ft_heredocclean(minishell);
+				ft_tokencmdclean(minishell);
+				ft_child(minishell, minishell->tokenlist->start);
+			}
+			ft_error(minishell, ft_itoa(minishell->laststatus,
+					minishell->garbage));
+		}
+	}
+}

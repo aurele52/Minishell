@@ -6,7 +6,7 @@
 #    By: audreyer <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/21 22:50:22 by audreyer          #+#    #+#              #
-#    Updated: 2022/11/17 19:00:18 by audreyer         ###   ########.fr        #
+#    Updated: 2022/11/29 17:11:51 by audreyer         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,7 @@ SRC=	src/minishell/minishellinit.c	\
 		src/minishell/ft_token_create.c \
 		src/minishell/ft_token_create2.c \
 		src/minishell/ft_token_create3.c \
+		src/minishell/ft_token_create4.c \
 		src/minishell/ft_tokencheck.c \
 		src/minishell/ft_error.c \
 		src/minishell/ft_posprint.c \

@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 16:37:40 by audreyer          #+#    #+#             */
-/*   Updated: 2022/11/23 18:45:07 by mgirardo         ###   ########.fr       */
+/*   Updated: 2022/11/29 17:11:51 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,6 +221,7 @@ char		*ft_minishell2(t_minishell *minishell);
 
 /*bazar*/
 
+int			ft_spacecheck(char *str);
 void		ft_printtoken(t_minishell *minishell, void *ptr, int fd);
 int			ft_exit(t_minishell *minishell, char *str);
 char		*ft_getcmdfile(t_minishell *minishell, t_command *command);

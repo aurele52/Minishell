@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 18:39:13 by audreyer          #+#    #+#             */
-/*   Updated: 2022/11/18 15:17:48 by mgirardo         ###   ########.fr       */
+/*   Updated: 2022/11/29 17:28:35 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,8 @@ int	ft_elsedouble(t_minishell *minishell, char **str, char **temp, char **new)
 
 	i = 0;
 	while ((*str)[i] && (*str)[i] != ' ' && (*str)[i] != '$'
-		&& (*str)[i] != '=' && (*str)[i] != '/' && (*str)[i] != '?')
+		&& (*str)[i] != '=' && (*str)[i] != '/' && (*str)[i] != '?'
+		&& (*str)[i] != '\'')
 		i++;
 	if (i == 0 && (*str)[i] == '?')
 		i++;

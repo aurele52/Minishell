@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 11:53:25 by audreyer          #+#    #+#             */
-/*   Updated: 2022/11/16 16:28:13 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/11/29 17:11:51 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int	ft_char(t_minishell *minishell, char *str)
 
 int	ft_tokencreate(t_minishell *minishell, char *str)
 {
-	if (ft_strlen(str) == 0)
+	if (ft_strlen(str) == 0 || ft_spacecheck(str) == -1)
 		return (-1);
 	if (!ft_numbercheck(str))
 	{

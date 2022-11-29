@@ -75,6 +75,7 @@ int	ft_exit(t_minishell *minishell, char *str)
 {
 	int		i;
 
+	printf("In ft_exit\nstr = '%s'\n", str);//
 	if (str == 0)
 			i = minishell->laststatus;
 	else

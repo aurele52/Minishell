@@ -232,6 +232,7 @@ void		ft_printenv(t_minishell	*minishell, void *ptr, int fd);
 int			ft_errorstr(char *str);
 void		ft_signal_main(int sig);
 void		ft_signalhd(int sig);
+void		ft_setsignalparent(void);
 
 /*env*/
 

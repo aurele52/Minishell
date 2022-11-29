@@ -45,6 +45,18 @@ void	ft_setsignalmain(void)
 	signal(SIGQUIT, ft_signal_main);
 }
 
+void	ft_signalparent(int sig)
+{
+	(void)sig;
+}
+
+void	ft_setsignalparent(void)
+{
+	signal(SIGINT, ft_signalparent);
+	signal(SIGQUIT, ft_signalparent);
+	signal(SIGTERM, ft_signalparent);
+}
+
 void	ft_signal_main(int sig)
 {
 	if (sig == SIGINT)

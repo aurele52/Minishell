@@ -48,7 +48,7 @@ void	ft_fillofdout(t_command *command, unsigned int i)
 	}
 }
 
-void	ft_echo(t_command *command)
+void	ft_echo(t_minishell *minishell, t_command *command)
 {
 	unsigned int	i;
 
@@ -70,4 +70,5 @@ void	ft_echo(t_command *command)
 	}
 	else
 		write(command->ofdout, "\n", 1);
+	minishell->laststatus = 0;
 }

@@ -171,7 +171,7 @@ int			ft_tokenspace(t_minishell *minishell, char *str);
 
 /* minishell */
 
-void		ft_heredocclean(t_minishell *minishell);
+int			ft_heredocclean(t_minishell *minishell);
 void		ft_child(t_minishell *minishell, t_list *tokenlist);
 void		ft_tokenredirclean(t_minishell *minishell);
 void		ft_tokencmdclean(t_minishell *minishell);
@@ -247,7 +247,7 @@ void		ft_unset(t_minishell *minishell, t_command *command);
 void		ft_pwd(t_minishell *minishell, t_command *command);
 void		ft_export(t_minishell *minishell, t_command *command);
 void		ft_builtin(t_minishell *minishell, t_command *command);
-void		ft_echo(t_command *command);
+void		ft_echo(t_minishell *minishell, t_command *command);
 void		ft_cd(t_minishell *minishell, t_command *command);
 t_list		*ft_envvarexist(t_pos *envact, char *str);
 int			ft_ispartenv(t_env	*varenv, char *str);
@@ -262,6 +262,7 @@ void		ft_updateenv(t_minishell *minishell, char *buff);
 t_list		*ft_envvarexist(t_pos *envact, char *str);
 int			ft_ispartenv(t_env	*varenv, char *str);
 void		ft_soloexport(t_command *command);
+void		ft_updatepwd(t_minishell *minishell, char *buff);
 
 /*cast*/
 

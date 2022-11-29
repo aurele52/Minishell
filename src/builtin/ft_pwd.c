@@ -29,6 +29,10 @@ void	ft_pwd(t_minishell *minishell, t_command *command)
 		ft_error(minishell, str);
 		return ;
 	}
+/* 	if (!str)
+	{
+
+	} */
 	write(command->ofdout, str, ft_strlen(str));
 	write(command->ofdout, "\n", 1);
 	minishell->laststatus = 0;

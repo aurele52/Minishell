@@ -94,7 +94,6 @@ void	ft_minishell(t_minishell *minishell)
 
 	while (1)
 	{
-		ft_setsignalmain();
 		str = ft_minishell2(minishell);
 		if (!str)
 			continue ;
@@ -106,8 +105,11 @@ void	ft_minishell(t_minishell *minishell)
 			if (*minishell->tokenlist->size != 0)
 			{
 				ft_heredocclean(minishell);
-				ft_tokencmdclean(minishell);
-				ft_child(minishell, minishell->tokenlist->start);
+				if (g_heredoc != 130)
+				{
+					ft_tokencmdclean(minishell);
+					ft_child(minishell, minishell->tokenlist->start);
+				}
 			}
 			ft_error(minishell, ft_itoa(minishell->laststatus,
 					minishell->garbage));

@@ -6,7 +6,7 @@
 /*   By: mgirardo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 18:14:02 by mgirardo          #+#    #+#             */
-/*   Updated: 2022/11/17 18:45:29 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/11/29 12:37:30 by mgirardo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,17 +29,17 @@ int	ft_pwdcheck(t_minishell *minishell)
 	buff = ft_malloc(PATH_MAX, minishell->garbage);
 	if (!buff)
 		ft_exit(minishell, "malloc error\n");
-	if (!ft_envvarexist(minishell->actenv, "PWD"))
+	// if (!ft_envvarexist(minishell->actenv, "PWD"))
+	// {
+	if (getcwd(buff, PATH_MAX))
+		ft_updatepwd(minishell, buff);
+	/* else
 	{
-		if (getcwd(buff, PATH_MAX))
-			ft_addvarenv(minishell, "PWD", buff);
-		else
-		{
-			ft_error(minishell,
+		ft_error(minishell,
 				"minishell: cd: could not get current working directory\n");
-			return (1);
-		}
-	}
+		return (1);
+	} */
+	// }
 	return (0);
 }
 
@@ -47,6 +47,7 @@ void	ft_elseif(t_minishell *minishell, t_command *command, char *buff)
 {
 	char	*str;
 
+	ft_pwdcheck(minishell);
 	if (chdir(command->cmd[1]) == 0)
 	{
 		if (getcwd(buff, PATH_MAX))
@@ -75,6 +76,7 @@ void	ft_elseif2(t_minishell *minishell, char *buff)
 {
 	t_list	*list;
 
+	ft_pwdcheck(minishell);
 	list = ft_envvarexist(minishell->actenv, "HOME");
 	if (!list)
 	{
@@ -103,8 +105,8 @@ void	ft_cd(t_minishell *minishell, t_command *command)
 		ft_exit(minishell, "malloc error\n");
 	if (ft_doublstrlen(command->cmd) > 2)
 		ft_error(minishell, "minishell: cd: too many arguments\n");
-	else if (ft_pwdcheck(minishell))
-		return ;
+	/* 	else if (ft_pwdcheck(minishell))
+		return ; */
 	else if (ft_doublstrlen(command->cmd) == 2)
 		ft_elseif(minishell, command, buff);
 	else if (ft_doublstrlen(command->cmd) == 1)

@@ -83,7 +83,7 @@ NAME		=	minishell
 
 INC			=	include/minishell.h
 
-CC			=	gcc
+CC			=	cc
 
 FLAG		=	-g -Wall -Werror -Wextra -MMD
 
@@ -93,7 +93,8 @@ all:		$(NAME)
 
 -include ${DOBJ} ${DOBJ_MAIN}
 .c.o:
-			$(CC) $(FLAG) -I include -lreadline -c $< -o $(<:.c=.o)
+			$(CC) $(FLAG) -I include -c $< -o $(<:.c=.o)
+# $(CC) $(FLAG) -I include -lreadline -c $< -o $(<:.c=.o)
 
 # $(TESTER):	$(OBJ) $(OBJ_MAIN_TEST) $(INC)
 # 	$(CC) $(FLAG) $(OBJ) $(OBJ_MAIN_TEST) -lreadline -o $(TESTER)
@@ -101,7 +102,7 @@ all:		$(NAME)
 # 	mv $(TESTER) ./tester/$(TESTER)
 # 	@make -C ./tester
 
-$(NAME):	$(OBJ) $(INC) $(OBJ_MAIN)
+$(NAME):	$(OBJ_MAIN) $(OBJ) $(INC)
 			$(CC) $(FLAG) $(OBJ) $(OBJ_MAIN) -lreadline -o $(NAME)
 
 norm:

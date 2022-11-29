@@ -44,7 +44,7 @@ char	*ft_whileheredoc(t_minishell *minishell, char *str, t_token *t, int fd)
 		minishell->heredocprompt++;
 		minishell->laststatus = g_heredoc;
 		dup2(minishell->fdutil, 0);
-		g_heredoc = 42;
+		// g_heredoc = 42;
 		return (str);
 	}
 	minishell->heredocprompt++;
@@ -83,7 +83,7 @@ void	ft_heredoc(t_minishell *minishell, t_token *token)
 	ft_closevaria(1, fd);
 }
 
-void	ft_heredocclean(t_minishell *minishell)
+int	ft_heredocclean(t_minishell *minishell)
 {
 	t_list	*tokenlist;
 
@@ -93,5 +93,8 @@ void	ft_heredocclean(t_minishell *minishell)
 		if (ft_type(tokenlist) == HEREDOC || ft_type(tokenlist) == HEREDOCEXT)
 			ft_heredoc(minishell, tokenlist->content);
 		tokenlist = tokenlist->next;
+		ft_setsignalmain();
 	}
+	// printf("minishell->laststatus = '%i'\n", minishell->laststatus);//
+	return (minishell->laststatus);
 }

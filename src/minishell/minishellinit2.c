@@ -24,7 +24,13 @@ char	*ft_minishell2(t_minishell *minishell)
 		return (NULL);
 	}
 	else if ((!str && g_heredoc == 130) || str[0] == '\0')
+	{
+		g_heredoc = 42;
 		return (NULL);
+	}
 	else
+	{
+		g_heredoc = 42;
 		return (str);
+	}
 }

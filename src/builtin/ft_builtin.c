@@ -32,7 +32,7 @@ void	ft_closepipe(t_minishell *minishell)
 void	ft_builtin(t_minishell *minishell, t_command *command)
 {
 	if (!ft_strcmp(command->cmd[0], "echo"))
-		ft_echo(command);
+		ft_echo(minishell, command);
 	else if (!ft_strcmp(command->cmd[0], "cd"))
 		ft_cd(minishell, command);
 	else if (!ft_strcmp(command->cmd[0], "pwd"))

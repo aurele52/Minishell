@@ -70,3 +70,16 @@ void	ft_updateenv(t_minishell *minishell, char *buff)
 		ft_lstdelone(ft_envvarexist(minishell->actenv, "PWD"), 0);
 	ft_addvarenv(minishell, "PWD", buff);
 }
+
+void	ft_updatepwd(t_minishell *minishell, char *buff)
+{
+/* 	t_list	*list;
+
+	list = ft_envvarexist(minishell->actenv, "PWD");
+	if (ft_envvarexist(minishell->actenv, "OLDPWD"))
+		ft_lstdelone(ft_envvarexist(minishell->actenv, "OLDPWD"), 0);
+	ft_preaddvarenv(minishell, "OLDPWD", list->content); */
+	if (ft_envvarexist(minishell->actenv, "PWD"))
+		ft_lstdelone(ft_envvarexist(minishell->actenv, "PWD"), 0);
+	ft_addvarenv(minishell, "PWD", buff);
+}

@@ -29,7 +29,6 @@ int	ft_whil(t_minishell *minishell, t_command **command, t_list **tokenlist)
 		else
 			ft_exit(minishell, (*command)->error);
 	}
-	printf("In ft_whil\ncommand->error = '%s'\n", (*command)->error);//
 	ft_closevaria(2, ft_ofdout(*tokenlist), ft_ofdin(*tokenlist));
 	*tokenlist = (*tokenlist)->next->next;
 	*command = ft_commandget(*tokenlist);
@@ -55,11 +54,11 @@ void	ft_else(t_minishell *minishell, t_command *command, t_list *tokenlist)
 	b = 0;
 	while (b < i)
 		waitpid(childid[b++], &wstatus, 0);
-	// if (WIFEXITED(wstatus) == 1)
-	if (WIFEXITED(wstatus))//
+	if (WIFEXITED(wstatus) == 1)
 		minishell->laststatus = WEXITSTATUS(wstatus);
-	printf("minishell->laststatus = '%i'\n", minishell->laststatus);//
-	printf("WEXITSTATUS = '%i'\n", WEXITSTATUS(wstatus));//
+	else if (WIFEXITED(wstatus) == 0)
+		if (WIFSIGNALED(wstatus))
+			minishell->laststatus = WTERMSIG(wstatus) + 128;
 }
 
 void	ft_child(t_minishell *minishell, t_list *tokenlist)

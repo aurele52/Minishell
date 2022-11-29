@@ -27,7 +27,7 @@ int	ft_openwrite(t_minishell *minishell, t_command *command, t_token *token)
 	int	i;
 
 	command->type = 'T';
-	i = open(token->str, O_WRONLY | O_CREAT | O_TRUNC, 0777);
+	i = open(token->str, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (i == -1)
 	{
 		ft_resetcommand(command);
@@ -49,7 +49,7 @@ int	ft_openin(t_minishell *minishell, t_command *command, t_token *token)
 {
 	int	i;
 
-	i = open(token->str, O_RDONLY, 0777);
+	i = open(token->str, O_RDONLY, 0644);
 	if (i == -1)
 	{
 		ft_resetcommand(command);
@@ -72,7 +72,7 @@ int	ft_openappend(t_minishell *minishell, t_command *command, t_token *token)
 	int	i;
 
 	command->type = 'A';
-	i = open(token->str, O_WRONLY | O_CREAT | O_APPEND, 0777);
+	i = open(token->str, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (i == -1)
 	{
 		ft_resetcommand(command);

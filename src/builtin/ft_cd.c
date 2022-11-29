@@ -29,17 +29,8 @@ int	ft_pwdcheck(t_minishell *minishell)
 	buff = ft_malloc(PATH_MAX, minishell->garbage);
 	if (!buff)
 		ft_exit(minishell, "malloc error\n");
-	// if (!ft_envvarexist(minishell->actenv, "PWD"))
-	// {
 	if (getcwd(buff, PATH_MAX))
 		ft_updatepwd(minishell, buff);
-	/* else
-	{
-		ft_error(minishell,
-				"minishell: cd: could not get current working directory\n");
-		return (1);
-	} */
-	// }
 	return (0);
 }
 
@@ -105,8 +96,6 @@ void	ft_cd(t_minishell *minishell, t_command *command)
 		ft_exit(minishell, "malloc error\n");
 	if (ft_doublstrlen(command->cmd) > 2)
 		ft_error(minishell, "minishell: cd: too many arguments\n");
-	/* 	else if (ft_pwdcheck(minishell))
-		return ; */
 	else if (ft_doublstrlen(command->cmd) == 2)
 		ft_elseif(minishell, command, buff);
 	else if (ft_doublstrlen(command->cmd) == 1)

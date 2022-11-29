@@ -37,11 +37,11 @@ void	ft_changefdout(t_list *tokenlist, int fd)
 void	ft_openend(t_command *cmd)
 {
 	if (cmd->fdin != 0)
-		cmd->ofdin = open(cmd->fdin, O_RDONLY, 0777);
+		cmd->ofdin = open(cmd->fdin, O_RDONLY, 0644);
 	if (cmd->fdout != 0 && cmd->type == 'T')
-		cmd->ofdout = open(cmd->fdout, O_WRONLY | O_CREAT | O_TRUNC, 0777);
+		cmd->ofdout = open(cmd->fdout, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (cmd->fdout != 0 && cmd->type == 'A')
-		cmd->ofdout = open(cmd->fdout, O_WRONLY | O_CREAT | O_APPEND, 0777);
+		cmd->ofdout = open(cmd->fdout, O_WRONLY | O_CREAT | O_APPEND, 0644);
 }
 
 void	ft_arg(t_minishell *minishell, t_list *tokenlist)

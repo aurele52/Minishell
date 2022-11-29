@@ -84,8 +84,6 @@ int	ft_checkcmd1(t_minishell *minishell, char *cmd1, t_command *command)
 		ft_error(minishell, "0");
 		return (1);
 	}
-	// printf("In ft_checkcmd1\n");//
-	// printf("cmd1 = '%s'\n", cmd1);//
 	if (cmd1[0] == 0 || cmd1[0] == '=' || (cmd1[0] <= '9' && cmd1[0] >= '0'))
 	{
 		cmd1 = ft_strjoin("minishell: export: `", cmd1, minishell->garbage);

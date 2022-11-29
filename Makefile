@@ -35,6 +35,7 @@ SRC=	src/minishell/minishellinit.c	\
 		src/builtin/ft_echo.c \
 		src/builtin/ft_cd.c \
 		src/builtin/ft_cd2.c \
+		src/builtin/ft_cd3.c \
 		src/builtin/ft_builtin.c	\
 		src/builtin/ft_unset.c	\
 		src/builtin/ft_export.c	\

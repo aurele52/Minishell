@@ -21,7 +21,6 @@ void	ft_executecmd(t_minishell *minishell, t_command *command)
 	}
 	if (command->ofdin != 0)
 		dup2(command->ofdin, 0);
-	printf("1 command->error = '%s'\n", command->error);//
 	if (command->ofdout != 1)
 	{
 		dup2(command->ofdout, 1);
@@ -30,14 +29,11 @@ void	ft_executecmd(t_minishell *minishell, t_command *command)
 	}
 	ft_closevaria(2, command->ofdin, command->ofdout);
 	ft_closepipe(minishell);
-	printf("2 command->error = '%s'\n", command->error);//
 	if (command->error == 0)
 		execve(command->file, command->cmd, ft_reenv(minishell));
-	printf("3 command->error = '%s'\n", command->error);//
 	if (command->error == 0)
 		command->error = ft_strjoin(strerror(errno), "\n",
 				minishell->garbagecmd);
-	printf("4 command->error = '%s'\n", command->error);//
 	ft_exit(minishell, command->error);
 }
 

@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 12:48:41 by audreyer          #+#    #+#             */
-/*   Updated: 2022/11/30 13:52:52 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/11/30 14:30:39 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,9 @@ char	*ft_searchvalue(t_minishell *minishell, char *str)
 		i++;
 	if (str[i] == '+' || str[i] == '=')
 		i++;
-	if (str[i] == '+' || str[i] == '=')
+	if (str[i] == '+' || (str[i] == '=' && str[i - 1] != '='))
 		i++;
 	str = str + i;
-	// str = str + i - 1;
 	i = 0;
 	while (str[i])
 		i++;

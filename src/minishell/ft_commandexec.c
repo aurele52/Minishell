@@ -22,7 +22,9 @@ int	ft_whil(t_minishell *minishell, t_command **command, t_list **tokenlist)
 	c = fork();
 	if (c == 0)
 	{
-		if ((*command)->cmd[0] == 0)
+		if ((*command)->error != 0)
+			ft_exit(minishell, (*command)->error);
+		else if ((*command)->cmd[0] == 0)
 			ft_exit(minishell, 0);
 		else if ((*command)->error == 0)
 			ft_executecmd(minishell, (*command));

@@ -24,7 +24,9 @@ t_list	*ft_envvarexist(t_pos *envact, char *str)
 		while (i <= *envact->size)
 		{
 			if (!ft_ispartenv(varenv->content, str))
+			{
 				return (varenv);
+			}
 			varenv = varenv->next;
 			i++;
 		}
@@ -55,7 +57,10 @@ int	ft_ispartenv(t_env	*varenv, char *str)
 
 void	ft_preaddvarenv(t_minishell *minishell, char *name, t_env *varenv)
 {
-	ft_addvarenv(minishell, name, varenv->value);
+	if (!varenv)
+		ft_addvarenv(minishell, name, "");
+	else
+		ft_addvarenv(minishell, name, varenv->value);
 }
 
 void	ft_updateenv(t_minishell *minishell, char *buff)
@@ -63,9 +68,18 @@ void	ft_updateenv(t_minishell *minishell, char *buff)
 	t_list	*list;
 
 	list = ft_envvarexist(minishell->actenv, "PWD");
-	if (ft_envvarexist(minishell->actenv, "OLDPWD"))
-		ft_lstdelone(ft_envvarexist(minishell->actenv, "OLDPWD"), 0);
-	ft_preaddvarenv(minishell, "OLDPWD", list->content);
+	if (list)
+	{	
+		if (ft_envvarexist(minishell->actenv, "OLDPWD"))
+			ft_lstdelone(ft_envvarexist(minishell->actenv, "OLDPWD"), 0);
+		ft_preaddvarenv(minishell, "OLDPWD", list->content);
+	}
+	else
+	{
+		if (ft_envvarexist(minishell->actenv, "OLDPWD"))
+			ft_lstdelone(ft_envvarexist(minishell->actenv, "OLDPWD"), 0);
+		ft_preaddvarenv(minishell, "OLDPWD", NULL);
+	}
 	if (ft_envvarexist(minishell->actenv, "PWD"))
 		ft_lstdelone(ft_envvarexist(minishell->actenv, "PWD"), 0);
 	ft_addvarenv(minishell, "PWD", buff);

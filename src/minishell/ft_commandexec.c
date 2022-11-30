@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 13:35:21 by audreyer          #+#    #+#             */
-/*   Updated: 2022/11/29 18:05:13 by mgirardo         ###   ########.fr       */
+/*   Updated: 2022/11/30 10:52:47 by mgirardo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,18 +37,19 @@ int	ft_whil(t_minishell *minishell, t_command **command, t_list **tokenlist)
 	return (c);
 }
 
-char	*ft_execveerror(t_minishell *mill, t_command *cmd, int stt, char *err)
+void	ft_execveerror(t_minishell *mill, int stt, char *err)
 {
-	(void)cmd;//
-	err = ft_strjoin("Minishell: ", err, mill->garbage);
-	// err = ft_strjoin(cmd->cmd[0], err, mill->garbage);
-	// err = ft_strjoin("Minishell: ", err, mill->garbage);
-	err = ft_strjoin(err, "\n", mill->garbage);
-	if (!err)
-		ft_exit(mill, "malloc error\n");
-	write(2, err, ft_strlen(err));
+	if (stt == 139)
+	{
+		err = ft_strjoin("Minishell: ", err, mill->garbage);
+		err = ft_strjoin(err, "\n", mill->garbage);
+		if (!err)
+			ft_exit(mill, "malloc error\n");
+		write(2, err, ft_strlen(err));
+	}
+	else
+		write(2, "\n", 1);
 	mill->laststatus = stt;
-	return (err);
 }
 
 void	ft_else(t_minishell *minishell, t_command *command, t_list *tokenlist)
@@ -72,12 +73,7 @@ void	ft_else(t_minishell *minishell, t_command *command, t_list *tokenlist)
 		minishell->laststatus = WEXITSTATUS(wstatus);
 	else if (WIFEXITED(wstatus) == 0)
 		if (WIFSIGNALED(wstatus))
-			ft_execveerror(minishell, command, WTERMSIG(wstatus) + 128, strerror(errno));
-		// {
-		// 	ft_error(minishell, ft_execveerror(minishell, command, WTERMSIG(wstatus) + 128, strerror(errno)));
-		// 	// write(2, strerror(errno), ft_strlen(strerror(errno)));
-		// 	// minishell->laststatus = WTERMSIG(wstatus) + 128;
-		// }
+			ft_execveerror(minishell, WTERMSIG(wstatus) + 128, strerror(errno));
 }
 
 void	ft_child(t_minishell *minishell, t_list *tokenlist)

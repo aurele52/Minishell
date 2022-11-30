@@ -24,7 +24,8 @@ char	*ft_searchvalue(t_minishell *minishell, char *str)
 		i++;
 	if (str[i] == '+' || str[i] == '=')
 		i++;
-	str = str + i - 1;
+	str = str + i;
+	// str = str + i - 1;
 	i = 0;
 	while (str[i])
 		i++;
@@ -81,7 +82,7 @@ int	ft_checkcmd1(t_minishell *minishell, char *cmd1, t_command *command)
 	if (cmd1 == 0)
 	{
 		ft_soloexport(command);
-		ft_error(minishell, "0");
+		minishell->laststatus = 0;
 		return (1);
 	}
 	if (cmd1[0] == 0 || cmd1[0] == '=' || (cmd1[0] <= '9' && cmd1[0] >= '0'))
@@ -119,6 +120,7 @@ void	ft_export(t_minishell *minishel, t_command *command)
 			ft_doesnthaveinenv(minishel, command->cmd[i]);
 		i++;
 	}
+	minishel->laststatus = 0;
 }
 /*
 

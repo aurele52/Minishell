@@ -87,8 +87,8 @@ INC			=	include/minishell.h
 
 CC			=	cc
 
-# FLAG		=	-fsanitize=address -g -Wall -Werror -Wextra -MMD
-FLAG		=	-g -Wall -Werror -Wextra -MMD
+FLAG		=	-fsanitize=address -g -Wall -Werror -Wextra -MMD
+# FLAG		=	-g -Wall -Werror -Wextra -MMD
 
 RM			=	rm -f
 

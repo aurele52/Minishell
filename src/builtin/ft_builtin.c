@@ -45,8 +45,11 @@ void	ft_builtin(t_minishell *minishell, t_command *command)
 		ft_export(minishell, command);
 	else if (!ft_strcmp(command->cmd[0], "unset"))
 		ft_unset(minishell, command);
-	ft_closevaria(2, command->ofdout, command->ofdin);
-	ft_closepipe(minishell);
+	if (minishell->tokenlist->start != 0)
+	{
+		ft_closevaria(2, command->ofdout, command->ofdin);
+		ft_closepipe(minishell);
+	}
 }
 
 int	ft_isbuiltin(t_command *command)

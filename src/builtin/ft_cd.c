@@ -52,12 +52,14 @@ void	ft_elseif(t_minishell *minishell, t_command *command, char *buff)
 	}
 	else
 	{
-		str = ft_strdup("minishell: cd: ", minishell->garbagecmd);
-		str = ft_strjoin(str, command->cmd[1], minishell->garbagecmd);
+		str = ft_strdup("minishell: cd: ", minishell->garbage);
+		str = ft_strjoin(str, command->cmd[1], minishell->garbage);
 		str = ft_strjoin(str, ft_strdup(": No such file or directory\n",
-					minishell->garbagecmd), minishell->garbagecmd);
+					minishell->garbage), minishell->garbage);
 		if (!str)
 			ft_exit(minishell, "malloc error\n");
+		// write(command->ofdout, str, ft_strlen(str));
+		// minishell->laststatus = 1;
 		ft_error(minishell, str);
 		return ;
 	}
@@ -71,6 +73,7 @@ void	ft_elseif2(t_minishell *minishell, char *buff)
 	list = ft_envvarexist(minishell->actenv, "HOME");
 	if (!list)
 	{
+		// write(command->ofdout, "minishell: cd: HOME not set\n", )
 		ft_error(minishell, "minishell: cd: HOME not set\n");
 		return ;
 	}

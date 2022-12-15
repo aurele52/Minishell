@@ -6,7 +6,7 @@
 #    By: audreyer <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/21 22:50:22 by audreyer          #+#    #+#              #
-#    Updated: 2022/11/29 17:11:51 by audreyer         ###   ########.fr        #
+#    Updated: 2022/12/15 13:18:56 by audreyer         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -87,7 +87,7 @@ INC			=	include/minishell.h
 
 CC			=	cc
 
-FLAG		=	-fsanitize=address -g -Wall -Werror -Wextra -MMD
+FLAG		=	-g -Wall -Werror -Wextra -MMD
 # FLAG		=	-g -Wall -Werror -Wextra -MMD
 
 RM			=	rm -f

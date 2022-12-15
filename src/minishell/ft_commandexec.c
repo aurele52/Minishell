@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 13:35:21 by audreyer          #+#    #+#             */
-/*   Updated: 2022/11/30 14:42:07 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/12/15 13:23:30 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ void	ft_else(t_minishell *minishell, t_command *command, t_list *tokenlist)
 	while (ft_type(tokenlist->back) != NL || i == 0)
 		childid[i++] = ft_whil(minishell, &command, &tokenlist);
 	b = 0;
-	printf("fais \n");
 	while (b < i)
 		waitpid(childid[b++], &wstatus, 0);
 	if (WIFEXITED(wstatus) == 1)

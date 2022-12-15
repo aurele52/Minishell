@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:07:09 by audreyer          #+#    #+#             */
-/*   Updated: 2022/11/18 15:22:26 by mgirardo         ###   ########.fr       */
+/*   Updated: 2022/12/15 13:21:53 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,8 @@ int	ft_exit(t_minishell *minishell, char *str)
 			i = minishell->laststatus;
 	else
 		i = ft_errorstr(str);
+	if (minishell->fdutil != 0)
+		close(minishell->fdutil);
 	if (str && ft_isnum(str) == 0)
 		write(2, str, ft_strlen(str));
 	if (minishell->garbagecmd != 0)

@@ -24,6 +24,7 @@ void	ft_pwd(t_minishell *minishell, t_command *command)
 	{
 		write(command->ofdout, buff, ft_strlen(buff));
 		write(command->ofdout, "\n", 1);
+	minishell->laststatus = 0;
 		return ;
 	}
 	else
@@ -33,6 +34,7 @@ void	ft_pwd(t_minishell *minishell, t_command *command)
 		{
 			write(command->ofdout, str, ft_strlen(str));
 			write(command->ofdout, "\n", 1);
+	minishell->laststatus = 0;
 		}
 		return ;
 	}

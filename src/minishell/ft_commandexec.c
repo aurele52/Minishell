@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 13:35:21 by audreyer          #+#    #+#             */
-/*   Updated: 2022/12/15 13:23:30 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/12/15 17:33:14 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ int	ft_whil(t_minishell *minishell, t_command **command, t_list **tokenlist)
 			ft_exit(minishell, (*command)->error);
 	}
 	ft_closevaria(2, ft_ofdout(*tokenlist), ft_ofdin(*tokenlist));
+	ft_closevaria(1, minishell->pipe[0]);
 	*tokenlist = (*tokenlist)->next->next;
 	*command = ft_commandget(*tokenlist);
 	if ((*command)->cmd && (*command)->cmd[0] != 0)

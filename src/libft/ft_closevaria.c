@@ -6,7 +6,7 @@
 /*   By: audreyer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 23:52:12 by audreyer          #+#    #+#             */
-/*   Updated: 2022/11/02 12:45:35 by audreyer         ###   ########.fr       */
+/*   Updated: 2022/12/15 17:33:13 by audreyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,7 @@ int	ft_closevaria(int i, ...)
 	{
 		fd = va_arg(param, int);
 		if (fd != 0 && fd != 2 && fd != 1)
-		{
 			fd = close(fd);
-			if (fd == -1)
-				write(2, "Couldn't close fd\n", ft_strlen("Couldn't close fd"));
-		}
 		i--;
 	}
 	return (0);
